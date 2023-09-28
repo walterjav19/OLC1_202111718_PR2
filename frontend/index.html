@@ -41,17 +41,17 @@
               <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                   <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
                     <li>
-                      <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Nuevo</a>
+                      <a id="new" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Nuevo</a>
                     </li>
                     <li>
-                      <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Abir</a>
+                      <a id="open" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Abir</a>
                     </li>
                     <li>
-                      <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Guardar</a>
+                      <a id="guardar" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Guardar</a>
                     </li>
                   </ul>
                   <div class="py-1">
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Eliminar</a>
+                    <a id="delete" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Eliminar</a>
                   </div>
               </div>
               <li>
@@ -80,31 +80,24 @@
     </div>
   </nav>
 
-  <ul class="flex">
-    <li id="tabs" class="mr-4 p-2 cursor-pointer hover:bg-gray-100 bg-gray-200">Tab 1</li>
-    <li id="tabs" class="mr-4 p-2 cursor-pointer hover:bg-gray-100">Tab 2</li>
-    <li id="tabs" class="mr-4 p-2 cursor-pointer hover:bg-gray-100">Tab 3</li>
-    <li id="tabs" class="mr-4 p-2 cursor-pointer hover:bg-gray-100">Tab 4</li>
+  <ul class="flex" id="listtabs">
+    <li id="tabs" class="mr-4 p-2 cursor-pointer hover:bg-gray-100 bg-gray-200">Archivo 1</li>
   </ul>
-  <section id="selected-content">
-    <textarea id="editor"  name="codigo_entrada"></textarea>
-  </section>
-  <section id="selected-content" class="h-40 bg-gray-200 p-2 text-4xl flex items-center justify-center hidden">
-    Tab2
-  </section>
-  <section id="selected-content" class="h-40 bg-gray-200 p-2 text-4xl flex items-center justify-center hidden">
-    Tab3
-  </section>
-  <section id="selected-content" class="h-40 bg-gray-200 p-2 text-4xl flex items-center justify-center hidden">
-    Tab4
-  </section>
+  <div id="container-content">
+    <section id="selected-content">
+      <textarea id="editor1"></textarea>
+    </section>
+
+  
+  </div>
+
 
   
 
 
 
   <div style="display: flex; justify-content: center; margin: 10px;">
-    <button type="button" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Analizar</button>
+    <button type="button" id="Analizar" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Analizar</button>
   </div>
 
   
@@ -113,7 +106,8 @@
 <!--flowbyte script-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
   <script type="module">
-       let editor = CodeMirror.fromTextArea(document.getElementById("editor"),{
+    let tabglobal=1;
+       let editor = CodeMirror.fromTextArea(document.getElementById("editor1"),{
                 lineNumbers         : true,
                 mode                : "sql",
                 theme               : "dracula",
@@ -122,6 +116,24 @@
                 //lineWrapping : true,
                 styleActiveLine     : true
             });
+        const listaEditores=[editor]
+
+
+        function StyleEditor(nameeditor){
+          let editor = CodeMirror.fromTextArea(document.getElementById(nameeditor),{
+                lineNumbers         : true,
+                mode                : "sql",
+                theme               : "dracula",
+                autoCloseBrackets   : true,
+                tabSize: 4,
+                //lineWrapping : true,
+                styleActiveLine     : true
+                
+            });
+            editor.refresh()
+          listaEditores.push(editor)
+        }
+
         let consola = CodeMirror.fromTextArea(document.getElementById("consola"),{
                 lineNumbers         : true,
                 mode                : "javascript",
@@ -132,15 +144,17 @@
                 styleActiveLine     : true,
                 readOnly: true
             });
-      const tabsarray= Array.from(document.querySelectorAll('#tabs'));
-      const contentarray=  Array.from(document.querySelectorAll('#selected-content'));
-      tabsarray.forEach(tab=>{
+
+      function clickeoTabs(tabsarray,contentarray){
+        tabsarray.forEach(tab=>{
         tab.addEventListener('click',()=>{
           let target=tab;
           tabsarray.forEach(t=>{
             t.classList.remove('bg-gray-200');
           })
+          
           const currentTab=tabsarray.indexOf(target);
+          tabglobal=currentTab+1
           contentarray.forEach(content=>{
             if(contentarray.indexOf(content)===currentTab){
               content.classList.remove('hidden');
@@ -151,10 +165,137 @@
           target.classList.add('bg-gray-200');
         })
       })
+      }
 
 
+      const tabsarray= Array.from(document.querySelectorAll('#tabs'));
+      const contentarray=  Array.from(document.querySelectorAll('#selected-content'));
       
+      clickeoTabs(tabsarray,contentarray);
+
+
+      const nuevo=document.getElementById('new');
+      nuevo.addEventListener('click',()=>{
+        const tabsarray= Array.from(document.querySelectorAll('#tabs'));
+        const tabactual=tabsarray.length+1
+
+        /*parte donde se añade un tab a mi lista de tabs*/
+
+        // 1. Obtén la referencia a tu lista <ul> por su ID
+        var ul = document.getElementById("listtabs");
+
+        // 2. Crea un nuevo elemento <li>
+        var nuevoLi = document.createElement("li");
+
+        // 3. Asigna cualquier contenido o atributos que desees al nuevo <li>
+        nuevoLi.textContent = "Archivo "+tabactual; // Puedes cambiar el texto a lo que desees
+
+        // 4. Agrega clases al nuevo <li>
+        nuevoLi.classList.add("mr-4", "p-2", "cursor-pointer", "hover:bg-gray-100");
+
+        // 5. agrega id al nuevo <li>
+        nuevoLi.setAttribute("id", "tabs");
+
+        // 6. Agrega el nuevo <li> a la lista <ul>
+        ul.appendChild(nuevoLi);
+        //fin de la parte donde se añade un tab a mi lista de tabs
+
+        /*parte donde se añade una secccion a mi body*/
+        // Crea un elemento section
+        const section = document.createElement("section");
+
+        // Establece el atributo 'id' y 'class' para el elemento
+        section.setAttribute("id", "selected-content");
+        section.setAttribute("class", "hidden");
+
+        // Crea un elemento textarea
+        const textarea = document.createElement("textarea");
+
+        // Establece el atributo 'id' y 'name' para el textarea
+        textarea.setAttribute("id", "editor"+tabactual);
+        textarea.setAttribute("name", "codigo_entrada");
+        textarea.style.position = "relative"; // Ajusta la posición según sea necesario
+        textarea.style.zIndex = "1";
+
+
+        // Agrega el textarea como hijo de la sección
+        section.appendChild(textarea);
+        
+
+        // Obtén una referencia al elemento con el id "container-content"
+        const container = document.getElementById("container-content");
+
+        // Agrega la sección al elemento "container-content"
+        container.appendChild(section);
+        StyleEditor("editor"+tabactual);
+        const contentarray=  Array.from(document.querySelectorAll('#selected-content'));
+        const tabsarraynew= Array.from(document.querySelectorAll('#tabs'));
+        clickeoTabs(tabsarraynew,contentarray);
+
+      })
       
+    
+
+      const eliminar=document.getElementById('delete');
+      eliminar.addEventListener('click',()=>{
+        if (tabglobal==1){
+          alert("No se puede eliminar este Tab")
+        }else{
+          const tabsarray= Array.from(document.querySelectorAll('#tabs'));
+          const contentarray=  Array.from(document.querySelectorAll('#selected-content'));
+          const tabactual=tabsarray.length
+          const tabactual2=tabglobal-1
+          listaEditores.splice(tabactual2,1);
+          tabsarray[tabactual2].remove();
+          contentarray[tabactual2].remove();
+          tabglobal=tabactual
+          const tabsarraynew= Array.from(document.querySelectorAll('#tabs'));
+          const contentarraynew=  Array.from(document.querySelectorAll('#selected-content'));
+          clickeoTabs(tabsarraynew,contentarraynew);
+          
+        }
+      })
+
+
+
+      let fileHandle
+          
+      document.getElementById("open").addEventListener("click", async function() {
+          [fileHandle]=await window.showOpenFilePicker();
+          let FileData=await fileHandle.getFile();
+          let contenido=await FileData.text();
+          if (tabglobal==1){
+            editor.setValue(contenido);
+          }else{
+            //aqui va codigo para agregar el texto al tab correcto
+            listaEditores[tabglobal-1].setValue(contenido);
+          }
+
+      });
+
+      document.getElementById("guardar").addEventListener("click", async function() {
+        if(tabglobal==1){
+          let stream=await fileHandle.createWritable();
+          await stream.write(editor.getValue());
+          await stream.close();
+        }else{
+          let stream=await fileHandle.createWritable();
+          await stream.write(listaEditores[tabglobal-1].getValue());
+          await stream.close();
+        }
+      });
+
+      const analizar=document.getElementById('Analizar');
+      analizar.addEventListener('click',()=>{
+        //tengo  que llamar a mi api
+        if(tabglobal==1){
+          console.log(editor.getValue())
+        }else{
+          console.log(listaEditores[tabglobal-1].getValue())
+        }
+      })
+
+
   </script>
 </body>
 </html>
