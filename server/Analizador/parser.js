@@ -72,12 +72,12 @@
   }
 */
 var parser = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,5],$V1=[1,4],$V2=[2,5,7],$V3=[1,9],$V4=[1,10],$V5=[2,5,7,9];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,5],$V1=[1,4],$V2=[2,5,7],$V3=[1,9],$V4=[1,10],$V5=[1,11],$V6=[1,12],$V7=[1,13],$V8=[1,14],$V9=[1,17],$Va=[1,18],$Vb=[1,19],$Vc=[2,5,7,9,10,11,12,13],$Vd=[2,5,7,9,10];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"inicio":3,"lista_instrucciones":4,"EOF":5,"instruccion":6,"PRINT":7,"expresion":8,"MAS":9,"ENTERO":10,"DECIMAL":11,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",7:"PRINT",9:"MAS",10:"ENTERO",11:"DECIMAL"},
-productions_: [0,[3,2],[4,2],[4,1],[6,2],[6,1],[8,3],[8,1],[8,1]],
+symbols_: {"error":2,"inicio":3,"lista_instrucciones":4,"EOF":5,"instruccion":6,"PRINT":7,"expresion":8,"MAS":9,"MENOS":10,"POR":11,"DIV":12,"MOD":13,"ENTERO":14,"DECIMAL":15,"CADENA":16,"TRUE":17,"FALSE":18,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",7:"PRINT",9:"MAS",10:"MENOS",11:"POR",12:"DIV",13:"MOD",14:"ENTERO",15:"DECIMAL",16:"CADENA",17:"TRUE",18:"FALSE"},
+productions_: [0,[3,2],[4,2],[4,1],[6,2],[6,1],[8,3],[8,3],[8,3],[8,3],[8,3],[8,2],[8,1],[8,1],[8,1],[8,1],[8,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -102,14 +102,35 @@ case 6:
 this.$=new Aritmetica($$[$0-2],'+',$$[$0]);
 break;
 case 7:
-this.$ = new Dato($$[$0],'INT')
+this.$=new Aritmetica($$[$0-2],'-',$$[$0]);
 break;
 case 8:
+this.$=new Aritmetica($$[$0-2],'*',$$[$0]);
+break;
+case 9:
+this.$=new Aritmetica($$[$0-2],'/',$$[$0]);
+break;
+case 10:
+this.$=new Aritmetica($$[$0-2],'%',$$[$0]);
+break;
+case 11:
+this.$=new Aritmetica($$[$0],'-',null);
+break;
+case 12:
+this.$ = new Dato($$[$0],'INT')
+break;
+case 13:
 this.$ = new Dato($$[$0],'DOUBLE')
+break;
+case 14:
+this.$ = new Dato($$[$0],'STRING')
+break;
+case 15: case 16:
+this.$ = new Dato($$[$0],'BOOLEAN')
 break;
 }
 },
-table: [{2:$V0,3:1,4:2,6:3,7:$V1},{1:[3]},{2:$V0,5:[1,6],6:7,7:$V1},o($V2,[2,3]),{8:8,10:$V3,11:$V4},o($V2,[2,5]),{1:[2,1]},o($V2,[2,2]),o($V2,[2,4],{9:[1,11]}),o($V5,[2,7]),o($V5,[2,8]),{8:12,10:$V3,11:$V4},o($V5,[2,6])],
+table: [{2:$V0,3:1,4:2,6:3,7:$V1},{1:[3]},{2:$V0,5:[1,6],6:7,7:$V1},o($V2,[2,3]),{8:8,10:$V3,14:$V4,15:$V5,16:$V6,17:$V7,18:$V8},o($V2,[2,5]),{1:[2,1]},o($V2,[2,2]),o($V2,[2,4],{9:[1,15],10:[1,16],11:$V9,12:$Va,13:$Vb}),{8:20,10:$V3,14:$V4,15:$V5,16:$V6,17:$V7,18:$V8},o($Vc,[2,12]),o($Vc,[2,13]),o($Vc,[2,14]),o($Vc,[2,15]),o($Vc,[2,16]),{8:21,10:$V3,14:$V4,15:$V5,16:$V6,17:$V7,18:$V8},{8:22,10:$V3,14:$V4,15:$V5,16:$V6,17:$V7,18:$V8},{8:23,10:$V3,14:$V4,15:$V5,16:$V6,17:$V7,18:$V8},{8:24,10:$V3,14:$V4,15:$V5,16:$V6,17:$V7,18:$V8},{8:25,10:$V3,14:$V4,15:$V5,16:$V6,17:$V7,18:$V8},o($Vc,[2,11]),o($Vd,[2,6],{11:$V9,12:$Va,13:$Vb}),o($Vd,[2,7],{11:$V9,12:$Va,13:$Vb}),o($Vc,[2,8]),o($Vc,[2,9]),o($Vc,[2,10])],
 defaultActions: {6:[2,1]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
@@ -690,36 +711,52 @@ options: {"case-insensitive":true},
 performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
 var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
-case 0:return 'PARIZQ'
+case 0:/*no se hace nada*/
 break;
-case 1:return 'PARDER'
+case 1:/*no se hace nada*/
 break;
-case 2:return 'PYC'
+case 2:return 'PARIZQ'
 break;
-case 3:return 9
+case 3:return 'PARDER'
 break;
-case 4:return 'MENOS'
+case 4:return 'PYC'
 break;
-case 5:return 'POR'
+case 5:return 9
 break;
-case 6:return 'DIV'
+case 6:return 10
 break;
-case 7:return 7
+case 7:return 11
 break;
-case 8: return 11; 
+case 8:return 12
 break;
-case 9: return 10; 
+case 9:return 13
 break;
-case 10:/* Espacios se ignoran */
+case 10:return 7
 break;
-case 11:return 5;
+case 11:return 17
 break;
-case 12: console.error('Error léxico: \"' + yy_.yytext + '\", linea: ' + yy_.yylloc.first_line + ', columna: ' + yy_.yylloc.first_column);  
+case 12:return 18
+break;
+case 13:return 'NULL'
+break;
+case 14: return 16; 
+break;
+case 15: return 15; 
+break;
+case 16: return 14; 
+break;
+case 17: return 'FECHA';
+break;
+case 18:/* Espacios se ignoran */
+break;
+case 19:return 5;
+break;
+case 20: console.error('Error léxico: \"' + yy_.yytext + '\", linea: ' + yy_.yylloc.first_line + ', columna: ' + yy_.yylloc.first_column);  
 break;
 }
 },
-rules: [/^(?:\()/i,/^(?:\))/i,/^(?:;)/i,/^(?:\+)/i,/^(?:-)/i,/^(?:\*)/i,/^(?:\/)/i,/^(?:print\b)/i,/^(?:(([0-9]+)\.([0-9]+)))/i,/^(?:([0-9]+))/i,/^(?:[ \s\r\n\t])/i,/^(?:$)/i,/^(?:.)/i],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12],"inclusive":true}}
+rules: [/^(?:(--.*))/i,/^(?:([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]))/i,/^(?:\()/i,/^(?:\))/i,/^(?:;)/i,/^(?:\+)/i,/^(?:-)/i,/^(?:\*)/i,/^(?:\/)/i,/^(?:%)/i,/^(?:print\b)/i,/^(?:true\b)/i,/^(?:false\b)/i,/^(?:null\b)/i,/^(?:(("(\\.|[^\\"])*")))/i,/^(?:(([0-9]+)\.([0-9]+)))/i,/^(?:([0-9]+))/i,/^(?:([0-9]{4}[0-9]{2}[0-9]{2}))/i,/^(?:[ \s\r\n\t])/i,/^(?:$)/i,/^(?:.)/i],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],"inclusive":true}}
 });
 return lexer;
 })();
