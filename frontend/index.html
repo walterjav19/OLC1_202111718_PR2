@@ -289,7 +289,6 @@
       analizar.addEventListener('click',()=>{
         //tengo  que llamar a mi api
         if(tabglobal==1){
-          console.log(editor.getValue())
          //conectar con api
           fetch('http://localhost:4000/analizar',{
             method: 'POST',
@@ -318,7 +317,35 @@
                 console.error('Error:', error);
               });
         }else{
-          console.log(listaEditores[tabglobal-1].getValue())
+           //conectar con api
+           console.log(listaEditores[tabglobal-1].getValue())
+           fetch('http://localhost:4000/analizar',{
+            method: 'POST',
+            body: JSON.stringify({
+            entrada: listaEditores[tabglobal-1].getValue()
+            }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })  .then(res => {
+                // Esperar a que la promesa de res.json() se resuelva y devolver el resultado
+                return res.json();
+              })
+              .then(data => {
+                let texto = "";
+                data.salida.forEach((element, index) => {
+                  texto += element;
+                  if (index < data.salida.length - 1) {
+                    texto += "\n"; // Agregar salto de línea si no es el último elemento
+                  }
+                });
+                consola.setValue(texto);
+              })
+              .catch(error => {
+                // Capturar errores
+                console.error('Error:', error);
+              });
+          
         }
       })
 

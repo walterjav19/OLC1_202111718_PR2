@@ -1,14 +1,16 @@
 const Instruccion = require("../Instruccion");
 
 class Dato extends Instruccion {
-    constructor(valor, tipo) {
+    constructor(valor, tipo,linea,columna) {
         super();
         this.valor = valor;
         this.tipo = tipo;
+        this.linea=linea;
+        this.columna=columna;
     }
 
     ejecutar() {
-        if(this.tipo == "STRING"){
+        if(this.tipo == "VARCHAR"){
             this.valor = this.valor.slice(1);
             this.valor = this.valor.slice(0, -1);
         if(this.valor.includes("\\n")){
@@ -22,7 +24,23 @@ class Dato extends Instruccion {
         }else if(this.valor.includes("\\\'")){
             this.valor = this.valor.replaceAll("\\\'", "\'");
         }
-    }
+        }
+
+        if(this.tipo=="INT" || this.tipo=="DOUBLE"){
+            this.valor=Number(this.valor);
+        }
+
+
+        if(this.tipo=="BOOLEAN"){
+            this.valor=this.valor.toLowerCase();
+            if(this.valor=="true"){
+                this.valor=true;
+            }else{
+                this.valor=false;
+            }
+        }
+        
+        
         return this
     }
 }

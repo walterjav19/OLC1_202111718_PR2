@@ -3,6 +3,7 @@
 const Dato = require('../interprete/expresiones/Dato.js');
 const Print = require('../interprete/instrucciones/Print.js');
 const Aritmetica = require('../interprete/expresiones/Aritmetica.js');
+const Logica = require('../interprete/expresiones/Logica.js');
 %}
 
 
@@ -17,7 +18,7 @@ entero  [0-9]+
 comentario "--".*
 mcomentario [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] // se saco de https://github.com/jd-toralla/OLC1-1S2023/blob/main/JisonInterprete/src/Grammar/Grammar.jison
 fecha [0-9]{4}-[0-9]{2}-[0-9]{2}
-cadena (\"(\\.|[^\\"])*\")
+cadena (\"(\\.|[^\\"])*\") | (\'(\\.|[^\\'])*\')
 
 
 
@@ -37,7 +38,15 @@ cadena (\"(\\.|[^\\"])*\")
 'true'       {return 'TRUE'}
 'false'      {return 'FALSE'}
 'null'       {return 'NULL'}
-
+'=='         {return 'EQUALS'}
+'!='         {return 'NOTEQUALS'}
+'>'          {return 'MAYOR'}
+'<'          {return 'MENOR'}
+'>='         {return 'MAYORIGUAL'}
+'<='         {return 'MENORIGUAL'}
+'not'         {return 'NOT'}
+'or'          {return 'OR'}
+'and'         {return 'AND'}
 
 {cadena}                 { return 'CADENA'; }
 {decimal}                { return 'DECIMAL'; }	
@@ -58,9 +67,13 @@ cadena (\"(\\.|[^\\"])*\")
 // ################## ANALIZADOR SINTACTICO ######################
 // -------> Precedencia
 
+%left 'OR'
+%left 'AND'
+%left 'NOT'
+%left 'EQUALS' 'NOTEQUALS' 'MAYOR' 'MENOR' 'MAYORIGUAL' 'MENORIGUAL'
 %left 'MAS' 'MENOS'
 %left 'POR' 'DIV' 'MOD'
-%left UMINUS
+%left UMINUS 
 // -------> Simbolo Inicial
 %start inicio
 
@@ -81,16 +94,45 @@ instruccion
 	| error 	{console.error('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column);}
 ;
 
-expresion
-    : expresion MAS expresion {$$=new Aritmetica($1,'+',$3);}
-    | expresion MENOS expresion {$$=new Aritmetica($1,'-',$3);}
-    | expresion POR expresion {$$=new Aritmetica($1,'*',$3);}
-    | expresion DIV expresion {$$=new Aritmetica($1,'/',$3);}
-    | expresion MOD expresion {$$=new Aritmetica($1,'%',$3);}
-    | MENOS expresion %prec UMINUS {$$=new Aritmetica($2,'-',null);}
-    | ENTERO  {$$ = new Dato($1,'INT')}
-    | DECIMAL {$$ = new Dato($1,'DOUBLE')}
-    | CADENA  {$$ = new Dato($1,'STRING')}
-    | TRUE    {$$ = new Dato($1,'BOOLEAN')}
-    | FALSE   {$$ = new Dato($1,'BOOLEAN')}
+expresion :  symbols{$$=$1}
+            | unario{$$=$1}
+            | aritmetica{$$=$1}
+            | logica{$$=$1}
+            | PARIZQ expresion PARDER{$$=$2}
 ;
+
+symbols:DECIMAL {$$ = new Dato($1,'DOUBLE', this._$.first_line, this._$.first_column)}
+    | ENTERO  {$$ = new Dato($1,'INT', this._$.first_line, this._$.first_column)} 
+    | CADENA  {$$ = new Dato($1,'VARCHAR', this._$.first_line, this._$.first_column)}
+    | TRUE    {$$ = new Dato($1,'BOOLEAN', this._$.first_line, this._$.first_column)}
+    | FALSE   {$$ = new Dato($1,'BOOLEAN', this._$.first_line, this._$.first_column)}
+    | FECHA   {$$ = new Dato($1,'DATE', this._$.first_line, this._$.first_column)}
+    | NULL    {$$ = new Dato($1,'NULL', this._$.first_line, this._$.first_column)}
+;
+
+aritmetica
+    : expresion MAS expresion {$$=new Aritmetica($1,'+',$3, this._$.first_line, this._$.first_column);}
+    | expresion MENOS expresion {$$=new Aritmetica($1,'-',$3, this._$.first_line, this._$.first_column);}
+    | expresion POR expresion {$$=new Aritmetica($1,'*',$3, this._$.first_line, this._$.first_column);}
+    | expresion DIV expresion {$$=new Aritmetica($1,'/',$3, this._$.first_line, this._$.first_column);}
+    | expresion MOD expresion {$$=new Aritmetica($1,'%',$3, this._$.first_line, this._$.first_column);}
+;
+
+
+logica
+    :expresion OR expresion {$$=new Logica($1,'OR',$3);}
+    |expresion AND expresion {$$=new Logica($1,'AND',$3);}
+    |expresion EQUALS expresion {$$=new Logica($1,'==',$3);}
+    |expresion NOTEQUALS expresion {$$=new Logica($1,'!=',$3);}
+    |expresion MAYOR expresion {$$=new Logica($1,'>',$3);}
+    |expresion MENOR expresion {$$=new Logica($1,'<',$3);}
+    |expresion MAYORIGUAL expresion {$$=new Logica($1,'>=',$3);}
+    |expresion MENORIGUAL expresion {$$=new Logica($1,'<=',$3);}
+    
+;
+
+
+unario: MENOS expresion %prec UMINUS {$$=new Aritmetica($2,'-',null, this._$.first_line, this._$.first_column);}
+       | NOT expresion {$$=new Logica($2,'NOT',null, this._$.first_line, this._$.first_column);}
+;
+
