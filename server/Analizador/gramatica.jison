@@ -13,19 +13,22 @@ const Logica = require('../interprete/expresiones/Logica.js');
 %options case-insensitive 
 
 // ---------> Expresiones Regulares
+
 decimal ([0-9]+)"."([0-9]+)
 entero  [0-9]+
 comentario "--".*
 mcomentario [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] // se saco de https://github.com/jd-toralla/OLC1-1S2023/blob/main/JisonInterprete/src/Grammar/Grammar.jison
-fecha [0-9]{4}-[0-9]{2}-[0-9]{2}
-cadena (\"(\\.|[^\\"])*\") | (\'(\\.|[^\\'])*\')
-
+cadena (\"(\\.|[^\\"])*\") | (\'(\\.|[^\\'])*\')// se saco de https://github.com/jd-toralla/OLC1-1S2023/blob/main/JisonInterprete/src/Grammar/Grammar.jison
+fecha [0-9]{4}"-"([0][1-9]|[1][0-2])"-"([0-2][0-9]|[3][0-1])
 
 
 %%
 // -----> Reglas Lexicas
+
+
 {comentario}             {/*no se hace nada*/}
 {mcomentario}            {/*no se hace nada*/}
+{fecha}                  { return 'FECHA';}
 '('          {return 'PARIZQ'}
 ')'          {return 'PARDER'}
 ';'          {return 'PYC'}
@@ -51,7 +54,7 @@ cadena (\"(\\.|[^\\"])*\") | (\'(\\.|[^\\'])*\')
 {cadena}                 { return 'CADENA'; }
 {decimal}                { return 'DECIMAL'; }	
 {entero}                 { return 'ENTERO'; } 
-{fecha}                  { return 'FECHA';}
+
 
 // -----> Espacios en Blanco
 [ \s\r\n\t]             {/* Espacios se ignoran */}
@@ -106,7 +109,7 @@ symbols:DECIMAL {$$ = new Dato($1,'DOUBLE', this._$.first_line, this._$.first_co
     | CADENA  {$$ = new Dato($1,'VARCHAR', this._$.first_line, this._$.first_column)}
     | TRUE    {$$ = new Dato($1,'BOOLEAN', this._$.first_line, this._$.first_column)}
     | FALSE   {$$ = new Dato($1,'BOOLEAN', this._$.first_line, this._$.first_column)}
-    | FECHA   {$$ = new Dato($1,'DATE', this._$.first_line, this._$.first_column)}
+    | FECHA   {$$ = new Dato($1,'DATE', this._$.first_line, this._$.first_column);}
     | NULL    {$$ = new Dato($1,'NULL', this._$.first_line, this._$.first_column)}
 ;
 
