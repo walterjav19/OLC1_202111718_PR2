@@ -8,6 +8,7 @@ class Print extends Instruccion {
 
     ejecutar() {
         let expresion=this.expresion.ejecutar();
+        console.log(expresion.valor);
         return  expresion.valor
     }
 }

@@ -40,6 +40,10 @@ class Dato extends Instruccion {
             }
         }
         
+        if(this.tipo=="DATE"){
+            this.valor = this.valor.slice(1);
+            this.valor = this.valor.slice(0, -1);
+        }
         
         return this
     }

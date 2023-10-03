@@ -4,6 +4,10 @@ const Dato = require('../interprete/expresiones/Dato.js');
 const Print = require('../interprete/instrucciones/Print.js');
 const Aritmetica = require('../interprete/expresiones/Aritmetica.js');
 const Logica = require('../interprete/expresiones/Logica.js');
+const BeginEnd= require('../interprete/instrucciones/BeginEnd.js');
+const Lower= require('../interprete/instrucciones/Lower.js');
+const Token= require('../Estructuras/Tokens.js');
+const Lista_Tokens= require('../Estructuras/ListaTokens.js')
 %}
 
 
@@ -17,9 +21,10 @@ const Logica = require('../interprete/expresiones/Logica.js');
 decimal ([0-9]+)"."([0-9]+)
 entero  [0-9]+
 comentario "--".*
-mcomentario [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] // se saco de https://github.com/jd-toralla/OLC1-1S2023/blob/main/JisonInterprete/src/Grammar/Grammar.jison
+mcomentario [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] // se saco de https://github.com/jd-toralla/OLC1-1S2023/blob/main/JisonInterprete/src/Grammar/Grammar.jison}
+fecha \"[0-9]{4}"-"([0][1-9]|[1][0-2])"-"([0-2][0-9]|[3][0-1])\"
 cadena (\"(\\.|[^\\"])*\") | (\'(\\.|[^\\'])*\')// se saco de https://github.com/jd-toralla/OLC1-1S2023/blob/main/JisonInterprete/src/Grammar/Grammar.jison
-fecha [0-9]{4}"-"([0][1-9]|[1][0-2])"-"([0-2][0-9]|[3][0-1])
+variable "@"[a-zA-Z_][a-zA-Z0-9_]*
 
 
 %%
@@ -28,32 +33,86 @@ fecha [0-9]{4}"-"([0][1-9]|[1][0-2])"-"([0-2][0-9]|[3][0-1])
 
 {comentario}             {/*no se hace nada*/}
 {mcomentario}            {/*no se hace nada*/}
-{fecha}                  { return 'FECHA';}
-'('          {return 'PARIZQ'}
-')'          {return 'PARDER'}
-';'          {return 'PYC'}
-'+'          {return 'MAS'}
-'-'          {return 'MENOS'}
-'*'          {return 'POR'}
-'/'          {return 'DIV'}
-'%'          {return 'MOD'}
-'print'      {return 'PRINT'}
-'true'       {return 'TRUE'}
-'false'      {return 'FALSE'}
-'null'       {return 'NULL'}
-'=='         {return 'EQUALS'}
-'!='         {return 'NOTEQUALS'}
-'>'          {return 'MAYOR'}
-'<'          {return 'MENOR'}
-'>='         {return 'MAYORIGUAL'}
-'<='         {return 'MENORIGUAL'}
-'not'         {return 'NOT'}
-'or'          {return 'OR'}
-'and'         {return 'AND'}
+{fecha}                  {Lista_Tokens.push(new Token("FECHA", yytext, yylloc.first_line, yylloc.first_column));
+                         return 'FECHA';}
+{variable}               {Lista_Tokens.push(new Token("VARIABLE", yytext, yylloc.first_line, yylloc.first_column));
+                         return 'VARIABLE';}
+'('          {Lista_Tokens.push(new Token("PARIZQ", yytext, yylloc.first_line, yylloc.first_column));
+             return 'PARIZQ'}
+')'          {Lista_Tokens.push(new Token("PARDER", yytext, yylloc.first_line, yylloc.first_column));
+              return 'PARDER'}
+';'          {Lista_Tokens.push(new Token("PYC", yytext, yylloc.first_line, yylloc.first_column));
+              return 'PYC'}
+','          {Lista_Tokens.push(new Token("COMA", yytext, yylloc.first_line, yylloc.first_column));
+              return 'COMA'}
 
-{cadena}                 { return 'CADENA'; }
-{decimal}                { return 'DECIMAL'; }	
-{entero}                 { return 'ENTERO'; } 
+'+'          {Lista_Tokens.push(new Token("MAS", yytext, yylloc.first_line, yylloc.first_column));
+              return 'MAS'}
+'-'          {Lista_Tokens.push(new Token("MENOS", yytext, yylloc.first_line, yylloc.first_column));
+              return 'MENOS'}
+'*'          {  Lista_Tokens.push(new Token("POR", yytext, yylloc.first_line, yylloc.first_column));
+                return 'POR'}
+'/'          {  Lista_Tokens.push(new Token("DIV", yytext, yylloc.first_line, yylloc.first_column));
+                return 'DIV'}
+'%'          {  Lista_Tokens.push(new Token("MOD", yytext, yylloc.first_line, yylloc.first_column));
+                return 'MOD'}          
+'print'      {  Lista_Tokens.push(new Token("PRINT", yytext, yylloc.first_line, yylloc.first_column));
+                return 'PRINT'}
+'true'       {  Lista_Tokens.push(new Token("TRUE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'TRUE'}
+'false'      {  Lista_Tokens.push(new Token("FALSE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'FALSE'}
+'null'       {  Lista_Tokens.push(new Token("NULL", yytext, yylloc.first_line, yylloc.first_column));
+                return 'NULL'}
+'=='         {  Lista_Tokens.push(new Token("EQUALS", yytext, yylloc.first_line, yylloc.first_column));
+                return 'EQUALS'}
+'!='         {  Lista_Tokens.push(new Token("NOTEQUALS", yytext, yylloc.first_line, yylloc.first_column));
+                return 'NOTEQUALS'}
+'>'          {  Lista_Tokens.push(new Token("MAYOR", yytext, yylloc.first_line, yylloc.first_column));
+                return 'MAYOR'}
+'<'          {  Lista_Tokens.push(new Token("MENOR", yytext, yylloc.first_line, yylloc.first_column));
+                return 'MENOR'}
+'>='         {  Lista_Tokens.push(new Token("MAYORIGUAL", yytext, yylloc.first_line, yylloc.first_column));
+                return 'MAYORIGUAL'}
+'<='         {  Lista_Tokens.push(new Token("MENORIGUAL", yytext, yylloc.first_line, yylloc.first_column));
+                return 'MENORIGUAL'}
+'not'         {  Lista_Tokens.push(new Token("NOT", yytext, yylloc.first_line, yylloc.first_column));
+                return 'NOT'}
+'or'          {  Lista_Tokens.push(new Token("OR", yytext, yylloc.first_line, yylloc.first_column));
+                return 'OR'}
+'and'         {  Lista_Tokens.push(new Token("AND", yytext, yylloc.first_line, yylloc.first_column));
+                return 'AND'}
+
+'int'          {  Lista_Tokens.push(new Token("INT", yytext, yylloc.first_line, yylloc.first_column));
+                return 'INT'}
+
+'double'      {  Lista_Tokens.push(new Token("DOUBLE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'DOUBLE'}
+
+'date'        {  Lista_Tokens.push(new Token("DATE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'DATE'}
+
+'varchar'     {  Lista_Tokens.push(new Token("VARCHAR", yytext, yylloc.first_line, yylloc.first_column));
+                return 'VARCHAR'}
+
+'boolean'     {  Lista_Tokens.push(new Token("BOOLEAN", yytext, yylloc.first_line, yylloc.first_column));
+                return 'BOOLEAN'}
+
+'BEGIN'      {  Lista_Tokens.push(new Token("BEGIN", yytext, yylloc.first_line, yylloc.first_column));
+                return 'BEGIN'}
+'END'        {  Lista_Tokens.push(new Token("END", yytext, yylloc.first_line, yylloc.first_column));
+                return 'END'}
+'LOWER'      {  Lista_Tokens.push(new Token("LOWER", yytext, yylloc.first_line, yylloc.first_column));
+                return 'LOWER'}
+'DECLARE'    {  Lista_Tokens.push(new Token("DECLARE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'DECLARE'}
+
+{cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
+                return 'CADENA'; }
+{decimal}       { Lista_Tokens.push(new Token("DECIMAL", yytext, yylloc.first_line, yylloc.first_column));
+                return 'DECIMAL'; }	
+{entero}        { Lista_Tokens.push(new Token("ENTERO", yytext, yylloc.first_line, yylloc.first_column));
+                return 'ENTERO'; } 
 
 
 // -----> Espacios en Blanco
@@ -93,10 +152,28 @@ lista_instrucciones
 ;
 
 instruccion
-	: PRINT expresion {$$=new Print($2);}
-	| error 	{console.error('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column);}
+	: print_instruccion PYC{$$=$1;}
+    | begin_end PYC{$$=$1;}
+    | lower PYC{$$=$1;}
+    | declare PYC{console.log($1);}
+	| error{console.error('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column);}
 ;
 
+print_instruccion
+    : PRINT expresion {$$=new Print($2);}
+;
+
+begin_end
+    : BEGIN lista_instrucciones END {$$=new BeginEnd($2);}
+;
+
+lower
+    : LOWER PARIZQ expresion PARDER {$$=new Lower($3);}
+;
+
+declare : DECLARE VARIABLE {console.log($2);}
+
+;
 expresion :  symbols{$$=$1}
             | unario{$$=$1}
             | aritmetica{$$=$1}
