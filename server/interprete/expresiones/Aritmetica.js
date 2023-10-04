@@ -1,6 +1,6 @@
 const Instruccion = require("../Instruccion");
 const Dato = require("./Dato");
-
+const ListaConsola=require("../Estructuras/ConsoleOut.js")
 class Aritmetica extends Instruccion {
     constructor(izquierda, operador, derecha, linea, columna) {
         super();
@@ -109,7 +109,11 @@ class Aritmetica extends Instruccion {
                     fechaObjeto.setDate(fechaObjeto.getDate() + ascii);
                     let nuevaFecha = fechaObjeto.toISOString().slice(0, 10);
                     return new Dato(nuevaFecha, "DATE",this.linea,this.columna);
+                }else{
+                    ListaConsola.push("Error Semantico: Operador + no puede operar "+izquierda.tipo+" con "+derecha.tipo+" en la linea: "+this.linea+" y columna: "+this.columna);
+                    return new Dato(null,'NULL' , this.linea, this.columna)
                 }
+                
             case "-":
                 if(derecha!=null){
                     if(izquierda.tipo=="INT" && derecha.tipo=="INT"){
@@ -190,6 +194,9 @@ class Aritmetica extends Instruccion {
                         fechaObjeto.setDate(fechaObjeto.getDate() - ascii);
                         let nuevaFecha = fechaObjeto.toISOString().slice(0, 10);
                         return new Dato(nuevaFecha, "DATE",this.linea,this.columna);
+                    }else{
+                        ListaConsola.push("Error Semantico: Operador - no puede operar "+izquierda.tipo+" con "+derecha.tipo+" en la linea: "+this.linea+" y columna: "+this.columna)
+                        return new Dato(null,'NULL' , this.linea, this.columna)
                     }
                 }else{
                     this.valor= izquierda.valor*-1;
@@ -209,10 +216,14 @@ class Aritmetica extends Instruccion {
                 }else if(izquierda.tipo=="DOUBLE" && derecha.tipo=="INT"){
                     this.valor= izquierda.valor * derecha.valor;
                     return new Dato(this.valor, "DOUBLE",this.linea,this.columna);
+                }else{
+                    ListaConsola.push("Error Semantico: Operador * no puede operar "+izquierda.tipo+" con "+derecha.tipo+" en la linea: "+this.linea+" y columna: "+this.columna)
+                    return new Dato(null,'NULL' , this.linea, this.columna)
                 }
             case "/":
                 if(derecha.valor==0){
-                    console.log("Error Semantico: No se puede dividir entre 0");
+                    ListaConsola.push("Error Semantico: No se puede dividir entre 0")
+                    return new Dato(null,'NULL' , this.linea, this.columna)
                 }else{
                     if(izquierda.tipo=="INT" && derecha.tipo=="INT"){
                         this.valor= izquierda.valor / derecha.valor;
@@ -226,11 +237,15 @@ class Aritmetica extends Instruccion {
                     }else if(izquierda.tipo=="DOUBLE" && derecha.tipo=="INT"){
                         this.valor= izquierda.valor / derecha.valor;
                         return new Dato(this.valor, "DOUBLE",this.linea,this.columna);
+                    }else{
+                        ListaConsola.push("Error Semantico: Operador / no puede operar "+izquierda.tipo+" con "+derecha.tipo+" en la linea: "+this.linea+" y columna: "+this.columna)
+                        return new Dato(null,'NULL' , this.linea, this.columna)
                     }
                 }
             case "%":
                 if(derecha.valor==0){
-                    console.log("Error Semantico: No se puede usar mod entre 0");
+                    ListaConsola.push("Error Semantico: No se puede usar mod entre 0")
+                    return new Dato(null,'NULL' , this.linea, this.columna)
                 }else{
                     if(izquierda.tipo=="INT" && derecha.tipo=="INT"){
                         this.valor= izquierda.valor % derecha.valor;
@@ -244,6 +259,9 @@ class Aritmetica extends Instruccion {
                     }else if(izquierda.tipo=="DOUBLE" && derecha.tipo=="INT"){
                         this.valor= izquierda.valor % derecha.valor;
                         return new Dato(this.valor, "DOUBLE",this.linea,this.columna);
+                    }else{
+                        ListaConsola.push("Error Semantico: Operador % no puede operar "+izquierda.tipo+" con "+derecha.tipo+" en la linea: "+this.linea+" y columna: "+this.columna)
+                        return new Dato(null,'NULL' , this.linea, this.columna)
                     }
                 }
         }

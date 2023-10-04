@@ -9,9 +9,9 @@ const BeginEnd= require('../interprete/instrucciones/BeginEnd.js');
 const Lower= require('../interprete/instrucciones/Lower.js');
 const Declaration= require('../interprete/instrucciones/Declaration.js');
 const ListDeclaration= require('../interprete/instrucciones/ListDeclaration.js');
-const Token= require('../Estructuras/Tokens.js');
-const Lista_Tokens= require('../Estructuras/ListaTokens.js')
-const Consola_Errores= require('../Estructuras/Errores.js')
+const Token= require('../interprete/Estructuras/Tokens.js');
+const Lista_Tokens= require('../interprete/Estructuras/ListaTokens.js')
+const ConsolaSalida= require('../interprete/Estructuras/ConsoleOut.js')
 %}
 
 
@@ -134,7 +134,7 @@ variable "@"[a-zA-Z_][a-zA-Z0-9_]*
 
 // -----> FIN DE CADENA Y ERRORES
 <<EOF>>               return 'EOF';
-.  { Consola_Errores.push('Error léxico: \"' + yytext + '\", linea: ' + yylloc.first_line + ', columna: ' + yylloc.first_column)  }
+.  { ConsolaSalida.push('Error léxico: \"' + yytext + '\", linea: ' + yylloc.first_line + ', columna: ' + yylloc.first_column)  }
 
 
 /lex
@@ -168,7 +168,7 @@ instruccion
     | begin_end PYC{$$=$1;}
     | lower PYC{$$=$1;}
     | declare PYC{$$=$1;}
-	| error{Consola_Errores.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
+	| error{ConsolaSalida.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
 ;
 
 print_instruccion
@@ -188,8 +188,8 @@ declare : DECLARE listavariable {$$=new ListDeclaration($2);}
 ;
 
 listavariable
-    : listavariable COMA VARIABLE tipo {$$=$1; $$.push(new Declaration($3,null,$4));}
-    | VARIABLE tipo {$$=[]; $$.push(new Declaration($1,null,$2));}
+    : listavariable COMA VARIABLE tipo {$$=$1; $$.push(new Declaration($3,new Dato($1,'NULL', this._$.first_line, this._$.first_column),$4));}
+    | VARIABLE tipo {$$=[]; $$.push(new Declaration($1,new Dato($1,'NULL', this._$.first_line, this._$.first_column),$2));}
 ;
 tipo: INT{$$=$1;}
     | DOUBLE{$$=$1;}

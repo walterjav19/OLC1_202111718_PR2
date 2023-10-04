@@ -1,7 +1,14 @@
 
 class Instruccion{
     constructor(){}
-    ejecutar(entorno){}
+    ejecutar(entorno){
+        
+    }
+
+    GenerarAST(){
+    }
 }
+
+
 
 module.exports = Instruccion;

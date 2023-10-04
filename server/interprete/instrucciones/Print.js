@@ -1,4 +1,5 @@
 const Instruccion = require('../Instruccion');
+const ConsolaSalida=require('../Estructuras/ConsoleOut')
 
 class Print extends Instruccion {
     constructor(expresion) {
@@ -8,8 +9,8 @@ class Print extends Instruccion {
 
     ejecutar(entorno) {
         let expresion=this.expresion.ejecutar(entorno);
-        console.log(expresion.valor);
-        return  expresion.valor
+        ConsolaSalida.push(expresion.valor);
+        console.log(expresion.valor); 
     }
 }
 
