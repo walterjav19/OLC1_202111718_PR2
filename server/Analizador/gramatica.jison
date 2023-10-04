@@ -4,10 +4,14 @@ const Dato = require('../interprete/expresiones/Dato.js');
 const Print = require('../interprete/instrucciones/Print.js');
 const Aritmetica = require('../interprete/expresiones/Aritmetica.js');
 const Logica = require('../interprete/expresiones/Logica.js');
+const Access = require('../interprete/expresiones/Access.js');
 const BeginEnd= require('../interprete/instrucciones/BeginEnd.js');
 const Lower= require('../interprete/instrucciones/Lower.js');
+const Declaration= require('../interprete/instrucciones/Declaration.js');
+const ListDeclaration= require('../interprete/instrucciones/ListDeclaration.js');
 const Token= require('../Estructuras/Tokens.js');
 const Lista_Tokens= require('../Estructuras/ListaTokens.js')
+const Consola_Errores= require('../Estructuras/Errores.js')
 %}
 
 
@@ -106,6 +110,14 @@ variable "@"[a-zA-Z_][a-zA-Z0-9_]*
                 return 'LOWER'}
 'DECLARE'    {  Lista_Tokens.push(new Token("DECLARE", yytext, yylloc.first_line, yylloc.first_column));
                 return 'DECLARE'}
+'SET'         {  Lista_Tokens.push(new Token("SET", yytext, yylloc.first_line, yylloc.first_column));
+                return 'SET'}
+
+'DEFAULT'     {  Lista_Tokens.push(new Token("DEFAULT", yytext, yylloc.first_line, yylloc.first_column));
+                return 'DEFAULT'}
+
+'SELECT'      {  Lista_Tokens.push(new Token("SELECT", yytext, yylloc.first_line, yylloc.first_column));
+                return 'SELECT'}
 
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
@@ -122,7 +134,7 @@ variable "@"[a-zA-Z_][a-zA-Z0-9_]*
 
 // -----> FIN DE CADENA Y ERRORES
 <<EOF>>               return 'EOF';
-.  { console.error('Error léxico: \"' + yytext + '\", linea: ' + yylloc.first_line + ', columna: ' + yylloc.first_column);  }
+.  { Consola_Errores.push('Error léxico: \"' + yytext + '\", linea: ' + yylloc.first_line + ', columna: ' + yylloc.first_column)  }
 
 
 /lex
@@ -155,8 +167,8 @@ instruccion
 	: print_instruccion PYC{$$=$1;}
     | begin_end PYC{$$=$1;}
     | lower PYC{$$=$1;}
-    | declare PYC{console.log($1);}
-	| error{console.error('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column);}
+    | declare PYC{$$=$1;}
+	| error{Consola_Errores.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
 ;
 
 print_instruccion
@@ -171,9 +183,21 @@ lower
     : LOWER PARIZQ expresion PARDER {$$=new Lower($3);}
 ;
 
-declare : DECLARE VARIABLE {console.log($2);}
-
+declare : DECLARE listavariable {$$=new ListDeclaration($2);}
+        | DECLARE VARIABLE tipo DEFAULT expresion{$$=new Declaration($2,$5,$3);}
 ;
+
+listavariable
+    : listavariable COMA VARIABLE tipo {$$=$1; $$.push(new Declaration($3,null,$4));}
+    | VARIABLE tipo {$$=[]; $$.push(new Declaration($1,null,$2));}
+;
+tipo: INT{$$=$1;}
+    | DOUBLE{$$=$1;}
+    | DATE{$$=$1;}
+    | VARCHAR{$$=$1;}
+    | BOOLEAN{$$=$1;}
+;
+
 expresion :  symbols{$$=$1}
             | unario{$$=$1}
             | aritmetica{$$=$1}
@@ -187,6 +211,7 @@ symbols:DECIMAL {$$ = new Dato($1,'DOUBLE', this._$.first_line, this._$.first_co
     | TRUE    {$$ = new Dato($1,'BOOLEAN', this._$.first_line, this._$.first_column)}
     | FALSE   {$$ = new Dato($1,'BOOLEAN', this._$.first_line, this._$.first_column)}
     | FECHA   {$$ = new Dato($1,'DATE', this._$.first_line, this._$.first_column);}
+    | VARIABLE{$$=  new Access($1, this._$.first_line, this._$.first_column);}
     | NULL    {$$ = new Dato($1,'NULL', this._$.first_line, this._$.first_column)}
 ;
 

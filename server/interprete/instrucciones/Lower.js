@@ -6,8 +6,8 @@ class Lower extends Instruccion{
         this.expresion=expresion;
     }
 
-    ejecutar(){
-        let expresion=this.expresion.ejecutar();
+    ejecutar(entorno){
+        let expresion=this.expresion.ejecutar(entorno);
         return expresion.valor.toLowerCase();
     }
 }

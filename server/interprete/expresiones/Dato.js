@@ -9,7 +9,7 @@ class Dato extends Instruccion {
         this.columna=columna;
     }
 
-    ejecutar() {
+    ejecutar(entorno) {
         if(this.tipo == "VARCHAR"){
             this.valor = this.valor.slice(1);
             this.valor = this.valor.slice(0, -1);
@@ -43,6 +43,11 @@ class Dato extends Instruccion {
         if(this.tipo=="DATE"){
             this.valor = this.valor.slice(1);
             this.valor = this.valor.slice(0, -1);
+        }
+        
+        if(this.tipo=="NULL"){
+            this.valor = null;
+            
         }
         
         return this

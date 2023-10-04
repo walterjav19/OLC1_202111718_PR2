@@ -1,7 +1,7 @@
 
 class Instruccion{
     constructor(){}
-    ejecutar(){}
+    ejecutar(entorno){}
 }
 
 module.exports = Instruccion;

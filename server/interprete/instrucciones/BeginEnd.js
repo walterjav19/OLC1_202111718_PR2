@@ -6,7 +6,7 @@ class BeginEnd extends Instruccion{
         this.instrucciones=instrucciones;
     }
 
-    ejecutar(){
+    ejecutar(entorno){
         this.instrucciones.forEach(instruccion => {
             instruccion.ejecutar();
         });

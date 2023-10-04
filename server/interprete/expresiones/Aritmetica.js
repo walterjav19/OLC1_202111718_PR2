@@ -12,14 +12,14 @@ class Aritmetica extends Instruccion {
         this.valor = null;
     }
 
-    ejecutar() {
-        let izquierda=this.izquierda.ejecutar();
+    ejecutar(entorno) {
+        let izquierda=this.izquierda.ejecutar(entorno);
         let derecha;
 
 
         
         if(this.derecha!=null){
-            derecha=this.derecha.ejecutar();
+            derecha=this.derecha.ejecutar(entorno);
         }
     
         switch(this.operador){
