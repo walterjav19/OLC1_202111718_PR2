@@ -6,12 +6,20 @@ const Aritmetica = require('../interprete/expresiones/Aritmetica.js');
 const Logica = require('../interprete/expresiones/Logica.js');
 const Access = require('../interprete/expresiones/Access.js');
 const BeginEnd= require('../interprete/instrucciones/BeginEnd.js');
-const Lower= require('../interprete/instrucciones/Lower.js');
 const Declaration= require('../interprete/instrucciones/Declaration.js');
+const Assigment= require('../interprete/expresiones/Assigment.js');
 const ListDeclaration= require('../interprete/instrucciones/ListDeclaration.js');
 const Token= require('../interprete/Estructuras/Tokens.js');
 const Lista_Tokens= require('../interprete/Estructuras/ListaTokens.js')
 const ConsolaSalida= require('../interprete/Estructuras/ConsoleOut.js')
+const Select= require('../interprete/instrucciones/Select.js')
+const Lower= require('../interprete/instrucciones/Lower.js');
+const Upper= require('../interprete/instrucciones/Upper.js');
+const Round= require('../interprete/instrucciones/Round.js');
+const Len= require('../interprete/instrucciones/Length.js');
+const Truncate= require('../interprete/instrucciones/Truncate.js');
+const Typeof= require('../interprete/instrucciones/Typeof.js');
+
 %}
 
 
@@ -59,7 +67,9 @@ variable "@"[a-zA-Z_][a-zA-Z0-9_]*
 '/'          {  Lista_Tokens.push(new Token("DIV", yytext, yylloc.first_line, yylloc.first_column));
                 return 'DIV'}
 '%'          {  Lista_Tokens.push(new Token("MOD", yytext, yylloc.first_line, yylloc.first_column));
-                return 'MOD'}          
+                return 'MOD'} 
+'='          {  Lista_Tokens.push(new Token("IGUAL", yytext, yylloc.first_line, yylloc.first_column));
+                return 'IGUAL'}         
 'print'      {  Lista_Tokens.push(new Token("PRINT", yytext, yylloc.first_line, yylloc.first_column));
                 return 'PRINT'}
 'true'       {  Lista_Tokens.push(new Token("TRUE", yytext, yylloc.first_line, yylloc.first_column));
@@ -119,6 +129,21 @@ variable "@"[a-zA-Z_][a-zA-Z0-9_]*
 'SELECT'      {  Lista_Tokens.push(new Token("SELECT", yytext, yylloc.first_line, yylloc.first_column));
                 return 'SELECT'}
 
+'UPPER'       {  Lista_Tokens.push(new Token("UPPER", yytext, yylloc.first_line, yylloc.first_column));
+                return 'UPPER'}
+
+'ROUND'       {  Lista_Tokens.push(new Token("ROUND", yytext, yylloc.first_line, yylloc.first_column));
+                return 'ROUND'}
+
+'LEN'          {Lista_Tokens.push(new Token("LEN", yytext, yylloc.first_line, yylloc.first_column));
+                return 'LEN'}
+
+'TRUNCATE'     {Lista_Tokens.push(new Token("TRUNCATE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'TRUNCATE'}
+
+'TYPEOF'       {Lista_Tokens.push(new Token("TYPEOF", yytext, yylloc.first_line, yylloc.first_column));
+                return 'TYPEOF'}
+
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
 {decimal}       { Lista_Tokens.push(new Token("DECIMAL", yytext, yylloc.first_line, yylloc.first_column));
@@ -166,8 +191,9 @@ lista_instrucciones
 instruccion
 	: print_instruccion PYC{$$=$1;}
     | begin_end PYC{$$=$1;}
-    | lower PYC{$$=$1;}
     | declare PYC{$$=$1;}
+    | assigment PYC{$$=$1;}
+    | select PYC{$$=$1;}
 	| error{ConsolaSalida.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
 ;
 
@@ -179,8 +205,22 @@ begin_end
     : BEGIN lista_instrucciones END {$$=new BeginEnd($2);}
 ;
 
-lower
+nativas
     : LOWER PARIZQ expresion PARDER {$$=new Lower($3);}
+    | UPPER PARIZQ expresion PARDER {$$=new Upper($3);}
+    | ROUND PARIZQ expresion COMA expresion PARDER {$$=new Round($3,$5,this._$.first_line, this._$.first_column);}
+    | LEN PARIZQ expresion PARDER {$$=new Len($3);}
+    | TRUNCATE PARIZQ expresion COMA expresion PARDER {$$=new Truncate($3,$5,this._$.first_line, this._$.first_column);}
+    | TYPEOF PARIZQ expresion PARDER {$$=new Typeof($3);}
+;
+
+
+assigment
+         :SET VARIABLE IGUAL expresion {$$=new Assigment($2,$4);}
+;
+
+select
+    : SELECT expresion {$$=new Select($2);}
 ;
 
 declare : DECLARE listavariable {$$=new ListDeclaration($2);}
@@ -213,6 +253,7 @@ symbols:DECIMAL {$$ = new Dato($1,'DOUBLE', this._$.first_line, this._$.first_co
     | FECHA   {$$ = new Dato($1,'DATE', this._$.first_line, this._$.first_column);}
     | VARIABLE{$$=  new Access($1, this._$.first_line, this._$.first_column);}
     | NULL    {$$ = new Dato($1,'NULL', this._$.first_line, this._$.first_column)}
+    | nativas {$$=$1}
 ;
 
 aritmetica

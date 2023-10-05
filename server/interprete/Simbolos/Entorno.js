@@ -11,25 +11,52 @@ class Entorno{
 
     obtenerSimbolo(clave){
         let valor=this.TablaSimbolos.get(clave);
-        while(this.anterior!=null && valor == undefined ){
-            let nuevoEntorno=this.anterior;
+        let nuevoEntorno=this.anterior;
+        while(nuevoEntorno!=null && valor == undefined ){
             valor=nuevoEntorno.TablaSimbolos.get(clave);
+            nuevoEntorno=nuevoEntorno.anterior;
         }
         
         return valor
     }
+
+
+    actualizarSimbolo(clave, valor) {
+        // Buscar en los entornos locales primero
+        let currentEntorno = this;
+        while (currentEntorno != null) {
+            if (currentEntorno.TablaSimbolos.has(clave)) {
+                currentEntorno.TablaSimbolos.set(clave, valor);
+                return true; // Variable encontrada y actualizada correctamente
+            }
+            currentEntorno = currentEntorno.anterior;
+        }
+
+        // Si no se encuentra en los entornos locales, buscar en el entorno global
+        if (this.anterior != null) {
+            const encontrado = this.anterior.actualizarSimbolo(clave, valor);
+            if (encontrado) {
+                return true; // Variable encontrada y actualizada en el entorno global
+            }
+        }
+
+        return false; // Variable no encontrada en ningún entorno
+    }
+
 }
 
 /* let global=new Entorno("global",null);
 global.AgregarSimbolo("var1",2)
 global.AgregarSimbolo("var2","3")
 global.AgregarSimbolo("var3","hola mundo")   
-console.log(global.TablaSimbolos);
+
 
 let local=new Entorno("local",global);
-local.AgregarSimbolo("carro","sedan")
 local.AgregarSimbolo("flag",true)
-console.log(local.obtenerSimbolo("flag")); */
-
+console.log(local.actualizarSimbolo("var3","este es el nuevo valor"))
+console.log(local.actualizarSimbolo("carro","nissan"))
+console.log(local.actualizarSimbolo("h","final"))
+console.log(global.TablaSimbolos)
+console.log(local.TablaSimbolos) */
 
 module.exports=Entorno;
