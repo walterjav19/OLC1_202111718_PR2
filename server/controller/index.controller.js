@@ -29,8 +29,7 @@ const analizar = (req, res) =>{
     }
     
 
-    //console.log(Global)
-    
+    console.log(Global.Tablas)
     res.status(200).json({
         message:"Analisis Realizado",
         entrada:entrada,

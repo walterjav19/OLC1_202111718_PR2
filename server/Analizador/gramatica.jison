@@ -19,7 +19,9 @@ const Round= require('../interprete/instrucciones/Round.js');
 const Len= require('../interprete/instrucciones/Length.js');
 const Truncate= require('../interprete/instrucciones/Truncate.js');
 const Typeof= require('../interprete/instrucciones/Typeof.js');
-
+const Columna=require('../interprete/Estructuras/Columna.js');
+const Create=require('../interprete/expresiones/Create.js');
+const Add=require('../interprete/expresiones/Add.js');
 %}
 
 
@@ -37,7 +39,7 @@ mcomentario [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] // se saco de https://github.com
 fecha \"[0-9]{4}"-"([0][1-9]|[1][0-2])"-"([0-2][0-9]|[3][0-1])\"
 cadena (\"(\\.|[^\\"])*\") | (\'(\\.|[^\\'])*\')// se saco de https://github.com/jd-toralla/OLC1-1S2023/blob/main/JisonInterprete/src/Grammar/Grammar.jison
 variable "@"[a-zA-Z_][a-zA-Z0-9_]*
-
+id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
 
 %%
 // -----> Reglas Lexicas
@@ -47,8 +49,13 @@ variable "@"[a-zA-Z_][a-zA-Z0-9_]*
 {mcomentario}            {/*no se hace nada*/}
 {fecha}                  {Lista_Tokens.push(new Token("FECHA", yytext, yylloc.first_line, yylloc.first_column));
                          return 'FECHA';}
+
+
+
 {variable}               {Lista_Tokens.push(new Token("VARIABLE", yytext, yylloc.first_line, yylloc.first_column));
                          return 'VARIABLE';}
+
+
 '('          {Lista_Tokens.push(new Token("PARIZQ", yytext, yylloc.first_line, yylloc.first_column));
              return 'PARIZQ'}
 ')'          {Lista_Tokens.push(new Token("PARDER", yytext, yylloc.first_line, yylloc.first_column));
@@ -144,13 +151,40 @@ variable "@"[a-zA-Z_][a-zA-Z0-9_]*
 'TYPEOF'       {Lista_Tokens.push(new Token("TYPEOF", yytext, yylloc.first_line, yylloc.first_column));
                 return 'TYPEOF'}
 
+'CREATE'       {Lista_Tokens.push(new Token("CREATE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'CREATE'}
+
+'TABLE'        {Lista_Tokens.push(new Token("TABLE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'TABLE'}
+
+'ALTER'        {Lista_Tokens.push(new Token("ALTER", yytext, yylloc.first_line, yylloc.first_column));
+                return 'ALTER'}
+
+'ADD'           {Lista_Tokens.push(new Token("ADD", yytext, yylloc.first_line, yylloc.first_column));
+                return 'ADD'}
+
+'DROP'          {Lista_Tokens.push(new Token("DROP", yytext, yylloc.first_line, yylloc.first_column));
+                return 'DROP'}
+
+'COLUMN'        {Lista_Tokens.push(new Token("COLUMN", yytext, yylloc.first_line, yylloc.first_column));
+                return 'COLUMN'}
+
+'RENAME'        {Lista_Tokens.push(new Token("RENAME", yytext, yylloc.first_line, yylloc.first_column));
+                return 'RENAME'}
+
+'TO'            {Lista_Tokens.push(new Token("TO", yytext, yylloc.first_line, yylloc.first_column));
+                return 'TO'}
+
+
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
 {decimal}       { Lista_Tokens.push(new Token("DECIMAL", yytext, yylloc.first_line, yylloc.first_column));
                 return 'DECIMAL'; }	
 {entero}        { Lista_Tokens.push(new Token("ENTERO", yytext, yylloc.first_line, yylloc.first_column));
                 return 'ENTERO'; } 
-
+                
+{id}            {Lista_Tokens.push(new Token("ID", yytext, yylloc.first_line, yylloc.first_column));
+                         return 'ID';}
 
 // -----> Espacios en Blanco
 [ \s\r\n\t]             {/* Espacios se ignoran */}
@@ -194,6 +228,8 @@ instruccion
     | declare PYC{$$=$1;}
     | assigment PYC{$$=$1;}
     | select PYC{$$=$1;}
+    | create PYC{$$=$1;}
+    | alter PYC{$$=$1;}
 	| error{ConsolaSalida.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
 ;
 
@@ -226,6 +262,22 @@ select
 declare : DECLARE listavariable {$$=new ListDeclaration($2);}
         | DECLARE VARIABLE tipo DEFAULT expresion{$$=new Declaration($2,$5,$3);}
 ;
+
+create: CREATE TABLE ID PARIZQ listacolumnas PARDER {$$=new Create($3,$5);}
+;
+
+listacolumnas:listacolumnas COMA columna {$$=$1; $$.push($3);}
+            | columna {$$=[]; $$.push($1);}
+;
+
+columna: ID tipo {$$=new Columna($1,$2);}
+;
+
+alter
+     : ALTER TABLE ID ADD ID tipo{$$=new Add($3,$5,$6);}
+;
+
+
 
 listavariable
     : listavariable COMA VARIABLE tipo {$$=$1; $$.push(new Declaration($3,new Dato($1,'NULL', this._$.first_line, this._$.first_column),$4));}

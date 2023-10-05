@@ -3,10 +3,15 @@ class Entorno{
         this.nombre=nombre;
         this.anterior=anterior;
         this.TablaSimbolos=new Map();
+        this.Tablas=new Map();
     }
 
     AgregarSimbolo(clave,valor){
         this.TablaSimbolos.set(clave,valor);
+    }
+
+    AgregarTabla(clave,valor){
+        this.Tablas.set(clave,valor);
     }
 
     obtenerSimbolo(clave){
@@ -20,6 +25,16 @@ class Entorno{
         return valor
     }
 
+    obtenerTabla(clave){
+        let valor=this.Tablas.get(clave);
+        let nuevoEntorno=this.anterior;
+        while(nuevoEntorno!=null && valor == undefined ){
+            valor=nuevoEntorno.Tablas.get(clave);
+            nuevoEntorno=nuevoEntorno.anterior;
+        }
+        
+        return valor
+    }
 
     actualizarSimbolo(clave, valor) {
         // Buscar en los entornos locales primero
