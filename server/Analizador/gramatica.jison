@@ -22,6 +22,10 @@ const Typeof= require('../interprete/instrucciones/Typeof.js');
 const Columna=require('../interprete/Estructuras/Columna.js');
 const Create=require('../interprete/expresiones/Create.js');
 const Add=require('../interprete/expresiones/Add.js');
+const DropColumn=require('../interprete/expresiones/DropColumn.js');
+const Rename=require('../interprete/expresiones/Rename.js');
+const RenameColumn=require('../interprete/expresiones/RenameColumn.js');
+const DropTable=require('../interprete/expresiones/DropTable.js');
 %}
 
 
@@ -275,6 +279,10 @@ columna: ID tipo {$$=new Columna($1,$2);}
 
 alter
      : ALTER TABLE ID ADD ID tipo{$$=new Add($3,$5,$6);}
+     | ALTER TABLE ID DROP COLUMN ID {$$=new DropColumn($3,$6);}
+     | ALTER TABLE ID RENAME TO ID {$$=new Rename($3,$6);}
+     | ALTER TABLE ID RENAME COLUMN ID TO ID {$$=new RenameColumn($3,$6,$8);}
+     | DROP TABLE ID {$$=new DropTable($3);}
 ;
 
 

@@ -9,8 +9,7 @@ class Print extends Instruccion {
 
     ejecutar(entorno) {
         let expresion=this.expresion.ejecutar(entorno);
-        ConsolaSalida.push(expresion.valor);
-        console.log(expresion.valor); 
+        ConsolaSalida.push(expresion.valor); 
     }
 }
 

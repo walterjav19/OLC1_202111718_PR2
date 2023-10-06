@@ -58,6 +58,25 @@ class Entorno{
         return false; // Variable no encontrada en ningún entorno
     }
 
+
+    actualizarTabla(clave) {
+        let valor = this.Tablas.get(clave);
+        let entornoEncontrado = this;
+        
+        while (entornoEncontrado != null && valor === undefined) {
+            valor = entornoEncontrado.Tablas.get(clave);
+            if (valor !== undefined) {
+                return entornoEncontrado; // Devuelve el entorno donde se encontró la variable
+            }
+            entornoEncontrado = entornoEncontrado.anterior;
+        }
+        if(valor!=undefined){
+            return entornoEncontrado; // Devuelve el entorno donde se encontró la variable
+        }
+        return null; // Devuelve null si la variable no se encuentra en ningún entorno
+    }
+
+
 }
 
 /* let global=new Entorno("global",null);
