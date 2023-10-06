@@ -14,6 +14,11 @@ class Add extends Instruccion {
         let table=entorno.obtenerTabla(this.nombreTabla)
         if(table!=undefined){
             table.listaColumnas.push(new Columna(this.nombreColumna,this.tipo))
+            //agregar a la lista de filas
+            for (let i = 0; i < table.listaFilas.length; i++) {
+                let element = table.listaFilas[i];
+                element.push(null)
+            }
         }else{
             ConsolaSalida.push("Error Semantico, No existe la tabla "+this.nombreTabla)
         }

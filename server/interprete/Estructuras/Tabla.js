@@ -3,6 +3,7 @@ class Tabla{
     constructor(nombre,listaColumnas){
         this.nombre=nombre;
         this.listaColumnas=listaColumnas;
+        this.listaFilas=[];
     }
 
     BucarColumna(nombre){

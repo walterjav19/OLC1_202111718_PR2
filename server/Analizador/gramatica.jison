@@ -26,6 +26,7 @@ const DropColumn=require('../interprete/expresiones/DropColumn.js');
 const Rename=require('../interprete/expresiones/Rename.js');
 const RenameColumn=require('../interprete/expresiones/RenameColumn.js');
 const DropTable=require('../interprete/expresiones/DropTable.js');
+const Insert=require('../interprete/expresiones/Insert.js');
 %}
 
 
@@ -179,6 +180,14 @@ id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
 'TO'            {Lista_Tokens.push(new Token("TO", yytext, yylloc.first_line, yylloc.first_column));
                 return 'TO'}
 
+'INSERT'        {Lista_Tokens.push(new Token("INSERT", yytext, yylloc.first_line, yylloc.first_column));
+                return 'INSERT'}
+
+'INTO'          {Lista_Tokens.push(new Token("INTO", yytext, yylloc.first_line, yylloc.first_column));
+                return 'INTO'}
+
+'VALUES'        {Lista_Tokens.push(new Token("VALUES", yytext, yylloc.first_line, yylloc.first_column));
+                return 'VALUES'}
 
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
@@ -234,6 +243,7 @@ instruccion
     | select PYC{$$=$1;}
     | create PYC{$$=$1;}
     | alter PYC{$$=$1;}
+    | insert PYC{$$=$1;}    
 	| error{ConsolaSalida.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
 ;
 
@@ -285,7 +295,17 @@ alter
      | DROP TABLE ID {$$=new DropTable($3);}
 ;
 
+insert:INSERT INTO ID PARIZQ listaid PARDER VALUES PARIZQ listaexpresion PARDER {$$=new Insert($3,$5,$9);}
+;
 
+
+listaid:  listaid COMA ID {$$=$1; $$.push($3);}
+        | ID {$$=[]; $$.push($1);}
+;
+
+listaexpresion: listaexpresion COMA expresion {$$=$1; $$.push($3);}
+        | expresion {$$=[]; $$.push($1);}
+;
 
 listavariable
     : listavariable COMA VARIABLE tipo {$$=$1; $$.push(new Declaration($3,new Dato($1,'NULL', this._$.first_line, this._$.first_column),$4));}
@@ -298,7 +318,7 @@ tipo: INT{$$=$1;}
     | BOOLEAN{$$=$1;}
 ;
 
-expresion :  symbols{$$=$1}
+expresion :   symbols{$$=$1}
             | unario{$$=$1}
             | aritmetica{$$=$1}
             | logica{$$=$1}

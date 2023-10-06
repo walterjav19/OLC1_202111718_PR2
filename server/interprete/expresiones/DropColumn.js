@@ -16,6 +16,11 @@ class DropColumn extends Instruccion {
                 if (element.Nombre === this.columnName) {
                     indiceborrar=i;
                     table.listaColumnas.splice(i, 1);
+                    //borrar de la lista de filas
+                    for (let j = 0; j < table.listaFilas.length; j++) {
+                        let element = table.listaFilas[j];
+                        element.splice(indiceborrar, 1)
+                    }
                     return; // Sale de la función ejecutar(entorno)
                 }
             }
