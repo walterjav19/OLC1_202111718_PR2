@@ -27,6 +27,7 @@ const Rename=require('../interprete/expresiones/Rename.js');
 const RenameColumn=require('../interprete/expresiones/RenameColumn.js');
 const DropTable=require('../interprete/expresiones/DropTable.js');
 const Insert=require('../interprete/expresiones/Insert.js');
+const SelectColumn=require('../interprete/instrucciones/SelectColumn.js');
 %}
 
 
@@ -189,6 +190,9 @@ id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
 'VALUES'        {Lista_Tokens.push(new Token("VALUES", yytext, yylloc.first_line, yylloc.first_column));
                 return 'VALUES'}
 
+'FROM'          {Lista_Tokens.push(new Token("FROM", yytext, yylloc.first_line, yylloc.first_column));
+                return 'FROM'}
+
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
 {decimal}       { Lista_Tokens.push(new Token("DECIMAL", yytext, yylloc.first_line, yylloc.first_column));
@@ -271,6 +275,7 @@ assigment
 
 select
     : SELECT expresion {$$=new Select($2);}
+    | SELECT listaid FROM ID {$$=new SelectColumn($2,$4);}
 ;
 
 declare : DECLARE listavariable {$$=new ListDeclaration($2);}
@@ -334,6 +339,7 @@ symbols:DECIMAL {$$ = new Dato($1,'DOUBLE', this._$.first_line, this._$.first_co
     | VARIABLE{$$=  new Access($1, this._$.first_line, this._$.first_column);}
     | NULL    {$$ = new Dato($1,'NULL', this._$.first_line, this._$.first_column)}
     | nativas {$$=$1}
+    
 ;
 
 aritmetica
