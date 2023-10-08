@@ -8,8 +8,8 @@ class Tabla{
 
     BucarColumna(nombre){
         for(let i=0;i<this.listaColumnas.length;i++){
-            if(this.listaColumnas[i].nombre==nombre){
-                return this.listaColumnas[i];
+            if(this.listaColumnas[i].Nombre==nombre){
+                return i;
             }
         }
         return null;

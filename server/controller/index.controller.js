@@ -1,5 +1,4 @@
 const parser=require('../Analizador/parser.js')
-const Print=require('../interprete/instrucciones/Print')
 const Lista_Tokens=require('../interprete/Estructuras/ListaTokens.js')
 const Entorno=require('../interprete/Simbolos/Entorno.js')
 const ConsolaSalida=require('../interprete/Estructuras/ConsoleOut.js')
@@ -29,7 +28,7 @@ const analizar = (req, res) =>{
     }
     
 
-    //console.log(Global.Tablas.get('Clientes').listaFilas)
+    console.log(Global.Tablas.get('Clientes').listaFilas)
     res.status(200).json({
         message:"Analisis Realizado",
         entrada:entrada,

@@ -1,4 +1,5 @@
 const Instruccion=require("../Instruccion");
+const Tabla=require("../Estructuras/Tabla");
 const ConsolaSalida= require("../Estructuras/ConsoleOut");
 
 class Insert extends Instruccion {
@@ -14,14 +15,14 @@ class Insert extends Instruccion {
 
         if(table){
             if(this.listaColumnas.length==this.listaValores.length){
+                let tablaAux=new Tabla(this.TableName,table.listaColumnas);
                 
                 //encontrar los indices en los que se deben insertar los valores
                 let indices=[];
-                table.listaColumnas.forEach(element => {
-                    if(this.listaColumnas.includes(element.Nombre)){
-                        indices.push(table.listaColumnas.indexOf(element));
-                    }
+                this.listaColumnas.forEach(element => {
+                    indices.push(tablaAux.BucarColumna(element));
                 });
+                          
 
                 let mapa=new Map();
                 for(let i=0;i<indices.length;i++){
@@ -30,7 +31,7 @@ class Insert extends Instruccion {
                 }
 
                 
-
+                
                 let filaux=[];
                 for(let i=0;i<table.listaColumnas.length;i++){
                     if(indices.includes(i)){
@@ -40,7 +41,7 @@ class Insert extends Instruccion {
                     }
                     
                 }
-
+                
                 //isertamos el registro en la tabla
                 table.listaFilas.push(filaux);
 
