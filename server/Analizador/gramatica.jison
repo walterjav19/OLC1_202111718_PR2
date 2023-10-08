@@ -28,6 +28,7 @@ const RenameColumn=require('../interprete/expresiones/RenameColumn.js');
 const DropTable=require('../interprete/expresiones/DropTable.js');
 const Insert=require('../interprete/expresiones/Insert.js');
 const SelectColumn=require('../interprete/instrucciones/SelectColumn.js');
+const SelectTable=require('../interprete/instrucciones/SelectTable.js');
 %}
 
 
@@ -276,6 +277,7 @@ assigment
 select
     : SELECT expresion {$$=new Select($2);}
     | SELECT listaid FROM ID {$$=new SelectColumn($2,$4);}
+    | SELECT POR FROM ID {$$=new SelectTable($4);}
 ;
 
 declare : DECLARE listavariable {$$=new ListDeclaration($2);}

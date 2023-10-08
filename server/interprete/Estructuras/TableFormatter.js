@@ -1,5 +1,7 @@
 /*codigo extraido de 
+
 https://parzibyte.me/blog/2023/02/28/javascript-tabular-datos-limite-longitud-separador-relleno/
+
 */
 
 
@@ -50,4 +52,81 @@ const tabularDatos = (cadenas, relleno, separadorColumnas) => {
     return lineas;
 }
 
-module.exports=tabularDatos;
+// estas funciones si las hice yo XD
+const generarSeparacion=(numCols)=>{
+    const separadorColumnasEnSeparador = "+";
+    let sepa=[];
+    for(let i=0;i<numCols;i++){
+        sepa.push({ contenido: "-", maximaLongitud:20 });
+    }
+    const lineasSeparador = tabularDatos(sepa, "-", separadorColumnasEnSeparador);
+
+    return lineasSeparador[0];
+
+}
+
+const generarEncabezados=(listacolumnas)=>{
+    const longitud = 20;
+    const separadorColumnas = "|";
+    const columnasEncabezado = [];
+
+    for(i=0;i<listacolumnas.length;i++){
+        columnasEncabezado.push({ contenido: listacolumnas[i], maximaLongitud:longitud });
+    }
+
+    const lineasEncabezado = tabularDatos(columnasEncabezado, " ", separadorColumnas);
+
+    let filas="";
+    for(let i=0;i<lineasEncabezado.length;i++){
+        if(lineasEncabezado.length>1 && i<lineasEncabezado.length-1){
+            filas+=lineasEncabezado[i]+"\n";
+        }else{
+            filas+=lineasEncabezado[i];
+        }
+        
+    }
+
+    return filas;
+
+
+    
+
+}
+
+const generarRegistros=(lista)=>{
+    const longitud = 20;
+    const separadorColumnas = "|";
+    const columnasEncabezado = [];
+
+    for(i=0;i<lista.length;i++){
+        columnasEncabezado.push({ contenido: lista[i], maximaLongitud:longitud });
+    }
+
+    const lineasEncabezado = tabularDatos(columnasEncabezado, " ", separadorColumnas);
+    let filas="";
+    for(let i=0;i<lineasEncabezado.length;i++){
+        if(lineasEncabezado.length>1 && i<lineasEncabezado.length-1){
+            filas+=lineasEncabezado[i]+"\n";
+        }else{
+            filas+=lineasEncabezado[i];
+        }
+        
+    }
+
+    return filas;
+}
+
+/* console.log(generarSeparacion(3));
+console.log(generarEncabezados(["nombre","apellido","edad"]));
+console.log(generarSeparacion(3));
+console.log(generarRegistros(["jose","perez","20"]));
+console.log(generarSeparacion(3));
+console.log(generarRegistros(["walter javier sadsad","perez","20"]));
+console.log(generarSeparacion(3));
+ */
+
+module.exports = {
+    generarSeparacion,
+    generarEncabezados,
+    generarRegistros
+};
