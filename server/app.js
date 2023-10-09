@@ -24,7 +24,7 @@ const indexRoutes = require("./routes/index.routes.js")
 app.use("/", indexRoutes)
 app.use("/analizar", indexRoutes)
 app.use("/TablaToken", indexRoutes)
-
+app.use("/TablaErrores", indexRoutes)
   
 
 //Default route

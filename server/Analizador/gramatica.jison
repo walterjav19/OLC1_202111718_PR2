@@ -12,6 +12,8 @@ const ListDeclaration= require('../interprete/instrucciones/ListDeclaration.js')
 const Token= require('../interprete/Estructuras/Tokens.js');
 const Lista_Tokens= require('../interprete/Estructuras/ListaTokens.js')
 const ConsolaSalida= require('../interprete/Estructuras/ConsoleOut.js')
+const Lista_Errores= require('../interprete/Estructuras/ListaErrores.js')
+const Error= require('../interprete/Estructuras/Errores.js')
 const Select= require('../interprete/instrucciones/Select.js')
 const Lower= require('../interprete/instrucciones/Lower.js');
 const Upper= require('../interprete/instrucciones/Upper.js');
@@ -29,6 +31,8 @@ const DropTable=require('../interprete/expresiones/DropTable.js');
 const Insert=require('../interprete/expresiones/Insert.js');
 const SelectColumn=require('../interprete/instrucciones/SelectColumn.js');
 const SelectTable=require('../interprete/instrucciones/SelectTable.js');
+const SelectAs=require('../interprete/instrucciones/SelectAs.js');
+const TruncateTable=require('../interprete/instrucciones/TruncateTable.js');
 %}
 
 
@@ -194,6 +198,9 @@ id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
 'FROM'          {Lista_Tokens.push(new Token("FROM", yytext, yylloc.first_line, yylloc.first_column));
                 return 'FROM'}
 
+'AS'            {Lista_Tokens.push(new Token("AS", yytext, yylloc.first_line, yylloc.first_column));
+                return 'AS'}
+
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
 {decimal}       { Lista_Tokens.push(new Token("DECIMAL", yytext, yylloc.first_line, yylloc.first_column));
@@ -211,7 +218,8 @@ id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
 
 // -----> FIN DE CADENA Y ERRORES
 <<EOF>>               return 'EOF';
-.  { ConsolaSalida.push('Error léxico: \"' + yytext + '\", linea: ' + yylloc.first_line + ', columna: ' + yylloc.first_column)  }
+.  { Lista_Errores.push(new Error("Lexico", "Carater no reconocido "+yytext, yylloc.first_line, yylloc.first_column));
+    ConsolaSalida.push('Error léxico: \"' + yytext + '\", linea: ' + yylloc.first_line + ', columna: ' + yylloc.first_column)  }
 
 
 /lex
@@ -248,13 +256,17 @@ instruccion
     | select PYC{$$=$1;}
     | create PYC{$$=$1;}
     | alter PYC{$$=$1;}
-    | insert PYC{$$=$1;}    
-	| error{ConsolaSalida.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
+    | insert PYC{$$=$1;}
+    | truncate PYC{$$=$1;}    
+	| error{
+         Lista_Errores.push(new Error("Sintactico", `componente ${yytext} `, this._$.first_line,this._$.first_column));
+        ConsolaSalida.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
 ;
 
 print_instruccion
     : PRINT expresion {$$=new Print($2);}
 ;
+
 
 begin_end
     : BEGIN lista_instrucciones END {$$=new BeginEnd($2);}
@@ -278,6 +290,7 @@ select
     : SELECT expresion {$$=new Select($2);}
     | SELECT listaid FROM ID {$$=new SelectColumn($2,$4);}
     | SELECT POR FROM ID {$$=new SelectTable($4);}
+    | SELECT expresion AS ID{$$=new SelectAs($2,$4);}
 ;
 
 declare : DECLARE listavariable {$$=new ListDeclaration($2);}
@@ -285,6 +298,9 @@ declare : DECLARE listavariable {$$=new ListDeclaration($2);}
 ;
 
 create: CREATE TABLE ID PARIZQ listacolumnas PARDER {$$=new Create($3,$5);}
+;
+
+truncate: TRUNCATE TABLE ID {$$=new TruncateTable($3);}
 ;
 
 listacolumnas:listacolumnas COMA columna {$$=$1; $$.push($3);}

@@ -9,5 +9,6 @@ const indexController = require('../controller/index.controller.js')
 router.get("/", indexController.index);
 router.post("/analizar", indexController.analizar);
 router.get("/TablaToken", indexController.TablaToken);
+router.get("/TablaErrores", indexController.TablaErrores);
 
 module.exports=router;
