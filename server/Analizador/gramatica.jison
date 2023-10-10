@@ -34,6 +34,8 @@ const SelectTable=require('../interprete/instrucciones/SelectTable.js');
 const SelectAs=require('../interprete/instrucciones/SelectAs.js');
 const TruncateTable=require('../interprete/instrucciones/TruncateTable.js');
 const SelectWhere=require('../interprete/instrucciones/SelectWhere.js');
+const If=require('../interprete/instrucciones/If.js');
+const IfElse=require('../interprete/instrucciones/IfElse.js');
 %}
 
 
@@ -87,8 +89,7 @@ id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
                 return 'DIV'}
 '%'          {  Lista_Tokens.push(new Token("MOD", yytext, yylloc.first_line, yylloc.first_column));
                 return 'MOD'} 
-'='          {  Lista_Tokens.push(new Token("IGUAL", yytext, yylloc.first_line, yylloc.first_column));
-                return 'IGUAL'}         
+
 'print'      {  Lista_Tokens.push(new Token("PRINT", yytext, yylloc.first_line, yylloc.first_column));
                 return 'PRINT'}
 'true'       {  Lista_Tokens.push(new Token("TRUE", yytext, yylloc.first_line, yylloc.first_column));
@@ -101,14 +102,20 @@ id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
                 return 'EQUALS'}
 '!='         {  Lista_Tokens.push(new Token("NOTEQUALS", yytext, yylloc.first_line, yylloc.first_column));
                 return 'NOTEQUALS'}
-'>'          {  Lista_Tokens.push(new Token("MAYOR", yytext, yylloc.first_line, yylloc.first_column));
-                return 'MAYOR'}
-'<'          {  Lista_Tokens.push(new Token("MENOR", yytext, yylloc.first_line, yylloc.first_column));
-                return 'MENOR'}
 '>='         {  Lista_Tokens.push(new Token("MAYORIGUAL", yytext, yylloc.first_line, yylloc.first_column));
                 return 'MAYORIGUAL'}
 '<='         {  Lista_Tokens.push(new Token("MENORIGUAL", yytext, yylloc.first_line, yylloc.first_column));
                 return 'MENORIGUAL'}
+
+'>'          {  Lista_Tokens.push(new Token("MAYOR", yytext, yylloc.first_line, yylloc.first_column));
+                return 'MAYOR'}
+'<'          {  Lista_Tokens.push(new Token("MENOR", yytext, yylloc.first_line, yylloc.first_column));
+                return 'MENOR'}
+'='          {  Lista_Tokens.push(new Token("IGUAL", yytext, yylloc.first_line, yylloc.first_column));
+                return 'IGUAL'} 
+
+
+        
 'not'         {  Lista_Tokens.push(new Token("NOT", yytext, yylloc.first_line, yylloc.first_column));
                 return 'NOT'}
 'or'          {  Lista_Tokens.push(new Token("OR", yytext, yylloc.first_line, yylloc.first_column));
@@ -203,7 +210,16 @@ id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
                 return 'AS'}
 
 'WHERE'         {Lista_Tokens.push(new Token("WHERE", yytext, yylloc.first_line, yylloc.first_column));
-                return 'WHERE'}      
+                return 'WHERE'}   
+
+'IF'            {Lista_Tokens.push(new Token("IF", yytext, yylloc.first_line, yylloc.first_column));
+                return 'IF'}
+
+'THEN'          {Lista_Tokens.push(new Token("THEN", yytext, yylloc.first_line, yylloc.first_column));
+                return 'THEN'}
+
+'ELSE'          {Lista_Tokens.push(new Token("ELSE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'ELSE'}
 
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
@@ -262,6 +278,7 @@ instruccion
     | alter PYC{$$=$1;}
     | insert PYC{$$=$1;}
     | truncate PYC{$$=$1;}    
+    | if PYC{$$=$1;}
 	| error{
          Lista_Errores.push(new Error("Sintactico", `componente ${yytext} `, this._$.first_line,this._$.first_column));
         ConsolaSalida.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
@@ -295,15 +312,10 @@ select
     | SELECT listaid FROM ID {$$=new SelectColumn($2,$4);}
     | SELECT POR FROM ID {$$=new SelectTable($4);}
     | SELECT expresion AS ID{$$=new SelectAs($2,$4);}
-    | SELECT listaid FROM ID WHERE ID operador expresion{$$=new SelectWhere($2,$4,$6,$7,$8);} 
+    | SELECT listaid FROM ID WHERE condicion{$$=new SelectWhere($2,$4,$6);} 
 ;
 
-operador: IGUAL{$$=$1;}
-        | NOTEQUALS{$$=$1;}
-        | MAYOR{$$=$1;}
-        | MENOR{$$=$1;}
-        | MAYORIGUAL{$$=$1;}
-        | MENORIGUAL{$$=$1;}
+condicion: ID{$$=$1}
 ;
 
 declare : DECLARE listavariable {$$=new ListDeclaration($2);}
@@ -347,6 +359,16 @@ listavariable
     : listavariable COMA VARIABLE tipo {$$=$1; $$.push(new Declaration($3,new Dato($1,'NULL', this._$.first_line, this._$.first_column),$4));}
     | VARIABLE tipo {$$=[]; $$.push(new Declaration($1,new Dato($1,'NULL', this._$.first_line, this._$.first_column),$2));}
 ;
+
+if
+    : IF expresion THEN lista_instrucciones END IF{$$=new If($2,$4);}
+    | IF expresion THEN lista_instrucciones ELSE lista_instrucciones END IF{$$=new IfElse($2,$4,$6);}
+;
+
+
+
+
+
 tipo: INT{$$=$1;}
     | DOUBLE{$$=$1;}
     | DATE{$$=$1;}
