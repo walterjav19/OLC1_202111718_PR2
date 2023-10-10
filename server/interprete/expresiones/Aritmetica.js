@@ -194,6 +194,17 @@ class Aritmetica extends Instruccion {
                         fechaObjeto.setDate(fechaObjeto.getDate() - ascii);
                         let nuevaFecha = fechaObjeto.toISOString().slice(0, 10);
                         return new Dato(nuevaFecha, "DATE",this.linea,this.columna);
+                    }else if(izquierda.tipo=="VARCHAR" && derecha.tipo=="VARCHAR"){
+                        let ascii=0;
+                        for(let i=0; i<izquierda.valor.length; i++){
+                            ascii+=izquierda.valor.charCodeAt(i);
+                        }
+                        let ascii2=0;
+                        for(let i=0; i<derecha.valor.length; i++){
+                            ascii2+=derecha.valor.charCodeAt(i);
+                        }
+                        this.valor= ascii - ascii2;
+                        return new Dato(this.valor, "INT",this.linea,this.columna); 
                     }else{
                         ListaConsola.push("Error Semantico: Operador - no puede operar "+izquierda.tipo+" con "+derecha.tipo+" en la linea: "+this.linea+" y columna: "+this.columna)
                         return new Dato(null,'NULL' , this.linea, this.columna)

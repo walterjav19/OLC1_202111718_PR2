@@ -33,6 +33,7 @@ const SelectColumn=require('../interprete/instrucciones/SelectColumn.js');
 const SelectTable=require('../interprete/instrucciones/SelectTable.js');
 const SelectAs=require('../interprete/instrucciones/SelectAs.js');
 const TruncateTable=require('../interprete/instrucciones/TruncateTable.js');
+const SelectWhere=require('../interprete/instrucciones/SelectWhere.js');
 %}
 
 
@@ -201,6 +202,9 @@ id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
 'AS'            {Lista_Tokens.push(new Token("AS", yytext, yylloc.first_line, yylloc.first_column));
                 return 'AS'}
 
+'WHERE'         {Lista_Tokens.push(new Token("WHERE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'WHERE'}      
+
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
 {decimal}       { Lista_Tokens.push(new Token("DECIMAL", yytext, yylloc.first_line, yylloc.first_column));
@@ -291,6 +295,15 @@ select
     | SELECT listaid FROM ID {$$=new SelectColumn($2,$4);}
     | SELECT POR FROM ID {$$=new SelectTable($4);}
     | SELECT expresion AS ID{$$=new SelectAs($2,$4);}
+    | SELECT listaid FROM ID WHERE ID operador expresion{$$=new SelectWhere($2,$4,$6,$7,$8);} 
+;
+
+operador: IGUAL{$$=$1;}
+        | NOTEQUALS{$$=$1;}
+        | MAYOR{$$=$1;}
+        | MENOR{$$=$1;}
+        | MAYORIGUAL{$$=$1;}
+        | MENORIGUAL{$$=$1;}
 ;
 
 declare : DECLARE listavariable {$$=new ListDeclaration($2);}
