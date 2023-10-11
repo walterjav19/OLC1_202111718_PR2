@@ -7,6 +7,7 @@ class Dato extends Instruccion {
         this.tipo = tipo;
         this.linea=linea;
         this.columna=columna;
+        this.cont=0;
     }
     
     obtenerTexto(){
@@ -22,8 +23,10 @@ class Dato extends Instruccion {
 
     ejecutar(entorno) {
         if(this.tipo == "VARCHAR"){
-            this.valor = this.valor.slice(1);
-            this.valor = this.valor.slice(0, -1);
+            if (this.valor.startsWith('"') && this.valor.endsWith('"') && this.cont==0) {
+                this.valor = this.valor.slice(1,-1);
+                this.cont++;
+            }
         if(this.valor.includes("\\n")){
             this.valor = this.valor.replaceAll("\\n", "\n");
         }else if(this.valor.includes("\\\\")){

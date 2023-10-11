@@ -36,6 +36,7 @@ const TruncateTable=require('../interprete/instrucciones/TruncateTable.js');
 const SelectWhere=require('../interprete/instrucciones/SelectWhere.js');
 const If=require('../interprete/instrucciones/If.js');
 const IfElse=require('../interprete/instrucciones/IfElse.js');
+const While=require('../interprete/instrucciones/while.js');
 %}
 
 
@@ -221,6 +222,9 @@ id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
 'ELSE'          {Lista_Tokens.push(new Token("ELSE", yytext, yylloc.first_line, yylloc.first_column));
                 return 'ELSE'}
 
+'WHILE'         {Lista_Tokens.push(new Token("WHILE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'WHILE'}
+
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
 {decimal}       { Lista_Tokens.push(new Token("DECIMAL", yytext, yylloc.first_line, yylloc.first_column));
@@ -279,6 +283,7 @@ instruccion
     | insert PYC{$$=$1;}
     | truncate PYC{$$=$1;}    
     | if PYC{$$=$1;}
+    | while PYC{$$=$1;}
 	| error{
          Lista_Errores.push(new Error("Sintactico", `componente ${yytext} `, this._$.first_line,this._$.first_column));
         ConsolaSalida.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
@@ -366,6 +371,10 @@ if
 ;
 
 
+while
+    : WHILE expresion BEGIN lista_instrucciones END {$$=new While($2,$4);}
+;
+
 
 
 
@@ -405,14 +414,14 @@ aritmetica
 
 
 logica
-    :expresion OR expresion {$$=new Logica($1,'OR',$3);}
-    |expresion AND expresion {$$=new Logica($1,'AND',$3);}
-    |expresion EQUALS expresion {$$=new Logica($1,'==',$3);}
-    |expresion NOTEQUALS expresion {$$=new Logica($1,'!=',$3);}
-    |expresion MAYOR expresion {$$=new Logica($1,'>',$3);}
-    |expresion MENOR expresion {$$=new Logica($1,'<',$3);}
-    |expresion MAYORIGUAL expresion {$$=new Logica($1,'>=',$3);}
-    |expresion MENORIGUAL expresion {$$=new Logica($1,'<=',$3);}
+    :expresion OR expresion {$$=new Logica($1,'OR',$3, this._$.first_line, this._$.first_column);}
+    |expresion AND expresion {$$=new Logica($1,'AND',$3, this._$.first_line, this._$.first_column);}
+    |expresion EQUALS expresion {$$=new Logica($1,'==',$3, this._$.first_line, this._$.first_column);}
+    |expresion NOTEQUALS expresion {$$=new Logica($1,'!=',$3, this._$.first_line, this._$.first_column);}
+    |expresion MAYOR expresion {$$=new Logica($1,'>',$3, this._$.first_line, this._$.first_column);}
+    |expresion MENOR expresion {$$=new Logica($1,'<',$3, this._$.first_line, this._$.first_column);}
+    |expresion MAYORIGUAL expresion {$$=new Logica($1,'>=',$3, this._$.first_line, this._$.first_column);}
+    |expresion MENORIGUAL expresion {$$=new Logica($1,'<=',$3, this._$.first_line, this._$.first_column);}
     
 ;
 
