@@ -8,6 +8,11 @@ class Access extends Instruccion{
         this.columna=columna;
     }
     
+        
+    obtenerTexto(){
+        return this.id;
+    }
+
     ejecutar(entorno){
         let simbolo=entorno.obtenerSimbolo(this.id);
         return simbolo;

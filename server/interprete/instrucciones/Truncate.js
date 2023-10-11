@@ -11,6 +11,10 @@ class Truncate extends Instruccion{
         this.columna=columna;
     }
 
+    obtenerTexto(){
+        return `TRUNCATE(${this.numero.obtenerTexto()},${this.cantidad.obtenerTexto()})`;
+    }
+
     ejecutar(entorno){
         let num=this.numero.ejecutar(entorno);
         let cant=this.cantidad.ejecutar(entorno);

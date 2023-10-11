@@ -8,6 +8,10 @@ class TypeOf extends Instruccion{
         this.expresion=expresion;
     }
 
+    obtenerTexto(){
+        return `TYPEOF(${this.expresion.obtenerTexto()})`;
+    }
+
     ejecutar(entorno){
         let expresion=this.expresion.ejecutar(entorno);
         return new Dato(expresion.tipo,"VARCHAR",expresion.linea,expresion.columna)

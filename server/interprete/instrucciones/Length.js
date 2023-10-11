@@ -8,6 +8,10 @@ class Len extends Instruccion{
         this.expresion=expresion;
     }
 
+    obtenerTexto(){
+        return `LEN(${this.expresion.obtenerTexto()})`;
+    }
+
     ejecutar(entorno){
         let expresion=this.expresion.ejecutar(entorno);
         if(expresion.tipo=="VARCHAR"){

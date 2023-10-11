@@ -12,6 +12,10 @@ class Logica extends Instruccion{
         this.valor=null;
     }
 
+    obtenerTexto(){
+        return this.izquierda.obtenerTexto()+" "+this.operador+" "+this.derecha.obtenerTexto();
+    }
+
     ejecutar(entorno){
         let izquierda=this.izquierda.ejecutar(entorno);
         let derecha;

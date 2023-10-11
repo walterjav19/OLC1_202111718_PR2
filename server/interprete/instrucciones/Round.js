@@ -11,6 +11,10 @@ class Round extends Instruccion{
         this.columna=columna;
     }
 
+    obtenerTexto(){
+        return `Round(${this.numero.obtenerTexto()},${this.cantidad.obtenerTexto()})`;
+    }
+
     ejecutar(entorno){
         let num=this.numero.ejecutar(entorno);
         let cant=this.cantidad.ejecutar(entorno);

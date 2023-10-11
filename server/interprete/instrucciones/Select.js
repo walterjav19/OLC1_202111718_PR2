@@ -12,7 +12,7 @@ class Select extends Instruccion{
         let aux=String(expresion.valor);
         
         ConsolaSalida.push(generarSeparacion(1))
-        ConsolaSalida.push(generarEncabezados([String('Resultado')]))
+        ConsolaSalida.push(generarEncabezados([this.expresion.obtenerTexto()]))
         ConsolaSalida.push(generarSeparacion(1))
         ConsolaSalida.push(generarRegistros([aux]))
         ConsolaSalida.push(generarSeparacion(1))

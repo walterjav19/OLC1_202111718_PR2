@@ -8,6 +8,10 @@ class Upper extends Instruccion{
         this.expresion=expresion;
     }
 
+    obtenerTexto(){
+        return `UPPER(${this.expresion.obtenerTexto()})`;
+    }
+
     ejecutar(entorno){
         let expresion=this.expresion.ejecutar(entorno);
         if(expresion.tipo=="VARCHAR"){

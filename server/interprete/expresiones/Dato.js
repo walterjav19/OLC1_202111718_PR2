@@ -8,6 +8,17 @@ class Dato extends Instruccion {
         this.linea=linea;
         this.columna=columna;
     }
+    
+    obtenerTexto(){
+        let aux="";
+        if(this.tipo=="NULL"){
+            aux="NULL";
+            return aux;
+        }
+        
+        
+        return this.valor;
+    }
 
     ejecutar(entorno) {
         if(this.tipo == "VARCHAR"){
