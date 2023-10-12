@@ -38,7 +38,7 @@ const If=require('../interprete/instrucciones/If.js');
 const IfElse=require('../interprete/instrucciones/IfElse.js');
 const While=require('../interprete/instrucciones/while.js');
 const Cast=require('../interprete/instrucciones/Cast.js');
-
+const Condicion=require('../interprete/expresiones/condicion.js');
 %}
 
 
@@ -326,7 +326,7 @@ select
     | SELECT listaid FROM ID {$$=new SelectColumn($2,$4);}
     | SELECT POR FROM ID {$$=new SelectTable($4);}
     | SELECT expresion AS ID{$$=new SelectAs($2,$4);}
-    | SELECT listaid FROM ID WHERE expresion{console.log($6);$$=new SelectWhere($2,$4,$6);} 
+    | SELECT listaid FROM ID WHERE expresion{$$=new SelectWhere($2,$4,$6);} 
 ;
 
 
@@ -437,6 +437,13 @@ logica
 
 unario: MENOS expresion %prec UMINUS {$$=new Aritmetica($2,'-',null, this._$.first_line, this._$.first_column);}
        | NOT expresion {$$=new Logica($2,'NOT',null, this._$.first_line, this._$.first_column);}
-       | ID IGUAL expresion %prec IG { $$=`${$1} ${$2} ${$3}`;}
+       | ID operadores expresion %prec IG {$$=new Condicion($1,$2,$3);}
 ;
 
+operadores: IGUAL      {$$=$1;}
+          | NOTEQUALS  {$$=$1;}
+          | MAYOR      {$$=$1;}
+          | MENOR      {$$=$1;}
+          | MAYORIGUAL {$$=$1;}
+          | MENORIGUAL {$$=$1;}
+;

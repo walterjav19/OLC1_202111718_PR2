@@ -13,9 +13,9 @@ class SelectWhere extends Instruccion{
     }
 
     ejecutar(entorno){
-       
+       console.log(this.condicion.ejecutar(entorno));
         
-        console.log(this.condicion);
+        
     }
 }
 
