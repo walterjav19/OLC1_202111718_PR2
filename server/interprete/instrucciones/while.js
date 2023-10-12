@@ -11,7 +11,6 @@ class While extends Instruccion {
 
     ejecutar(entorno) {
         let expresion = this.condicion.ejecutar(entorno);
-        console.log(this.instrucciones)
         if(expresion.tipo=='BOOLEAN'){
             let nuevoEntorno = new Entorno('WHILE', entorno);
             while(expresion.valor){
@@ -20,8 +19,6 @@ class While extends Instruccion {
                 });
                 expresion = this.condicion.ejecutar(entorno);
             }
-            console.log(this.instrucciones)
-            
         }else{
             ConsolaSalida.push(`Error Semantico, la condicion del while no es booleana linea: ${this.condicion.linea} columna: ${this.condicion.columna}`)
         }

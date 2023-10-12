@@ -37,6 +37,8 @@ const SelectWhere=require('../interprete/instrucciones/SelectWhere.js');
 const If=require('../interprete/instrucciones/If.js');
 const IfElse=require('../interprete/instrucciones/IfElse.js');
 const While=require('../interprete/instrucciones/while.js');
+const Cast=require('../interprete/instrucciones/Cast.js');
+
 %}
 
 
@@ -51,7 +53,7 @@ decimal ([0-9]+)"."([0-9]+)
 entero  [0-9]+
 comentario "--".*
 mcomentario [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] // se saco de https://github.com/jd-toralla/OLC1-1S2023/blob/main/JisonInterprete/src/Grammar/Grammar.jison}
-fecha \"[0-9]{4}"-"([0][1-9]|[1][0-2])"-"([0-2][0-9]|[3][0-1])\"
+fecha (\"[0-9]{4}"-"([0][1-9]|[1][0-2])"-"([0-2][0-9]|[3][0-1])\")|(\'[0-9]{4}"-"([0][1-9]|[1][0-2])"-"([0-2][0-9]|[3][0-1])\')
 cadena (\"(\\.|[^\\"])*\") | (\'(\\.|[^\\'])*\')// se saco de https://github.com/jd-toralla/OLC1-1S2023/blob/main/JisonInterprete/src/Grammar/Grammar.jison
 variable "@"[a-zA-Z_][a-zA-Z0-9_]*
 id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
@@ -225,6 +227,10 @@ id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
 'WHILE'         {Lista_Tokens.push(new Token("WHILE", yytext, yylloc.first_line, yylloc.first_column));
                 return 'WHILE'}
 
+
+'CAST'          {Lista_Tokens.push(new Token("CAST", yytext, yylloc.first_line, yylloc.first_column));
+                return 'CAST'}  
+
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
 {decimal}       { Lista_Tokens.push(new Token("DECIMAL", yytext, yylloc.first_line, yylloc.first_column));
@@ -256,7 +262,7 @@ id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
 %left 'EQUALS' 'NOTEQUALS' 'MAYOR' 'MENOR' 'MAYORIGUAL' 'MENORIGUAL'
 %left 'MAS' 'MENOS'
 %left 'POR' 'DIV' 'MOD'
-%left UMINUS 
+%left UMINUS,IG
 // -------> Simbolo Inicial
 %start inicio
 
@@ -308,6 +314,9 @@ nativas
 ;
 
 
+cast
+   : CAST PARIZQ expresion AS tipo PARDER {$$=new Cast($3,$5);}
+;
 assigment
          :SET VARIABLE IGUAL expresion {$$=new Assigment($2,$4);}
 ;
@@ -317,11 +326,12 @@ select
     | SELECT listaid FROM ID {$$=new SelectColumn($2,$4);}
     | SELECT POR FROM ID {$$=new SelectTable($4);}
     | SELECT expresion AS ID{$$=new SelectAs($2,$4);}
-    | SELECT listaid FROM ID WHERE condicion{$$=new SelectWhere($2,$4,$6);} 
+    | SELECT listaid FROM ID WHERE expresion{console.log($6);$$=new SelectWhere($2,$4,$6);} 
 ;
 
-condicion: ID{$$=$1}
-;
+
+
+
 
 declare : DECLARE listavariable {$$=new ListDeclaration($2);}
         | DECLARE VARIABLE tipo DEFAULT expresion{$$=new Declaration($2,$5,$3);}
@@ -401,7 +411,7 @@ symbols:DECIMAL {$$ = new Dato($1,'DOUBLE', this._$.first_line, this._$.first_co
     | VARIABLE{$$=  new Access($1, this._$.first_line, this._$.first_column);}
     | NULL    {$$ = new Dato($1,'NULL', this._$.first_line, this._$.first_column)}
     | nativas {$$=$1}
-    
+    | cast    {$$=$1}
 ;
 
 aritmetica
@@ -422,11 +432,11 @@ logica
     |expresion MENOR expresion {$$=new Logica($1,'<',$3, this._$.first_line, this._$.first_column);}
     |expresion MAYORIGUAL expresion {$$=new Logica($1,'>=',$3, this._$.first_line, this._$.first_column);}
     |expresion MENORIGUAL expresion {$$=new Logica($1,'<=',$3, this._$.first_line, this._$.first_column);}
-    
 ;
 
 
 unario: MENOS expresion %prec UMINUS {$$=new Aritmetica($2,'-',null, this._$.first_line, this._$.first_column);}
        | NOT expresion {$$=new Logica($2,'NOT',null, this._$.first_line, this._$.first_column);}
+       | ID IGUAL expresion %prec IG { $$=`${$1} ${$2} ${$3}`;}
 ;
 

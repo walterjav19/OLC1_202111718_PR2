@@ -23,7 +23,7 @@ class Dato extends Instruccion {
 
     ejecutar(entorno) {
         if(this.tipo == "VARCHAR"){
-            if (this.valor.startsWith('"') && this.valor.endsWith('"') && this.cont==0) {
+            if (this.valor.startsWith('"') && this.valor.endsWith('"') && this.cont==0 || this.valor.startsWith("'") && this.valor.endsWith("'") && this.cont==0) {
                 this.valor = this.valor.slice(1,-1);
                 this.cont++;
             }
