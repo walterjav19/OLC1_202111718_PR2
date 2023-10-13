@@ -99,7 +99,6 @@ class SelectWhere extends Instruccion{
                     this.listacondiciones[j].actualizarValorColumna(registros[i][col])
                     j++;
                 })
-                console.log(this.condicion.ejecutar(entorno))
                 let expr=this.condicion.ejecutar(entorno);
                 if(expr.valor){
                     ConsolaSalida.push(generarRegistros(element.map(element=>element.toString())));

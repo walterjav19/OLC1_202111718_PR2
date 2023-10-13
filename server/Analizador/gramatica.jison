@@ -39,6 +39,7 @@ const IfElse=require('../interprete/instrucciones/IfElse.js');
 const While=require('../interprete/instrucciones/while.js');
 const Cast=require('../interprete/instrucciones/Cast.js');
 const Condicion=require('../interprete/expresiones/condicion.js');
+const For=require('../interprete/instrucciones/For.js');
 let condicion=[];
 %}
 
@@ -56,7 +57,7 @@ comentario "--".*
 mcomentario [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] // se saco de https://github.com/jd-toralla/OLC1-1S2023/blob/main/JisonInterprete/src/Grammar/Grammar.jison}
 fecha (\"[0-9]{4}"-"([0][1-9]|[1][0-2])"-"([0-2][0-9]|[3][0-1])\")|(\'[0-9]{4}"-"([0][1-9]|[1][0-2])"-"([0-2][0-9]|[3][0-1])\')
 cadena (\"(\\.|[^\\"])*\") | (\'(\\.|[^\\'])*\')// se saco de https://github.com/jd-toralla/OLC1-1S2023/blob/main/JisonInterprete/src/Grammar/Grammar.jison
-variable "@"[a-zA-Z_][a-zA-Z0-9_]*
+variable ("@"[a-zA-Z_][a-zA-Z0-9_]*)
 id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
 
 %%
@@ -67,7 +68,6 @@ id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
 {mcomentario}            {/*no se hace nada*/}
 {fecha}                  {Lista_Tokens.push(new Token("FECHA", yytext, yylloc.first_line, yylloc.first_column));
                          return 'FECHA';}
-
 
 
 {variable}               {Lista_Tokens.push(new Token("VARIABLE", yytext, yylloc.first_line, yylloc.first_column));
@@ -232,15 +232,28 @@ id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
 'CAST'          {Lista_Tokens.push(new Token("CAST", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CAST'}  
 
+'FOR'           {Lista_Tokens.push(new Token("FOR", yytext, yylloc.first_line, yylloc.first_column));
+                return 'FOR'}
+
+'IN'            {Lista_Tokens.push(new Token("IN", yytext, yylloc.first_line, yylloc.first_column));
+                return 'IN'}
+
+'..'            {Lista_Tokens.push(new Token("RANGO", yytext, yylloc.first_line, yylloc.first_column));
+                return 'RANGO'}
+
+
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
 {decimal}       { Lista_Tokens.push(new Token("DECIMAL", yytext, yylloc.first_line, yylloc.first_column));
                 return 'DECIMAL'; }	
 {entero}        { Lista_Tokens.push(new Token("ENTERO", yytext, yylloc.first_line, yylloc.first_column));
                 return 'ENTERO'; } 
-                
+// * ID
+
 {id}            {Lista_Tokens.push(new Token("ID", yytext, yylloc.first_line, yylloc.first_column));
-                         return 'ID';}
+                return 'ID';}
+
+
 
 // -----> Espacios en Blanco
 [ \s\r\n\t]             {/* Espacios se ignoran */}
@@ -291,6 +304,7 @@ instruccion
     | truncate PYC{$$=$1;}    
     | if PYC{$$=$1;}
     | while PYC{$$=$1;}
+    | for PYC{$$=$1;}
 	| error{
          Lista_Errores.push(new Error("Sintactico", `componente ${yytext} `, this._$.first_line,this._$.first_column));
         ConsolaSalida.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
@@ -381,6 +395,10 @@ if
     | IF expresion THEN lista_instrucciones ELSE lista_instrucciones END IF{$$=new IfElse($2,$4,$6);}
 ;
 
+
+for
+    : FOR ID IN expresion RANGO expresion BEGIN lista_instrucciones END {$$=new For($2,$4,$6,$8);}
+;
 
 while
     : WHILE expresion BEGIN lista_instrucciones END {$$=new While($2,$4);}

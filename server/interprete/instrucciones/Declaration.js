@@ -1,5 +1,4 @@
 const Instruccion=require('../Instruccion')
-const Dato=require('../expresiones/Dato')
 
 class Declaration extends Instruccion{
     constructor(id,valor,tipo){
