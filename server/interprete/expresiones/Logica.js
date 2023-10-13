@@ -1,5 +1,6 @@
 const Instruccion=require("../Instruccion");
 const Dato=require("./Dato");
+const condicion=require("./condicion");
 
 class Logica extends Instruccion{
     constructor(izquierda,operador,derecha,linea,columna){

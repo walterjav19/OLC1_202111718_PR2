@@ -13,22 +13,22 @@ class Condicion extends Instruccion{
     ejecutar(entorno){
         let expresion=this.expresion.ejecutar(entorno);
         if(this.operador=="="){
-            let val=expresion.valor==this.columna
+            let val=this.columna==expresion.valor
             return new Dato(val,"BOOLEAN",this.linea,this.columna);
         }else if(this.operador=="<"){
-            let val=expresion.valor<this.columna
+            let val=this.columna<expresion.valor
             return new Dato(val,"BOOLEAN",this.linea,this.columna);
         }else if(this.operador==">"){
-            let val=expresion.valor>this.columna
+            let val=this.columna>expresion.valor
             return new Dato(val,"BOOLEAN",this.linea,this.columna);
         }else if(this.operador=="<="){
-            let val=expresion.valor<=this.columna
+            let val=this.columna<=expresion.valor
             return new Dato(val,"BOOLEAN",this.linea,this.columna);
         }else if(this.operador==">="){
-            let val=expresion.valor>=this.columna
+            let val=this.columna>=expresion.valor
             return new Dato(val,"BOOLEAN",this.linea,this.columna);
         }else if(this.operador=="!="){
-            let val=expresion.valor!=this.columna
+            let val =this.columna!=expresion.valor
             return new Dato(val,"BOOLEAN",this.linea,this.columna);
         }
     }

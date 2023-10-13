@@ -39,6 +39,7 @@ const IfElse=require('../interprete/instrucciones/IfElse.js');
 const While=require('../interprete/instrucciones/while.js');
 const Cast=require('../interprete/instrucciones/Cast.js');
 const Condicion=require('../interprete/expresiones/condicion.js');
+let condicion=[];
 %}
 
 
@@ -326,7 +327,7 @@ select
     | SELECT listaid FROM ID {$$=new SelectColumn($2,$4);}
     | SELECT POR FROM ID {$$=new SelectTable($4);}
     | SELECT expresion AS ID{$$=new SelectAs($2,$4);}
-    | SELECT listaid FROM ID WHERE expresion{$$=new SelectWhere($2,$4,$6);} 
+    | SELECT listaid FROM ID WHERE expresion{$$=new SelectWhere($2,$4,$6,condicion);condicion=[];} 
 ;
 
 
@@ -437,7 +438,7 @@ logica
 
 unario: MENOS expresion %prec UMINUS {$$=new Aritmetica($2,'-',null, this._$.first_line, this._$.first_column);}
        | NOT expresion {$$=new Logica($2,'NOT',null, this._$.first_line, this._$.first_column);}
-       | ID operadores expresion %prec IG {$$=new Condicion($1,$2,$3);}
+       | ID operadores expresion %prec IG {let c=new Condicion($1,$2,$3);condicion.push(c);$$=c;}
 ;
 
 operadores: IGUAL      {$$=$1;}

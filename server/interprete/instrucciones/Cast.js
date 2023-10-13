@@ -7,6 +7,10 @@ class Cast extends Instruccion{
         this.tipo=tipo;
     }
 
+    obtenerTexto(){
+        return "CAST("+this.expresion.obtenerTexto()+" AS "+this.tipo+")";
+    }
+
     ejecutar(entorno){
         let expresion=this.expresion.ejecutar(entorno);
         //pasara a mayusculas el tipo
