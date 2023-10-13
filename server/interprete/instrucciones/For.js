@@ -16,12 +16,17 @@ class For extends Instruccion{
         
         let Inferior=this.Inferior.ejecutar(entorno);
         let Superior=this.Superior.ejecutar(entorno);
+        let data=new Dato(0,"INT",0,0);
+        entorno.AgregarSimbolo(this.Contador,data)
         if(Inferior.tipo=="INT" && Superior.tipo=="INT"){ 
             let nuevoEntorno = new Entorno('FOR', entorno);
             for(let i=Inferior.valor;i<=Superior.valor;i++){
+                data.valor=i;
+                entorno.actualizarSimbolo(this.Contador,data);
                 this.Instrucciones.forEach(element => {
                     element.ejecutar(nuevoEntorno);
                 });
+                
             }
         }else{
             if(Superior.tipo!="INT"){

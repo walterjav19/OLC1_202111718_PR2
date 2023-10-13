@@ -57,15 +57,16 @@ comentario "--".*
 mcomentario [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] // se saco de https://github.com/jd-toralla/OLC1-1S2023/blob/main/JisonInterprete/src/Grammar/Grammar.jison}
 fecha (\"[0-9]{4}"-"([0][1-9]|[1][0-2])"-"([0-2][0-9]|[3][0-1])\")|(\'[0-9]{4}"-"([0][1-9]|[1][0-2])"-"([0-2][0-9]|[3][0-1])\')
 cadena (\"(\\.|[^\\"])*\") | (\'(\\.|[^\\'])*\')// se saco de https://github.com/jd-toralla/OLC1-1S2023/blob/main/JisonInterprete/src/Grammar/Grammar.jison
-variable ("@"[a-zA-Z_][a-zA-Z0-9_]*)
 id ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*
-
+variable ("@"[a-zA-Z_][a-zA-Z0-9_]*)
 %%
 // -----> Reglas Lexicas
 
 
 {comentario}             {/*no se hace nada*/}
 {mcomentario}            {/*no se hace nada*/}
+
+
 {fecha}                  {Lista_Tokens.push(new Token("FECHA", yytext, yylloc.first_line, yylloc.first_column));
                          return 'FECHA';}
 
@@ -431,6 +432,7 @@ symbols:DECIMAL {$$ = new Dato($1,'DOUBLE', this._$.first_line, this._$.first_co
     | NULL    {$$ = new Dato($1,'NULL', this._$.first_line, this._$.first_column)}
     | nativas {$$=$1}
     | cast    {$$=$1}
+    | PARIZQ ID PARDER{$$=new Access($2, this._$.first_line, this._$.first_column);}
 ;
 
 aritmetica
