@@ -52,7 +52,7 @@ class Update extends Instruccion{
            for(let i=0;i<this.listacondiciones.length;i++){
             let aux=table.BucarColumna(this.listacondiciones[i].columna);
             listaindx.push(aux);
-        } 
+         } 
            
            tabla.listaFilas.forEach(fila => {
             let j=0;
@@ -77,7 +77,7 @@ class Update extends Instruccion{
            }
 
         }else{
-            ConsolaSalida.push("No existe la tabla "+this.Tabla);
+            ConsolaSalida.push("No existe la tabla en la instruccion Update"+this.Tabla);
         }
     }
 }

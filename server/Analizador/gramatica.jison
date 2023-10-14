@@ -41,6 +41,7 @@ const Cast=require('../interprete/instrucciones/Cast.js');
 const Condicion=require('../interprete/expresiones/condicion.js');
 const For=require('../interprete/instrucciones/For.js');
 const Update=require('../interprete/instrucciones/Update.js');
+const Delete=require('../interprete/instrucciones/Delete.js');
 let condicion=[];
 %}
 
@@ -246,6 +247,10 @@ variable ("@"[a-zA-Z_][a-zA-Z0-9_]*)
 'UPDATE'       {Lista_Tokens.push(new Token("UPDATE", yytext, yylloc.first_line, yylloc.first_column));
                 return 'UPDATE'}
 
+'DELETE'       {Lista_Tokens.push(new Token("DELETE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'DELETE'}
+
+
 
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
@@ -308,6 +313,7 @@ instruccion
     | insert PYC{$$=$1;}
     | truncate PYC{$$=$1;} 
     | update PYC{$$=$1;}   
+    | delete PYC{$$=$1;}
     | if PYC{$$=$1;}
     | while PYC{$$=$1;}
     | for PYC{$$=$1;}
@@ -350,6 +356,9 @@ select
     | SELECT listaid FROM ID WHERE expresion{$$=new SelectWhere($2,$4,$6,condicion);condicion=[];} 
 ;
 
+
+delete:DELETE FROM ID WHERE expresion{$$=new Delete($3,$5,condicion);condicion=[];}
+;
 
 update
       :UPDATE ID SET lista_seteo WHERE expresion{$$=new Update($2,$4,$6,condicion);condicion=[];}
