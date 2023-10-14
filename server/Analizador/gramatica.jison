@@ -40,6 +40,7 @@ const While=require('../interprete/instrucciones/while.js');
 const Cast=require('../interprete/instrucciones/Cast.js');
 const Condicion=require('../interprete/expresiones/condicion.js');
 const For=require('../interprete/instrucciones/For.js');
+const Update=require('../interprete/instrucciones/Update.js');
 let condicion=[];
 %}
 
@@ -242,6 +243,9 @@ variable ("@"[a-zA-Z_][a-zA-Z0-9_]*)
 '..'            {Lista_Tokens.push(new Token("RANGO", yytext, yylloc.first_line, yylloc.first_column));
                 return 'RANGO'}
 
+'UPDATE'       {Lista_Tokens.push(new Token("UPDATE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'UPDATE'}
+
 
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
@@ -302,7 +306,8 @@ instruccion
     | create PYC{$$=$1;}
     | alter PYC{$$=$1;}
     | insert PYC{$$=$1;}
-    | truncate PYC{$$=$1;}    
+    | truncate PYC{$$=$1;} 
+    | update PYC{$$=$1;}   
     | if PYC{$$=$1;}
     | while PYC{$$=$1;}
     | for PYC{$$=$1;}
@@ -346,8 +351,13 @@ select
 ;
 
 
+update
+      :UPDATE ID SET lista_seteo WHERE expresion{$$=new Update($2,$4,$6,condicion);condicion=[];}
+;
 
-
+lista_seteo: lista_seteo COMA ID IGUAL expresion {$$=$1; $$.set($3,$5);}
+            | ID IGUAL expresion {$$=new Map(); $$.set($1,$3);}
+;
 
 declare : DECLARE listavariable {$$=new ListDeclaration($2);}
         | DECLARE VARIABLE tipo DEFAULT expresion{$$=new Declaration($2,$5,$3);}
