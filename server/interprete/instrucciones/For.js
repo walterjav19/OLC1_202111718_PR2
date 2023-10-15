@@ -20,12 +20,29 @@ class For extends Instruccion{
         entorno.AgregarSimbolo(this.Contador,data)
         if(Inferior.tipo=="INT" && Superior.tipo=="INT"){ 
             let nuevoEntorno = new Entorno('FOR', entorno);
+            let breakFlag="";
             for(let i=Inferior.valor;i<=Superior.valor;i++){
                 data.valor=i;
                 entorno.actualizarSimbolo(this.Contador,data);
-                this.Instrucciones.forEach(element => {
-                    element.ejecutar(nuevoEntorno);
-                });
+                
+                
+                for(let j=0;j<this.Instrucciones.length;j++){
+                    let ins=this.Instrucciones[j].ejecutar(nuevoEntorno)
+                    breakFlag=ins;
+                    if(breakFlag=='BREAK'){
+                        break;
+                    }
+                    if(breakFlag=='CONTINUE'){
+                        break;
+                    }
+                }
+                if(breakFlag=="BREAK"){
+                    break
+                }
+                if(breakFlag=="CONTINUE"){
+                    continue
+                }
+
                 
             }
         }else{

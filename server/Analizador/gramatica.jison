@@ -42,6 +42,8 @@ const Condicion=require('../interprete/expresiones/condicion.js');
 const For=require('../interprete/instrucciones/For.js');
 const Update=require('../interprete/instrucciones/Update.js');
 const Delete=require('../interprete/instrucciones/Delete.js');
+const Break=require('../interprete/expresiones/Break.js');
+const Continue=require('../interprete/expresiones/Continue.js');
 let condicion=[];
 %}
 
@@ -250,6 +252,11 @@ variable ("@"[a-zA-Z_][a-zA-Z0-9_]*)
 'DELETE'       {Lista_Tokens.push(new Token("DELETE", yytext, yylloc.first_line, yylloc.first_column));
                 return 'DELETE'}
 
+'BREAK'        {Lista_Tokens.push(new Token("BREAK", yytext, yylloc.first_line, yylloc.first_column));
+                return 'BREAK'}
+
+'CONTINUE'     {Lista_Tokens.push(new Token("CONTINUE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'CONTINUE'} 
 
 
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
@@ -317,6 +324,7 @@ instruccion
     | if PYC{$$=$1;}
     | while PYC{$$=$1;}
     | for PYC{$$=$1;}
+    | flow PYC{$$=$1;}
 	| error{
          Lista_Errores.push(new Error("Sintactico", `componente ${yytext} `, this._$.first_line,this._$.first_column));
         ConsolaSalida.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
@@ -424,8 +432,9 @@ while
     : WHILE expresion BEGIN lista_instrucciones END {$$=new While($2,$4);}
 ;
 
-
-
+flow: BREAK {$$=new Break($1,this._$.first_line, this._$.first_column);}
+    | CONTINUE {$$=new Continue($1,this._$.first_line, this._$.first_column);}
+;
 
 tipo: INT{$$=$1;}
     | DOUBLE{$$=$1;}

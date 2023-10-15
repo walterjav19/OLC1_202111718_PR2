@@ -16,14 +16,44 @@ class IfElse extends Instruccion{
         if(expresion.tipo=='BOOLEAN'){
             if(expresion.valor){
                 let nuevoEntorno=new Entorno('IF',entorno);
-                this.listaIf.forEach(instruccion => {
-                    instruccion.ejecutar(nuevoEntorno);
-                });
+                let breakFlag="";
+                for(let i=0;i<this.listaIf.length;i++){
+                    let ins=this.listaIf[i].ejecutar(nuevoEntorno);
+                    breakFlag=ins;
+                    if(breakFlag=='BREAK'){
+                        break;
+                    }
+                    if(breakFlag=='CONTINUE'){
+                        break;
+                    }
+                }
+                if(breakFlag=='BREAK'){
+                    return 'BREAK';
+                }
+                if(breakFlag=='CONTINUE'){
+                    return 'CONTINUE';
+                }
+
             }else{
                 let nuevoEntorno=new Entorno('ELSE',entorno);
-                this.listaElse.forEach(instruccion => {
-                    instruccion.ejecutar(nuevoEntorno);
-                });
+                let breakFlag="";
+                for(let i=0;i<this.listaElse.length;i++){
+                    let ins=this.listaElse[i].ejecutar(nuevoEntorno);
+                    breakFlag=ins;
+                    if(breakFlag=='BREAK'){
+                        break;
+                    }
+                    if(breakFlag=='CONTINUE'){
+                        break;
+                    }
+                }
+                if(breakFlag=='BREAK'){
+                    return 'BREAK';
+                }
+                
+                if(breakFlag=='CONTINUE'){
+                    return 'CONTINUE';
+                }
             }
         }else{
             ConsolaSalida.push(`Error Semantico, la expresion no es booleana en la linea ${this.expresion.linea} y columna ${this.expresion.columna}`);

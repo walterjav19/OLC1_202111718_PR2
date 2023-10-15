@@ -13,9 +13,26 @@ class If extends Instruccion{
         if(expresion.tipo=='BOOLEAN'){
             if(expresion.valor){
                 let nuevoEntorno=new Entorno('IF',entorno);
-                this.Instrucciones.forEach(instruccion => {
-                    instruccion.ejecutar(nuevoEntorno);
-                });
+                let breakflag="";
+                for(let i=0;this.Instrucciones.length;i++){
+                    let ins=this.Instrucciones[i].ejecutar(nuevoEntorno);
+                    if(ins=='BREAK'){
+                        breakflag=ins;
+                        break;
+                    }
+                    if(ins=='CONTINUE'){
+                        breakflag=ins;
+                        break;
+                    }
+                }
+
+
+                if(breakflag=='BREAK'){
+                    return 'BREAK';
+                }
+                if(breakflag=='CONTINUE'){
+                    return 'CONTINUE';
+                }
             }
                 
         }else{

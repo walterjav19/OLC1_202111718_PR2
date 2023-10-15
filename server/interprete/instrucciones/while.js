@@ -13,10 +13,28 @@ class While extends Instruccion {
         let expresion = this.condicion.ejecutar(entorno);
         if(expresion.tipo=='BOOLEAN'){
             let nuevoEntorno = new Entorno('WHILE', entorno);
+            let breakFlag="";
             while(expresion.valor){
-                this.instrucciones.forEach(instruccion => {
-                    instruccion.ejecutar(nuevoEntorno);
-                });
+                for(let i=0;i<this.instrucciones.length;i++){
+                    let ins = this.instrucciones[i].ejecutar(nuevoEntorno);
+                    breakFlag=ins;
+                    if(breakFlag=='BREAK'){
+                        break;
+                    }
+                    if(breakFlag=='CONTINUE'){
+                        break;
+                    }
+                }
+                
+                if(breakFlag=='BREAK'){
+                    break;
+                }
+                
+                if(breakFlag=='CONTINUE'){
+                    continue;
+                }
+               
+                
                 expresion = this.condicion.ejecutar(entorno);
             }
         }else{
