@@ -4,6 +4,8 @@ class Entorno{
         this.anterior=anterior;
         this.TablaSimbolos=new Map();
         this.Tablas=new Map();
+        this.Funciones=new Map();
+        this.Procedimientos=new Map();
     }
 
     AgregarSimbolo(clave,valor){

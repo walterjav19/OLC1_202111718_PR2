@@ -47,6 +47,7 @@ const Continue=require('../interprete/expresiones/Continue.js');
 const When=require('../interprete/expresiones/When.js');
 const CaseSimple=require('../interprete/expresiones/CaseSimple.js');
 const CaseBuscado=require('../interprete/expresiones/CaseBuscado.js');
+const Function=require('../interprete/expresiones/Function.js');
 let condicion=[];
 %}
 
@@ -267,6 +268,14 @@ variable ("@"[a-zA-Z_][a-zA-Z0-9_]*)
 'WHEN'          {Lista_Tokens.push(new Token("WHEN", yytext, yylloc.first_line, yylloc.first_column));
                 return 'WHEN'}
 
+'FUNCTION'      {Lista_Tokens.push(new Token("FUNCTION", yytext, yylloc.first_line, yylloc.first_column));
+                return 'FUNCTION'}
+
+'RETURNS'       {Lista_Tokens.push(new Token("RETURNS", yytext, yylloc.first_line, yylloc.first_column));
+                return 'RETURNS'}
+
+'RETURN'        {Lista_Tokens.push(new Token("RETURN", yytext, yylloc.first_line, yylloc.first_column));
+                return 'RETURN'}                    
 
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
@@ -335,9 +344,14 @@ instruccion
     | for PYC{$$=$1;}
     | flow PYC{$$=$1;}
     | case PYC{$$=$1;}
+    | function PYC {$$=$1;}
 	| error{
          Lista_Errores.push(new Error("Sintactico", `componente ${yytext} `, this._$.first_line,this._$.first_column));
         ConsolaSalida.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
+;
+
+function
+        :CREATE FUNCTION ID PARIZQ listavariable PARDER RETURNS tipo BEGIN lista_instrucciones RETURN expresion PYC END{$$=new Function($3,$5,$8,$10,$12);}
 ;
 
 print_instruccion

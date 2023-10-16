@@ -14,6 +14,7 @@ class While extends Instruccion {
         if(expresion.tipo=='BOOLEAN'){
             let nuevoEntorno = new Entorno('WHILE', entorno);
             let breakFlag="";
+            
             while(expresion.valor){
                 for(let i=0;i<this.instrucciones.length;i++){
                     let ins = this.instrucciones[i].ejecutar(nuevoEntorno);
