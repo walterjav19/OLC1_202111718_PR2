@@ -44,6 +44,9 @@ const Update=require('../interprete/instrucciones/Update.js');
 const Delete=require('../interprete/instrucciones/Delete.js');
 const Break=require('../interprete/expresiones/Break.js');
 const Continue=require('../interprete/expresiones/Continue.js');
+const When=require('../interprete/expresiones/When.js');
+const CaseSimple=require('../interprete/expresiones/CaseSimple.js');
+const CaseBuscado=require('../interprete/expresiones/CaseBuscado.js');
 let condicion=[];
 %}
 
@@ -258,6 +261,12 @@ variable ("@"[a-zA-Z_][a-zA-Z0-9_]*)
 'CONTINUE'     {Lista_Tokens.push(new Token("CONTINUE", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CONTINUE'} 
 
+'CASE'         {Lista_Tokens.push(new Token("CASE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'CASE'}
+
+'WHEN'          {Lista_Tokens.push(new Token("WHEN", yytext, yylloc.first_line, yylloc.first_column));
+                return 'WHEN'}
+
 
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
@@ -325,6 +334,7 @@ instruccion
     | while PYC{$$=$1;}
     | for PYC{$$=$1;}
     | flow PYC{$$=$1;}
+    | case PYC{$$=$1;}
 	| error{
          Lista_Errores.push(new Error("Sintactico", `componente ${yytext} `, this._$.first_line,this._$.first_column));
         ConsolaSalida.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
@@ -432,6 +442,17 @@ while
     : WHILE expresion BEGIN lista_instrucciones END {$$=new While($2,$4);}
 ;
 
+case
+    : CASE VARIABLE lista_when ELSE expresion END {$$=new CaseSimple($2,$3,$5);}
+    | CASE lista_when ELSE expresion END {$$=new CaseBuscado($2,$4);}
+;
+
+lista_when
+    : lista_when WHEN expresion THEN expresion {$$=$1; $$.push(new When($3,$5));}
+    | WHEN expresion THEN expresion {$$=[]; $$.push(new When($2,$4));}
+;
+
+
 flow: BREAK {$$=new Break($1,this._$.first_line, this._$.first_column);}
     | CONTINUE {$$=new Continue($1,this._$.first_line, this._$.first_column);}
 ;
@@ -461,6 +482,7 @@ symbols:DECIMAL {$$ = new Dato($1,'DOUBLE', this._$.first_line, this._$.first_co
     | nativas {$$=$1}
     | cast    {$$=$1}
     | PARIZQ ID PARDER{$$=new Access($2, this._$.first_line, this._$.first_column);}
+    | case    {$$=$1;}
 ;
 
 aritmetica
