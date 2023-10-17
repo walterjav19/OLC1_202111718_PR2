@@ -48,6 +48,7 @@ const When=require('../interprete/expresiones/When.js');
 const CaseSimple=require('../interprete/expresiones/CaseSimple.js');
 const CaseBuscado=require('../interprete/expresiones/CaseBuscado.js');
 const Function=require('../interprete/expresiones/Function.js');
+const CallFunction=require('../interprete/expresiones/CallFunction.js');
 let condicion=[];
 %}
 
@@ -351,7 +352,8 @@ instruccion
 ;
 
 function
-        :CREATE FUNCTION ID PARIZQ listavariable PARDER RETURNS tipo BEGIN lista_instrucciones RETURN expresion PYC END{$$=new Function($3,$5,$8,$10,$12);}
+        :CREATE FUNCTION ID PARIZQ listavariable PARDER RETURNS tipo BEGIN lista_instrucciones RETURN expresion PYC END{$$=new Function($3,new ListDeclaration($5),$8,$10,$12);}
+        |CREATE FUNCTION ID PARIZQ listavariable PARDER RETURNS tipo BEGIN RETURN expresion PYC END{$$=new Function($3,new ListDeclaration($5),$8,null,$11);}
 ;
 
 print_instruccion
@@ -497,6 +499,7 @@ symbols:DECIMAL {$$ = new Dato($1,'DOUBLE', this._$.first_line, this._$.first_co
     | cast    {$$=$1}
     | PARIZQ ID PARDER{$$=new Access($2, this._$.first_line, this._$.first_column);}
     | case    {$$=$1;}
+    | ID PARIZQ listaexpresion PARDER{$$=new CallFunction($1,$3);}
 ;
 
 aritmetica

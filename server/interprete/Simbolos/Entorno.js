@@ -8,6 +8,21 @@ class Entorno{
         this.Procedimientos=new Map();
     }
 
+    AgregarFuncion(clave,valor){
+        this.Funciones.set(clave,valor);
+    }
+    
+    obtenerFuncion(clave){
+        let valor=this.Funciones.get(clave);
+        let nuevoEntorno=this.anterior;
+        while(nuevoEntorno!=null && valor == undefined ){
+            valor=nuevoEntorno.Funciones.get(clave);
+            nuevoEntorno=nuevoEntorno.anterior;
+        }
+        
+        return valor
+    }
+
     AgregarSimbolo(clave,valor){
         this.TablaSimbolos.set(clave,valor);
     }

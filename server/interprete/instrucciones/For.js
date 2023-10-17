@@ -1,7 +1,7 @@
 const Instruccion=require('../Instruccion');
 const ConsolaSalida=require('../Estructuras/ConsoleOut')
 const Entorno=require('../Simbolos/Entorno');
-const Dato=require('../Expresiones/Dato');
+
 
 class For extends Instruccion{
     constructor(Contador,Inferior,Superior,Instrucciones){

@@ -32,9 +32,10 @@ class While extends Instruccion {
                 }
                 
                 if(breakFlag=='CONTINUE'){
+                    expresion = this.condicion.ejecutar(entorno);
                     continue;
                 }
-               
+                
                 
                 expresion = this.condicion.ejecutar(entorno);
             }

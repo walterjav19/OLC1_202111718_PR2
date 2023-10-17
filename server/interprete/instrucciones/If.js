@@ -9,12 +9,14 @@ class If extends Instruccion{
     }
 
     ejecutar(entorno){
+        
         let expresion=this.expresion.ejecutar(entorno);
         if(expresion.tipo=='BOOLEAN'){
             if(expresion.valor){
                 let nuevoEntorno=new Entorno('IF',entorno);
+                
                 let breakflag="";
-                for(let i=0;this.Instrucciones.length;i++){
+                for(let i=0;i<this.Instrucciones.length;i++){
                     let ins=this.Instrucciones[i].ejecutar(nuevoEntorno);
                     if(ins=='BREAK'){
                         breakflag=ins;
