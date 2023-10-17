@@ -48,7 +48,9 @@ const When=require('../interprete/expresiones/When.js');
 const CaseSimple=require('../interprete/expresiones/CaseSimple.js');
 const CaseBuscado=require('../interprete/expresiones/CaseBuscado.js');
 const Function=require('../interprete/expresiones/Function.js');
+const Procedure=require('../interprete/expresiones/Procedure.js');
 const CallFunction=require('../interprete/expresiones/CallFunction.js');
+const CallProcedure=require('../interprete/expresiones/CallProcedure.js');
 let condicion=[];
 %}
 
@@ -276,7 +278,13 @@ variable ("@"[a-zA-Z_][a-zA-Z0-9_]*)
                 return 'RETURNS'}
 
 'RETURN'        {Lista_Tokens.push(new Token("RETURN", yytext, yylloc.first_line, yylloc.first_column));
-                return 'RETURN'}                    
+                return 'RETURN'} 
+
+'PROCEDURE'     {Lista_Tokens.push(new Token("PROCEDURE", yytext, yylloc.first_line, yylloc.first_column));
+                return 'PROCEDURE'}             
+
+'CALL'          {Lista_Tokens.push(new Token("CALL", yytext, yylloc.first_line, yylloc.first_column));
+                return 'CALL'}
 
 {cadena}        {Lista_Tokens.push(new Token("CADENA", yytext, yylloc.first_line, yylloc.first_column));
                 return 'CADENA'; }
@@ -345,15 +353,24 @@ instruccion
     | for PYC{$$=$1;}
     | flow PYC{$$=$1;}
     | case PYC{$$=$1;}
-    | function PYC {$$=$1;}
+    | function PYC  {$$=$1;}
+    | procedure PYC {$$=$1;}
+    | call PYC{$$=$1;}
 	| error{
          Lista_Errores.push(new Error("Sintactico", `componente ${yytext} `, this._$.first_line,this._$.first_column));
         ConsolaSalida.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
 ;
 
+procedure:CREATE PROCEDURE ID listavariable AS BEGIN lista_instrucciones END{$$=new Procedure($3,new ListDeclaration($4),$7, this._$.first_line, this._$.first_column);}
+         |CREATE PROCEDURE ID AS BEGIN lista_instrucciones END{$$=new Procedure($3,null,$6, this._$.first_line, this._$.first_column);}
+;
+
+call: CALL ID PARIZQ listaexpresion PARDER{$$=new CallProcedure($2,$4);}
+;
+
 function
-        :CREATE FUNCTION ID PARIZQ listavariable PARDER RETURNS tipo BEGIN lista_instrucciones RETURN expresion PYC END{$$=new Function($3,new ListDeclaration($5),$8,$10,$12);}
-        |CREATE FUNCTION ID PARIZQ listavariable PARDER RETURNS tipo BEGIN RETURN expresion PYC END{$$=new Function($3,new ListDeclaration($5),$8,null,$11);}
+        :CREATE FUNCTION ID PARIZQ listavariable PARDER RETURNS tipo BEGIN lista_instrucciones RETURN expresion PYC END{$$=new Function($3,new ListDeclaration($5),$8,$10,$12, this._$.first_line, this._$.first_column);}
+        |CREATE FUNCTION ID PARIZQ listavariable PARDER RETURNS tipo BEGIN RETURN expresion PYC END{$$=new Function($3,new ListDeclaration($5),$8,null,$11, this._$.first_line, this._$.first_column);}
 ;
 
 print_instruccion

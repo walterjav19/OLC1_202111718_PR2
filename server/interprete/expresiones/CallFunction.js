@@ -11,16 +11,33 @@ class CallFunction extends Instruccion{
     }
 
     obtenerTexto(){
-        return "CALL "+this.id+"()"
+        let args="";
+        let i=0;
+        this.argumentos.forEach(element => {
+            if (i != this.argumentos.length - 1) {
+                args += element.obtenerTexto() + (element.tipo ? ` ${element.tipo},` : ',');
+            } else {
+                args += element.obtenerTexto() + (element.tipo ? ` ${element.tipo}` : '');
+            }
+            i++;
+        });
+        return "CALL "+this.id+`(${args})`
     }
 
     ejecutar(entorno){
         let func=entorno.obtenerFuncion(this.id);
+       
+
+        
         if(func){
+            
 
             let i=0;
             func.parametros.Declaraciones.forEach(element => {
-                element.valor=this.argumentos[i].ejecutar(entorno);
+                if(this.argumentos[i]!==undefined){
+                    element.valor=this.argumentos[i].ejecutar(entorno);
+                }
+                
                 i++;
             });
 
@@ -41,6 +58,9 @@ class CallFunction extends Instruccion{
         }else{
             ConsolaSalida.push("Error Semantico No se encontro la funcion "+this.id)
         }
+        
+        
+        
         
     }
 }

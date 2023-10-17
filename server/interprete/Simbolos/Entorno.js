@@ -8,6 +8,21 @@ class Entorno{
         this.Procedimientos=new Map();
     }
 
+    AgregarProcedimiento(clave,valor){
+        this.Procedimientos.set(clave,valor);
+    }
+
+    obtenerProcedimiento(clave){
+        let valor=this.Procedimientos.get(clave);
+        let nuevoEntorno=this.anterior;
+        while(nuevoEntorno!=null && valor == undefined ){
+            valor=nuevoEntorno.Procedimientos.get(clave);
+            nuevoEntorno=nuevoEntorno.anterior;
+        }
+        
+        return valor
+    }
+
     AgregarFuncion(clave,valor){
         this.Funciones.set(clave,valor);
     }
