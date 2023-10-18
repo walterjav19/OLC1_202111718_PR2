@@ -1,4 +1,5 @@
 const Instruccion = require("../Instruccion");
+const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
 
 class Dato extends Instruccion {
     constructor(valor, tipo,linea,columna) {
@@ -8,6 +9,22 @@ class Dato extends Instruccion {
         this.linea=linea;
         this.columna=columna;
         this.cont=0;
+    }
+
+    GenerarAST(){
+        aumentarGlobal();
+        let nodo={
+            label:"DATO",
+            id:getGlobConta(),
+            valor:this.valor,
+            texto:function(){
+                aumentarGlobal();
+                let hijo=`${getGlobConta()}[label="${this.valor}"]\n ${this.id}->${getGlobConta()}\n`
+                return `${this.id}[label="${this.label}"]\n${hijo}`
+            }
+                      
+        }
+        return nodo;
     }
     
     obtenerTexto(){

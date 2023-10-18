@@ -1,6 +1,7 @@
 const Instruccion=require("../Instruccion");
 const Dato=require("./Dato");
 const condicion=require("./condicion");
+const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
 
 class Logica extends Instruccion{
     constructor(izquierda,operador,derecha,linea,columna){
@@ -11,6 +12,35 @@ class Logica extends Instruccion{
         this.linea=linea;
         this.columna=columna;
         this.valor=null;
+    }
+
+    GenerarAST(){
+        aumentarGlobal();
+        let nodo={
+            label:"LOGICA",
+            id:getGlobConta(),
+            izq:this.izquierda,
+            der:this.derecha,
+            op:this.operador,
+            texto:function(){
+                let izquierda=this.izq.GenerarAST()
+                let texto1=izquierda.texto()+`\n${this.id}->${izquierda.id}\n`
+
+                aumentarGlobal();
+                let operador=`${getGlobConta()}[label="${this.op}"]\n ${this.id}->${getGlobConta()}\n`
+
+                if(this.der!=null){
+                    let derecha=this.der.GenerarAST()
+                    let texto2=derecha.texto()+`\n${this.id}->${derecha.id}\n`
+                    return `${this.id}[label="${this.label}"]\n${texto1}\n${operador}\n${texto2}\n`
+                }
+
+                
+                return `${this.id}[label="${this.label}"]\n${operador}\n${texto1}\n`
+            }
+                      
+        }
+        return nodo;
     }
 
     obtenerTexto(){

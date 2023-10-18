@@ -25,7 +25,7 @@ app.use("/", indexRoutes)
 app.use("/analizar", indexRoutes)
 app.use("/TablaToken", indexRoutes)
 app.use("/TablaErrores", indexRoutes)
-  
+app.use("/GenerarAST", indexRoutes)
 
 //Default route
 app.use((req,res,next)=>{

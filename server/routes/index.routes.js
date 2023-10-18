@@ -10,5 +10,7 @@ router.get("/", indexController.index);
 router.post("/analizar", indexController.analizar);
 router.get("/TablaToken", indexController.TablaToken);
 router.get("/TablaErrores", indexController.TablaErrores);
+router.get("/GenerarAST", indexController.GenerarAST);
+
 
 module.exports=router;
