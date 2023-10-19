@@ -25,7 +25,7 @@ class Print extends Instruccion {
                 let ant=getGlobConta()
                 let hijo=this.expr.GenerarAST()
                 let apunt=`${ant}->${hijo.id}\n`
-                return `${this.id}[label="instrucciones"]\n${p1}\n${x}\n${p2}\n${hijo.texto()}\n${apunt}`
+                return `${this.id}[label="PRINT"]\n${p1}\n${x}\n${p2}\n${hijo.texto()}\n${apunt}`
             }
                       
         }

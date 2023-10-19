@@ -1,0 +1,52 @@
+TODO:
+    AST:
+        EXPRESIONES:
+            ✔ ACCESS @started(23-10-18 17:14) @done(23-10-18 18:04) @lasted(50m46s)
+            ☐ ADD
+            ☐ ALTER
+            ✔ ARIMETICA @done(23-10-18 14:23)
+            ✔ ASSIGMENT @done(23-10-18 18:38)
+            ✔ BREAK @done(23-10-18 18:20)
+            ☐ CALL FUNCTION
+            ☐ CALL PROCEDURE
+            ☐ CASE BUSCADO
+            ☐ CASE SIMPLE
+            ☐ CONDICION
+            ✔ CONTINUE @done(23-10-18 18:21)
+            ☐ CREATE
+            ✔ DATO @done(23-10-18 14:23)
+            ☐ DROP COLUMN
+            ☐ DROP TABLE
+            ☐ FUNCTION
+            ☐ INSERT
+            ✔ LOGICA @done(23-10-18 14:23)
+            ☐ PROCEDURE
+            ☐ RENAME
+            ☐ RENAME COLUMN
+            ☐ WHEN
+        INSTRUCCIONES:
+            ✔ BEGIN END @done(23-10-18 22:16)
+            ✔ CAST @started(23-10-18 16:15) @done(23-10-18 16:37) @lasted(22m59s)
+            ✔ DECLARATION @started(23-10-18 17:14) @done(23-10-18 18:05) @lasted(51m1s)
+            ☐ DELETE
+            ☐ FOR
+            ☐ IF
+            ☐ IFELSE
+            ✔ LENGTH @done(23-10-18 14:23)
+            ✔ LIST DECLARATION @done(23-10-18 21:10)
+            ✔ LOWER @done(23-10-18 14:23)
+            ✔ PRINT @done(23-10-18 14:22)
+            ✔ ROUND @done(23-10-18 14:22)
+            ✔ SELECT @done(23-10-18 20:30)
+            ✔ SELECT AS @done(23-10-18 20:43)
+            ☐ SELECT COLUMN
+            ☐ SELECT TABLE
+            ☐ SELECT WHERE
+            ✔ TRUNCATE @done(23-10-18 14:23)
+            ☐ TRUNCATE TABLE
+            ✔ TYPEOF @done(23-10-18 14:23)
+            ☐ UPDATE
+            ✔ UPPER @done(23-10-18 14:22)
+            ☐ WHILE
+
+    TABLA DE SIMBOLOS:

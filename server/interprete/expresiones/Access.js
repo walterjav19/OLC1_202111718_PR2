@@ -1,4 +1,5 @@
 const Instruccion = require("../Instruccion")
+const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
 
 class Access extends Instruccion{
     constructor(id,linea,columna){
@@ -8,7 +9,22 @@ class Access extends Instruccion{
         this.columna=columna;
     }
     
-        
+    GenerarAST(){
+        aumentarGlobal();
+        let nodo={
+            label:"VARIABLE",
+            id:getGlobConta(),
+            valor:this.id,
+            texto:function(){
+                aumentarGlobal();
+                let hijo=`${getGlobConta()}[label="${this.valor}"]\n ${this.id}->${getGlobConta()}\n`
+                return `${this.id}[label="${this.label}"]\n${hijo}`
+            }
+                      
+        }
+        return nodo;
+    }
+    
     obtenerTexto(){
         return this.id;
     }

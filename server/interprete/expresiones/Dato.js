@@ -35,7 +35,7 @@ class Dato extends Instruccion {
         }
         
         
-        return this.valor;
+        return String(this.valor);
     }
 
     ejecutar(entorno) {

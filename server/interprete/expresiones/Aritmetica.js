@@ -45,6 +45,9 @@ class Aritmetica extends Instruccion {
     }
 
     obtenerTexto(){
+        if(this.derecha==null){
+            return this.operador + this.izquierda.obtenerTexto();
+        }
         return this.izquierda.obtenerTexto() +  this.operador + this.derecha.obtenerTexto();
     }
 

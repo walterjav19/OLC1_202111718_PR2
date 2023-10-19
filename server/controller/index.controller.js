@@ -4,6 +4,7 @@ const Entorno=require('../interprete/Simbolos/Entorno.js')
 const ConsolaSalida=require('../interprete/Estructuras/ConsoleOut.js')
 const Lista_Errores=require('../interprete/Estructuras/ListaErrores.js')
 const {resetGlobConta}=require('../interprete/Estructuras/Contador.js')
+const Dato=require('../interprete/expresiones/Dato.js')
 let cuerpo=""
 const index = (req, res) =>{
     res.status(200).json({message: 'Bienvenido a mi api'});
@@ -19,7 +20,7 @@ const analizar = (req, res) =>{
     const result = parser.parse(entrada);
     console.log(result)
     Global=new Entorno("Global",null);
-
+    //Global.AgregarSimbolo("@prueba",new Dato(4,'INT',0,0))
     if (result[0]!=''){
         result.forEach(element => {
             try{
@@ -47,10 +48,11 @@ const analizar = (req, res) =>{
             cuerpo+=`0->${element.id}\n`
             cuerpo+=element.texto()+"\n"
         });
-    }catch{
+    }catch(e){
+        console.error(e)
         ConsolaSalida.push("Error al generar el AST")
     }
-
+    //console.log(cuerpo)
 
     //console.log(Global.Tablas.get('Clientes').listaFilas)
     res.status(200).json({
