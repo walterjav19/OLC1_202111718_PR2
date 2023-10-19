@@ -1,0 +1,154 @@
+<inicio> ::= <lista_instrucciones> EOF
+
+<lista_instrucciones> ::= <lista_instrucciones> <instruccion>
+                        | <instruccion>
+
+<instruccion> ::= "PRINT" <expresion> ";"
+                | "BEGIN" <lista_instrucciones> "END" ";"
+                | "DECLARE" <listavariable> ";"
+                | "SET VARIABLE" "=" <expresion> ";"
+                | "SELECT" <expresion> ";"
+                | "CREATE" <create> ";"
+                | "ALTER" <alter> ";"
+                | "INSERT" <insert> ";"
+                | "TRUNCATE" <truncate> ";"
+                | "UPDATE" <update> ";"
+                | "DELETE" <delete> ";"
+                | "IF" <expresion> "THEN" <lista_instrucciones> "END" "IF" ";"
+                | "WHILE" <expresion> "BEGIN" <lista_instrucciones> "END" ";"
+                | "FOR" "ID" "IN" <expresion> "RANGO" <expresion> "BEGIN" <lista_instrucciones> "END" ";"
+                | <flow> ";"
+                | "CASE" <case> ";"
+                | <function> ";"
+                | <procedure> ";"
+                | "CALL" "ID" "(" <listaexpresion> ")"
+
+<procedure> ::= "CREATE PROCEDURE" "ID" "AS" "BEGIN" <lista_instrucciones> "END"
+               | "CREATE PROCEDURE" "ID" "AS" "BEGIN" <lista_instrucciones> "END"
+
+<call> ::= "CALL" "ID" "(" <listaexpresion> ")"
+
+<function> ::= "CREATE FUNCTION" "ID" "(" <listavariable> ")" "RETURNS" <tipo> "BEGIN" <lista_instrucciones> "RETURN" <expresion> ";" "END"
+
+<print_instruccion> ::= "PRINT" <expresion>
+
+<begin_end> ::= "BEGIN" <lista_instrucciones> "END"
+
+<nativas> ::= "LOWER" "(" <expresion> ")"
+              | "UPPER" "(" <expresion> ")"
+              | "ROUND" "(" <expresion> "," <expresion> ")"
+              | "LEN" "(" <expresion> ")"
+              | "TRUNCATE" "(" <expresion> "," <expresion> ")"
+              | "TYPEOF" "(" <expresion> ")"
+
+<cast> ::= "CAST" "(" <expresion> "AS" <tipo> ")"
+
+<assigment> ::= "SET" "VARIABLE" "=" <expresion>
+
+<select> ::= "SELECT" <expresion>
+             | "SELECT" <listaid> "FROM" "ID"
+             | "SELECT" "*" "FROM" "ID"
+             | "SELECT" <expresion> "AS" "ID"
+             | "SELECT" <listaid> "FROM" "ID" "WHERE" <expresion>
+
+<delete> ::= "DELETE" "FROM" "ID" "WHERE" <expresion>
+
+<update> ::= "UPDATE" "ID" "SET" <lista_seteo> "WHERE" <expresion>
+
+<lista_seteo> ::= <lista_seteo> "," "ID" "=" <expresion>
+                  | "ID" "=" <expresion>
+
+<declare> ::= "DECLARE" <listavariable>
+              | "DECLARE" "VARIABLE" <tipo> "DEFAULT" <expresion>
+
+<create> ::= "CREATE" "TABLE" "ID" "(" <listacolumnas> ")"
+
+<truncate> ::= "TRUNCATE" "TABLE" "ID"
+
+<listacolumnas> ::= <listacolumnas> "," <columna>
+                    | <columna>
+
+<columna> ::= "ID" <tipo>
+
+<alter> ::= "ALTER" "TABLE" "ID" "ADD" "ID" <tipo>
+            | "ALTER" "TABLE" "ID" "DROP COLUMN" "ID"
+            | "ALTER" "TABLE" "ID" "RENAME TO" "ID"
+            | "ALTER" "TABLE" "ID" "RENAME COLUMN" "ID" "TO" "ID"
+            | "DROP" "TABLE" "ID"
+
+<insert> ::= "INSERT" "INTO" "ID" "(" <listaid> ")" "VALUES" "(" <listaexpresion> ")"
+
+<listaid> ::= <listaid> "," "ID"
+              | "ID"
+
+<listaexpresion> ::= <listaexpresion> "," <expresion>
+                     | <expresion>
+
+<listavariable> ::= <listavariable> "," "VARIABLE" <tipo>
+                   | "VARIABLE" <tipo>
+
+<if> ::= "IF" <expresion> "THEN" <lista_instrucciones> "END" "IF"
+          | "IF" <expresion> "THEN" <lista_instrucciones> "ELSE" <lista_instrucciones> "END" "IF"
+
+<for> ::= "FOR" "ID" "IN" <expresion> "RANGO" <expresion> "BEGIN" <lista_instrucciones> "END"
+
+<while> ::= "WHILE" <expresion> "BEGIN" <lista_instrucciones> "END"
+
+<case> ::= "CASE" "VARIABLE" <lista_when> "ELSE" <expresion> "END"
+            | "CASE" <lista_when> "ELSE" <expresion> "END"
+
+<lista_when> ::= <lista_when> "WHEN" <expresion> "THEN" <expresion>
+                 | "WHEN" <expresion> "THEN" <expresion>
+
+<flow> ::= "BREAK"
+           | "CONTINUE"
+
+<tipo> ::= "INT"
+           | "DOUBLE"
+           | "DATE"
+           | "VARCHAR"
+           | "BOOLEAN"
+
+<expresion> ::= <symbols>
+                 | <unario>
+                 | <aritmetica>
+                 | <logica>
+                 | "(" <expresion> ")"
+
+<symbols> ::= "DECIMAL"
+               | "ENTERO"
+               | "CADENA"
+               | "TRUE"
+               | "FALSE"
+               | "FECHA"
+               | "VARIABLE"
+               | "NULL"
+               | <nativas>
+               | <cast>
+               | "(" "ID" ")"
+
+<aritmetica> ::= <expresion> "+" <expresion>
+                  | <expresion> "-" <expresion>
+                  | <expresion> "*" <expresion>
+                  | <expresion> "/" <expresion>
+                  | <expresion> "%" <expresion>
+
+<logica> ::= <expresion> "OR" <expresion>
+              | <expresion> "AND" <expresion>
+              | <expresion> "EQUALS" <expresion>
+              | <expresion> "NOTEQUALS" <expresion>
+              | <expresion> "MAYOR" <expresion>
+              | <expresion> "MENOR" <expresion>
+              | <expresion> "MAYORIGUAL" <expresion>
+              | <expresion> "MENORIGUAL" <expresion>
+
+<unario> ::= "-" <expresion>
+              | "NOT" <expresion>
+              | "ID" <operadores> <expresion>
+
+<operadores> ::= "IGUAL"
+                  | "NOTEQUALS"
+                  | "MAYOR"
+                  | "MENOR"
+                  | "MAYORIGUAL"
+                  | "MENORIGUAL"
