@@ -1,6 +1,9 @@
 const Instruccion=require('../Instruccion');
 const ConsolaSalida=require('../Estructuras/ConsoleOut');
 const Tabla=require("../Estructuras/Tabla");
+const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
+
+
 
 class Update extends Instruccion{
 
@@ -11,6 +14,50 @@ class Update extends Instruccion{
         this.condicion=condicion;
         this.listacondiciones=listacondiciones;
     }
+
+    GenerarAST(){
+        aumentarGlobal();
+        let nodo={
+            label:"UPDATE",
+            id:getGlobConta(),
+            Tabla:this.Tabla,
+            mapa:this.mapa,
+            condicion:this.condicion,
+            texto:function(){
+                aumentarGlobal();
+                let upda=`${getGlobConta()}[label="UPDATE"]\n${this.id}->${getGlobConta()}\n`
+                aumentarGlobal();
+                let tab=`${getGlobConta()}[label="${this.Tabla}"]\n${this.id}->${getGlobConta()}\n`
+                aumentarGlobal()
+                let set=`${getGlobConta()}[label="SET"]\n${this.id}->${getGlobConta()}\n`
+                let lista="";
+                for (let [clave, valor] of this.mapa) {
+                    aumentarGlobal();
+                    lista+=`${getGlobConta()}[label="${clave}"]\n${this.id}->${getGlobConta()}\n`
+                    aumentarGlobal();
+                    lista+=`${getGlobConta()}[label="="]\n${this.id}->${getGlobConta()}\n`
+                    aumentarGlobal();
+                    lista+=`${getGlobConta()}[label="${valor.valor}"]\n${this.id}->${getGlobConta()}\n`
+                    
+                }
+                aumentarGlobal();
+                let where=`${getGlobConta()}[label="WHERE"]\n${this.id}->${getGlobConta()}\n`
+
+                aumentarGlobal();
+                let x=`${getGlobConta()}[label="CONDICION"]\n ${this.id}->${getGlobConta()}\n`
+                let ant=getGlobConta()
+                let hijo=this.condicion.GenerarAST()
+                let apunt=`${ant}->${hijo.id}\n`
+
+                return `${this.id}[label=${this.label}]\n${upda}\n${tab}\n${set}\n${lista}\n${where}\n${x}\n${hijo.texto()}\n${apunt}`
+            }
+
+        }
+        return nodo
+    }
+
+
+
 
     ejecutar(entorno){
         let tabla=entorno.obtenerTabla(this.Tabla);

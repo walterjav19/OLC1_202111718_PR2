@@ -1,6 +1,7 @@
 const Instruccion=require("../Instruccion");
 const Tabla=require("../Estructuras/Tabla");
 const ConsolaSalida= require("../Estructuras/ConsoleOut");
+const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
 
 class Insert extends Instruccion {
     constructor(TableName,listaColumnas,listaValores) {
@@ -9,6 +10,57 @@ class Insert extends Instruccion {
         this.listaColumnas = listaColumnas;
         this.listaValores = listaValores;
     }
+
+    GenerarAST(){
+        aumentarGlobal();
+        let nodo={
+            label:"DML",
+            id:getGlobConta(),
+            nombre:this.TableName,
+            columnas:this.listaColumnas,
+            valores:this.listaValores,
+            texto:function(){
+                aumentarGlobal();
+                let create=`${getGlobConta()}[label="INSERT"]\n${this.id}->${getGlobConta()}\n`
+                aumentarGlobal();
+                let table=`${getGlobConta()}[label="INTO"]\n${this.id}->${getGlobConta()}\n`
+                aumentarGlobal();
+                let nombre=`${getGlobConta()}[label="${this.nombre}"]\n${this.id}->${getGlobConta()}\n`
+
+                let lista1=""
+                this.columnas.forEach(element => {
+                    aumentarGlobal();
+                    lista1+=`${getGlobConta()}[label="${element}"]\n${this.id}->${getGlobConta()}\n`
+                });
+
+                aumentarGlobal();
+                let val=`${getGlobConta()}[label="VALUES"]\n${this.id}->${getGlobConta()}\n`
+
+                let lista2=""   
+                this.valores.forEach(element => {
+                    aumentarGlobal();
+                    lista2+=`${getGlobConta()}[label="EXPRESION"]\n ${this.id}->${getGlobConta()}\n`
+                    let ant=getGlobConta()
+                    let hijo=element.GenerarAST()
+                    lista2+=`${hijo.texto()}\n${ant}->${hijo.id}\n`
+                });
+
+
+                aumentarGlobal();
+                let PAIZ=`${getGlobConta()}[label="("]\n${this.id}->${getGlobConta()}\n`
+                aumentarGlobal();
+                let PADER=`${getGlobConta()}[label=")"]\n${this.id}->${getGlobConta()}\n`
+                aumentarGlobal();
+                let PAIZ2=`${getGlobConta()}[label="("]\n${this.id}->${getGlobConta()}\n`
+                aumentarGlobal();
+                let PADER2=`${getGlobConta()}[label=")"]\n${this.id}->${getGlobConta()}\n`
+                return `${this.id}[label=${this.label}]\n${create}\n${table}\n${nombre}\n${PAIZ}\n${lista1}\n${PADER}\n${val}\n${PAIZ2}\n${lista2}\n${PADER2}\n`
+            }
+
+        }
+        return nodo
+    }
+
 
     ejecutar(entorno) {
         let table=entorno.obtenerTabla(this.TableName)

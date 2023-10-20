@@ -1,7 +1,7 @@
 const Instruccion=require('../Instruccion');
 const ConsolaSalida=require('../Estructuras/ConsoleOut');
 const { generarSeparacion, generarEncabezados, generarRegistros} = require('../Estructuras/TableFormatter');
-
+const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
 
 class SelectColumn extends Instruccion{
     constructor(Columnas,Tabla){
@@ -9,6 +9,33 @@ class SelectColumn extends Instruccion{
         this.Columnas=Columnas;
         this.Tabla=Tabla;
     }
+
+    GenerarAST(){
+        aumentarGlobal();
+        let nodo={
+            label:"SELECT",
+            id:getGlobConta(),
+            columnas:this.Columnas,
+            tabla:this.Tabla,
+            texto:function(){
+                aumentarGlobal();
+                let select=`${getGlobConta()}[label="SELECT"]\n${this.id}->${getGlobConta()}\n`
+                aumentarGlobal();
+                let from=`${getGlobConta()}[label="FROM"]\n${this.id}->${getGlobConta()}\n`
+                let lista=""
+                this.columnas.forEach(element => {
+                    aumentarGlobal();
+                    lista+=`${getGlobConta()}[label="${element}"]\n${this.id}->${getGlobConta()}\n`
+                });
+                aumentarGlobal();
+                let tabla=`${getGlobConta()}[label="${this.tabla}"]\n${this.id}->${getGlobConta()}\n`
+                return `${this.id}[label=${this.label}]\n${select}\n${lista}\n${from}\n${tabla}\n`
+            }
+
+        }
+        return nodo
+    }
+
 
     ejecutar(entorno){
         let tabla=entorno.obtenerTabla(this.Tabla);

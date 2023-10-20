@@ -2,6 +2,8 @@ const Instruccion=require('../Instruccion');
 const ConsolaSalida=require('../Estructuras/ConsoleOut');
 const { generarSeparacion, generarEncabezados, generarRegistros} = require('../Estructuras/TableFormatter');
 const Tabla=require("../Estructuras/Tabla");
+const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
+
 
 class SelectWhere extends Instruccion{
     constructor(listaColumnas,Tabla,condicion,listacondiciones){
@@ -12,6 +14,42 @@ class SelectWhere extends Instruccion{
         this.listacondiciones=listacondiciones;
 
     }
+
+
+    GenerarAST(){
+        aumentarGlobal();
+        let nodo={
+            label:"SELECT",
+            id:getGlobConta(),
+            listaColumnas:this.listaColumnas,
+            Tabla:this.Tabla,
+            condicion:this.condicion,
+            texto:function(){
+                aumentarGlobal();
+                let select=`${getGlobConta()}[label="SELECT"]\n${this.id}->${getGlobConta()}\n`
+                let lista="";
+                this.listaColumnas.forEach(element => {
+                    aumentarGlobal();
+                    lista+=`${getGlobConta()}[label="${element}"]\n${this.id}->${getGlobConta()}\n`
+                });
+                aumentarGlobal();
+                let from=`${getGlobConta()}[label="FROM"]\n${this.id}->${getGlobConta()}\n`
+                aumentarGlobal();
+                let tabla=`${getGlobConta()}[label="${this.Tabla}"]\n${this.id}->${getGlobConta()}\n`
+                aumentarGlobal();
+                let where=`${getGlobConta()}[label="WHERE"]\n${this.id}->${getGlobConta()}\n`
+                aumentarGlobal();
+                let x=`${getGlobConta()}[label="CONDICION"]\n ${this.id}->${getGlobConta()}\n`
+                let ant=getGlobConta()
+                let hijo=this.condicion.GenerarAST()
+                let apunt=`${ant}->${hijo.id}\n`
+                return `${this.id}[label=${this.label}]\n${select}\n${lista}\n${from}\n${tabla}\n${where}\n${x}\n${hijo.texto()}\n${apunt}`
+            }
+
+        }
+        return nodo
+    }
+
 
     ejecutar(entorno){
 
