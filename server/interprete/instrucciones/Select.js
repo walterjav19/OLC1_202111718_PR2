@@ -35,7 +35,7 @@ class Select extends Instruccion{
     ejecutar(entorno){ 
         let expresion=this.expresion.ejecutar(entorno);
         let aux=String(expresion.valor);
-        console.log(aux);
+        //console.log(aux);
         ConsolaSalida.push(generarSeparacion(1))
         ConsolaSalida.push(generarEncabezados([this.expresion.obtenerTexto()]))
         ConsolaSalida.push(generarSeparacion(1))
