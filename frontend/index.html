@@ -68,7 +68,7 @@
                         <a id="btnErrores" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Errores</a>
                       </li>
                       <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Simbolos</a>
+                        <a id="tsim" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Simbolos</a>
                       </li>
                     </ul>
                     <div class="py-1">
@@ -417,6 +417,27 @@
               });
       })
 
+      const btnsim=document.getElementById('tsim');
+      btnsim.addEventListener('click',()=>{
+        fetch('http://localhost:4000/TablaSimbolos',{
+            method: 'GET',//
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })  .then(res => {
+                // Esperar a que la promesa de res.json() se resuelva y devolver el resultado
+                console.log(res.url)
+                //abrir en una nueva pestaña
+                window.open(res.url, '_blank');
+              })
+              .then(data => {
+                
+              })
+              .catch(error => {
+                // Capturar errores
+                console.error('Error:', error);
+              });
+      })
       
   </script>
 </body>

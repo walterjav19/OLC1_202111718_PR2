@@ -2,9 +2,11 @@ const Instruccion=require('../Instruccion')
 const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
 
 class ListDeclaration extends Instruccion{
-    constructor(Declaraciones){
+    constructor(Declaraciones,linea,columna){
         super();
         this.Declaraciones=Declaraciones;
+        this.linea=linea;
+        this.columna=columna;
     }
 
     GenerarAST(){

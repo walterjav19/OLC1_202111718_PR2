@@ -3,12 +3,14 @@ const Tabla=require('../Estructuras/Tabla');
 const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
 
 class Create extends Instruccion{
-    constructor(nombre,listaColumnas){
+    constructor(nombre,listaColumnas,linea,columna){
         super();
         this.nombre=nombre;
         this.listaColumnas=listaColumnas;
         this.listaverdad=null;
         this.nombreoriginal=null;
+        this.linea=linea;
+        this.columna=columna;
     }
 
 
@@ -49,7 +51,7 @@ class Create extends Instruccion{
     ejecutar(entorno){
         this.listaverdad=JSON.parse(JSON.stringify(this.listaColumnas));
         this.nombreoriginal=JSON.parse(JSON.stringify(this.nombre));
-        let tabla=new Tabla(this.nombre,this.listaColumnas);
+        let tabla=new Tabla(this.nombre,this.listaColumnas,this.linea,this.columna);
         entorno.AgregarTabla(this.nombre,tabla);
     }
 }

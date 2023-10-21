@@ -419,11 +419,11 @@ lista_seteo: lista_seteo COMA ID IGUAL expresion {$$=$1; $$.set($3,$5);}
             | ID IGUAL expresion {$$=new Map(); $$.set($1,$3);}
 ;
 
-declare : DECLARE listavariable {$$=new ListDeclaration($2);}
-        | DECLARE VARIABLE tipo DEFAULT expresion{$$=new Declaration($2,$5,$3);}
+declare : DECLARE listavariable {$$=new ListDeclaration($2, this._$.first_line, this._$.first_column);}
+        | DECLARE VARIABLE tipo DEFAULT expresion{$$=new Declaration($2,$5,$3, this._$.first_line, this._$.first_column);}
 ;
 
-create: CREATE TABLE ID PARIZQ listacolumnas PARDER {$$=new Create($3,$5);}
+create: CREATE TABLE ID PARIZQ listacolumnas PARDER {$$=new Create($3,$5, this._$.first_line, this._$.first_column);}
 ;
 
 truncate: TRUNCATE TABLE ID {$$=new TruncateTable($3);}

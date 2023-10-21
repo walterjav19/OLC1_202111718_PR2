@@ -1,9 +1,11 @@
 class Tabla{
 
-    constructor(nombre,listaColumnas){
+    constructor(nombre,listaColumnas,linea,columna){
         this.nombre=nombre;
         this.listaColumnas=listaColumnas;
         this.listaFilas=[];
+        this.linea=linea;
+        this.columna=columna;
     }
 
     BucarColumna(nombre){

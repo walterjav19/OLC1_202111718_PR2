@@ -2,6 +2,7 @@ const Instruccion=require('../Instruccion');
 const Entorno=require('../Simbolos/Entorno');
 const ConsolaSalida=require('../Estructuras/ConsoleOut')
 const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
+const  ListaContexto=require('../Estructuras/ListaContexto')
 
 class IfElse extends Instruccion{
     constructor(expresion,listaIf,listaElse){
@@ -86,6 +87,7 @@ class IfElse extends Instruccion{
         if(expresion.tipo=='BOOLEAN'){
             if(expresion.valor){
                 let nuevoEntorno=new Entorno('IF',entorno);
+                ListaContexto.push(nuevoEntorno)
                 let breakFlag="";
                 for(let i=0;i<this.listaIf.length;i++){
                     let ins=this.listaIf[i].ejecutar(nuevoEntorno);
@@ -106,6 +108,7 @@ class IfElse extends Instruccion{
 
             }else{
                 let nuevoEntorno=new Entorno('ELSE',entorno);
+                ListaContexto.push(nuevoEntorno);
                 let breakFlag="";
                 for(let i=0;i<this.listaElse.length;i++){
                     let ins=this.listaElse[i].ejecutar(nuevoEntorno);

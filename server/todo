@@ -49,7 +49,14 @@ TODO:
             ✔ WHILE @started(23-10-19 18:53) @done(23-10-19 19:22) @lasted(29m41s)
 
     TABLA DE SIMBOLOS:
-        ☐ REPORTE
+        ✔ Global @done(23-10-21 11:22)
+        ✔ for @done(23-10-21 11:40)
+        ✔ if @done(23-10-21 11:40)
+        ✔ if else @done(23-10-21 11:42)
+        ✔ while @done(23-10-21 11:43)
+        ✔ begin end @done(23-10-21 11:22)
+        ✔ procedure @done(23-10-21 11:44)
+        ✔ function @done(23-10-21 11:44)
     DOCUMENTACION:
         ☐ MANUAL USUARIO
         ☐ MANUAL TECNICO

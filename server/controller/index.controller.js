@@ -5,6 +5,8 @@ const ConsolaSalida=require('../interprete/Estructuras/ConsoleOut.js')
 const Lista_Errores=require('../interprete/Estructuras/ListaErrores.js')
 const {resetGlobConta}=require('../interprete/Estructuras/Contador.js')
 const Dato=require('../interprete/expresiones/Dato.js')
+const ListaContexto=require('../interprete/Estructuras/ListaContexto.js')
+
 let cuerpo=""
 const index = (req, res) =>{
     res.status(200).json({message: 'Bienvenido a mi api'});
@@ -17,9 +19,11 @@ const analizar = (req, res) =>{
     Lista_Tokens.length=0;
     ConsolaSalida.length=0;
     Lista_Errores.length=0;
+    ListaContexto.length=0;
     const result = parser.parse(entrada);
     console.log(result)
     Global=new Entorno("Global",null);
+    ListaContexto.push(Global)
     //Global.AgregarSimbolo("@prueba",new Dato(4,'INT',0,0))
     if (result[0]!=''){
         result.forEach(element => {
@@ -31,6 +35,8 @@ const analizar = (req, res) =>{
             
         });
     }
+   
+    console.log(ListaContexto[0].Tablas)
     let arbol=[]
     if (result[0]!=''){
         result.forEach(element => {
@@ -75,10 +81,17 @@ const GenerarAST= (req, res) =>{
     res.render('AST.ejs',{ imageUrl: texto});
 }
 
+
+
+const TablaSimbolos= (req, res) =>{
+    res.render('Ambito.ejs',{Simbolos:ListaContexto});
+}
+
 module.exports={
     index,
     analizar,
     TablaToken,
     TablaErrores,
-    GenerarAST
+    GenerarAST,
+    TablaSimbolos
 }

@@ -2,11 +2,13 @@ const Instruccion=require('../Instruccion')
 const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
 
 class Declaration extends Instruccion{
-    constructor(id,valor,tipo){
+    constructor(id,valor,tipo,linea,columna){
         super();
         this.id=id;
         this.valor=valor;
         this.tipo=tipo;
+        this.linea=linea
+        this.columna=columna
     }
 
     GenerarAST(){

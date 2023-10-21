@@ -1,7 +1,7 @@
 const Instruccion=require('../Instruccion');
 const Entorno=require('../Simbolos/Entorno');
 const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
-
+const  ListaContexto=require('../Estructuras/ListaContexto')
 
 class BeginEnd extends Instruccion{
     constructor(instrucciones){
@@ -46,6 +46,7 @@ class BeginEnd extends Instruccion{
 
     ejecutar(entorno){
         let nuevoEntorno=new Entorno("begin",entorno);
+        ListaContexto.push(nuevoEntorno)
         this.instrucciones.forEach(instruccion => {
             instruccion.ejecutar(nuevoEntorno);
         });

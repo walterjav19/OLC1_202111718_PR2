@@ -173,13 +173,13 @@ case 47:
 this.$=new Map(); this.$.set($$[$0-2],$$[$0]);
 break;
 case 48:
-this.$=new ListDeclaration($$[$0]);
+this.$=new ListDeclaration($$[$0], this._$.first_line, this._$.first_column);
 break;
 case 49:
-this.$=new Declaration($$[$0-3],$$[$0],$$[$0-2]);
+this.$=new Declaration($$[$0-3],$$[$0],$$[$0-2], this._$.first_line, this._$.first_column);
 break;
 case 50:
-this.$=new Create($$[$0-3],$$[$0-1]);
+this.$=new Create($$[$0-3],$$[$0-1], this._$.first_line, this._$.first_column);
 break;
 case 51:
 this.$=new TruncateTable($$[$0]);

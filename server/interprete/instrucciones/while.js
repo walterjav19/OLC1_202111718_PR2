@@ -2,6 +2,7 @@ const Instruccion = require('../Instruccion');
 const ConsolaSalida=require('../Estructuras/ConsoleOut')
 const Entorno=require('../Simbolos/Entorno');
 const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
+const  ListaContexto=require('../Estructuras/ListaContexto')
 
 class While extends Instruccion {
     constructor(condicion, instrucciones) {
@@ -61,6 +62,7 @@ class While extends Instruccion {
         let expresion = this.condicion.ejecutar(entorno);
         if(expresion.tipo=='BOOLEAN'){
             let nuevoEntorno = new Entorno('WHILE', entorno);
+            ListaContexto.push(nuevoEntorno)
             let breakFlag="";
             
             while(expresion.valor){

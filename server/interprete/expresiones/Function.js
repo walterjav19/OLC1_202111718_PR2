@@ -1,7 +1,7 @@
 const Instruccion=require('../Instruccion');
 const Entorno=require('../Simbolos/Entorno');
 const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
-
+const  ListaContexto=require('../Estructuras/ListaContexto')
 class Function extends Instruccion{
     constructor(id, parametros,tipo,instrucciones,devolver,linea,columna){
         super();
@@ -76,6 +76,7 @@ class Function extends Instruccion{
 
     ejecutar(entorno){
         let nuevoEntorno=new Entorno('FUNCION',entorno);
+        ListaContexto.push(nuevoEntorno)
         this.parametros.ejecutar(nuevoEntorno)
         this.entorno=nuevoEntorno;
         entorno.AgregarFuncion(this.id,this);

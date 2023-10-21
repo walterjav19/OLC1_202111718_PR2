@@ -11,6 +11,7 @@ router.post("/analizar", indexController.analizar);
 router.get("/TablaToken", indexController.TablaToken);
 router.get("/TablaErrores", indexController.TablaErrores);
 router.get("/GenerarAST", indexController.GenerarAST);
+router.get("/TablaSimbolos", indexController.TablaSimbolos);
 
 
 module.exports=router;

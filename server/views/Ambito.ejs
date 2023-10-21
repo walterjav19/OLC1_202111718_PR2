@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TABLA SIMBOLOS</title>
+    <!--flowbite cdn-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css" rel="stylesheet" />
+    <!--Tailwind cdn-->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    
+<div class="relative overflow-x-auto">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    ID
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    TIPO
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    TIPO
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    ENTORNO
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    LINEA
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    COLUMNA
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (let i = 0; i < Simbolos.length; i++) { %>
+                <% for (var [key, value] of Simbolos[i].TablaSimbolos) { %>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <%=key%>
+                    </th>
+                    <td class="px-6 py-4">
+                        Variable
+                    <td class="px-6 py-4">
+                        <%=value.tipo%>
+                    </td>
+                    <td class="px-6 py-4">
+                        <%=Simbolos[i].nombre%>
+                    </td>
+                    <td class="px-6 py-4">
+                        <%=value.linea%>
+                    </td>
+                    <td class="px-6 py-4">
+                        <%=value.columna%>
+                    </td>
+                </tr>
+                <% } %>
+                <% for (var [key, value] of Simbolos[i].Tablas) { %>
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <%=key%>
+                        </th>
+                        <td class="px-6 py-4">
+                            Tabla
+                        <td class="px-6 py-4">
+                            Tabla
+                        </td>
+                        <td class="px-6 py-4">
+                            <%=Simbolos[i].nombre%>
+                        </td>
+                        <td class="px-6 py-4">
+                            <%=value.linea%>
+                        </td>
+                        <td class="px-6 py-4">
+                            <%=value.columna%>
+                        </td>
+                    </tr>
+                    <% } %>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+
+
+</body>
+</html>

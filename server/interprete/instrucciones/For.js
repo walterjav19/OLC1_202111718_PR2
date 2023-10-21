@@ -3,6 +3,7 @@ const ConsolaSalida=require('../Estructuras/ConsoleOut')
 const Entorno=require('../Simbolos/Entorno');
 const Dato=require('../expresiones/Dato');
 const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
+const  ListaContexto=require('../Estructuras/ListaContexto')
 
 class For extends Instruccion{
     constructor(Contador,Inferior,Superior,Instrucciones){
@@ -73,15 +74,15 @@ class For extends Instruccion{
         
         let Inferior=this.Inferior.ejecutar(entorno);
         let Superior=this.Superior.ejecutar(entorno);
-        let data=new Dato(0,"INT",0,0);
-        entorno.AgregarSimbolo(this.Contador,data)
+        
         if(Inferior.tipo=="INT" && Superior.tipo=="INT"){ 
             let nuevoEntorno = new Entorno('FOR', entorno);
+            let data=new Dato(0,"INT",0,0);
+            ListaContexto.push(nuevoEntorno)
+            nuevoEntorno.AgregarSimbolo(this.Contador,data)
             let breakFlag="";
             for(let i=Inferior.valor;i<=Superior.valor;i++){
-                data.valor=i;
-                entorno.actualizarSimbolo(this.Contador,data);
-                
+                nuevoEntorno.actualizarSimbolo(this.Contador,new Dato(i,"INT",0,0));
                 
                 for(let j=0;j<this.Instrucciones.length;j++){
                     let ins=this.Instrucciones[j].ejecutar(nuevoEntorno)
