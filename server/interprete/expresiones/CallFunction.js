@@ -89,7 +89,7 @@ class CallFunction extends Instruccion{
                 });
             }
             
-            
+            console.log(func.devolver.ejecutar(func.entorno))
             
 
             return func.devolver.ejecutar(func.entorno)

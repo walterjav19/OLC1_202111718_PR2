@@ -53,22 +53,25 @@ class Function extends Instruccion{
                     listaparam+=`${getGlobConta()}[label="${element.tipo}"]\n${this.id}->${getGlobConta()}\n`
                 });
 
-                this.Instruccion.forEach(element => {
-                    arbol.push(element.GenerarAST())
-                });
-                arbol.forEach(element => {
-                    cuerpo+=`${aux}->${element.id}\n`
-                    cuerpo+=element.texto()+"\n"
-                });
+                if(this.Instruccion){
+                    this.Instruccion.forEach(element => {
+                        arbol.push(element.GenerarAST())
+                    });
+                    arbol.forEach(element => {
+                        cuerpo+=`${aux}->${element.id}\n`
+                        cuerpo+=element.texto()+"\n"
+                    });
+                }
+                
                 aumentarGlobal();
                 let ar=getGlobConta();
                 let rto=`${getGlobConta()}[label="RETURN"]\n${aux}->${getGlobConta()}\n`
                 aumentarGlobal();
                 let rto2=`${getGlobConta()}[label="RETURN"]\n${ar}->${getGlobConta()}\n`
-                aumentarGlobal();
-                let devolver=`${getGlobConta()}[label="${this.devolver.id}"]\n${ar}->${getGlobConta()}\n`
-                
-                return `${this.id}[label=${this.label}]\n${create}\n${func}\n${nombre}\n${listaparam}\n${ret}\n${tipo}\n${lis}\n${cuerpo}\n${rto}\n${rto2}\n${devolver}\n`
+                let devolver=this.devolver.GenerarAST()
+                let te=devolver.texto()+`\n${ar}->${devolver.id}\n`
+
+                return `${this.id}[label=${this.label}]\n${create}\n${func}\n${nombre}\n${listaparam}\n${ret}\n${tipo}\n${lis}\n${cuerpo}\n${rto}\n${rto2}\n${te}\n`
             }
         }
         return nodo
