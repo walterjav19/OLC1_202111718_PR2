@@ -70,6 +70,7 @@ class Delete extends Instruccion {
                 listaindx.push(aux);
              }
 
+            let nuevasfilas=[];
             tabla.listaFilas.forEach(fila => {
                 let j=0;
                 listaindx.forEach(col => {
@@ -77,10 +78,13 @@ class Delete extends Instruccion {
                     j++;
                 });
                 let expr=this.Condicion.ejecutar(entorno);
-                if(expr.valor){
-                    tabla.listaFilas.splice(tabla.listaFilas.indexOf(fila),1);
+                if(!expr.valor){
+                    //tabla.listaFilas.splice(tabla.listaFilas.indexOf(fila),1);
+                    nuevasfilas.push(tabla.listaFilas[tabla.listaFilas.indexOf(fila)])
                 }
             }); 
+            //actualizamos las filas
+            tabla.listaFilas=nuevasfilas;
             
             //restablecemos los nombres de las columnas
             for(let k=0;k<this.listacondiciones.length;k++){

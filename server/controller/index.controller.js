@@ -35,8 +35,7 @@ const analizar = (req, res) =>{
             
         });
     }
-   
-    console.log(ListaContexto[0].Funciones)
+
     let arbol=[]
     if (result[0]!=''){
         result.forEach(element => {

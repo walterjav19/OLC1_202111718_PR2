@@ -356,6 +356,7 @@ instruccion
     | function PYC  {$$=$1;}
     | procedure PYC {$$=$1;}
     | call PYC{$$=$1;}
+    | case {$$=$1;}
 	| error{
          Lista_Errores.push(new Error("Sintactico", `componente ${yytext} `, this._$.first_line,this._$.first_column));
         ConsolaSalida.push('Error sintáctico: ' + yytext + ',  linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)}
@@ -476,8 +477,8 @@ while
 ;
 
 case
-    : CASE VARIABLE lista_when ELSE expresion END {$$=new CaseSimple($2,$3,$5);}
-    | CASE lista_when ELSE expresion END {$$=new CaseBuscado($2,$4);}
+    : CASE VARIABLE lista_when ELSE expresion END{$$=new CaseSimple($2,$3,$5);}
+    | CASE lista_when ELSE expresion END{$$=new CaseBuscado($2,$4);}
 ;
 
 lista_when

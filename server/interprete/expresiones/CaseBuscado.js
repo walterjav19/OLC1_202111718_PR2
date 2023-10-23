@@ -1,6 +1,6 @@
 const Instruccion=require('../Instruccion')
 const {aumentarGlobal,getGlobConta}=require('../Estructuras/Contador')
-
+const ConsolaSalida= require("../Estructuras/ConsoleOut");
 class CaseBuscado extends Instruccion{
     constructor(listawhen,expresionelse){
         super();
@@ -64,11 +64,13 @@ class CaseBuscado extends Instruccion{
             let valores=this.listawhen[i].ejecutar(entorno);
             if(valores.expresion1.valor){
                 this.titulo=valores.expresion2.valor;
+                ConsolaSalida.push(this.titulo)
                 return valores.expresion2;
             }
         }
         
         this.titulo=expresion.valor;
+        ConsolaSalida.push(this.titulo)
         return expresion;
         
     }

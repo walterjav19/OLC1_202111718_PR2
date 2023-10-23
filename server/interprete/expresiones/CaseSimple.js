@@ -70,12 +70,14 @@ class CaseSimple extends Instruccion{
                 if(valor1.valor==valor2){
                     let valor3 = this.ListaWhen[i].expresion2.ejecutar(entorno);
                     this.titulo=valor3.valor;
+                    ConsolaSalida.push(valor3.valor);
                     return valor3;
                 }
             }
 
             
             this.titulo=expresion.valor;
+            ConsolaSalida.push(expresion.valor);
             return expresion;
         }else{
             ConsolaSalida.push("La variable "+this.Id+" no existe")

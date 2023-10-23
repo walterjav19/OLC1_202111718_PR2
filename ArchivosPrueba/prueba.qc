@@ -16,3 +16,5 @@ SET @edad = 25;
 SELECT @nombre;
 -- Imprime el valor de la variable @edad
 SELECT @edad;
+
+--Linea agregada para guardar
