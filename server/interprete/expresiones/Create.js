@@ -40,7 +40,7 @@ class Create extends Instruccion{
                 }
                 aumentarGlobal();
                 let PADER=`${getGlobConta()}[label=")"]\n${this.id}->${getGlobConta()}\n`
-                return `${this.id}[label=${this.label}]\n${create}\n${table}\n${nombre}\n${PAIZ}\n${lista}\n${PADER}\n`
+                return `${this.id}[label="${this.label}"]\n${create}\n${table}\n${nombre}\n${PAIZ}\n${lista}\n${PADER}\n`
             }
 
         }

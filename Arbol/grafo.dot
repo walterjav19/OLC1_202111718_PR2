@@ -1,0 +1,2059 @@
+digraph L{ordering="out" 0[label="instrucciones"]0->1
+1[label="DDL"]
+30[label="CREATE"]
+1->30
+
+31[label="TABLE"]
+1->31
+
+33[label="Cliente"]
+1->33
+
+32[label="("]
+1->32
+
+34[label="ID"]
+1->34
+35[label="INT"]
+1->35
+36[label="Nombre"]
+1->36
+37[label="VARCHAR"]
+1->37
+38[label="CorreoElectronico"]
+1->38
+39[label="VARCHAR"]
+1->39
+40[label="FechaRegistro"]
+1->40
+41[label="DATE"]
+1->41
+
+42[label=")"]
+1->42
+
+
+0->2
+2[label="DDL"]
+43[label="CREATE"]
+2->43
+
+44[label="TABLE"]
+2->44
+
+46[label="ClienteX"]
+2->46
+
+45[label="("]
+2->45
+
+47[label="ID"]
+2->47
+48[label="INT"]
+2->48
+49[label="Nombre"]
+2->49
+50[label="VARCHAR"]
+2->50
+51[label="CorreoElectronico"]
+2->51
+52[label="VARCHAR"]
+2->52
+53[label="FechaRegistro"]
+2->53
+54[label="DATE"]
+2->54
+
+55[label=")"]
+2->55
+
+
+0->3
+3[label="DDL"]
+56[label="CREATE"]
+3->56
+
+57[label="TABLE"]
+3->57
+
+59[label="Productos"]
+3->59
+
+58[label="("]
+3->58
+
+60[label="ProductoID"]
+3->60
+61[label="INT"]
+3->61
+62[label="NombreProducto"]
+3->62
+63[label="VARCHAR"]
+3->63
+64[label="Precio"]
+3->64
+65[label="DOUBLE"]
+3->65
+
+66[label=")"]
+3->66
+
+
+0->4
+4[label=ALTER]
+67[label="ALTER"]
+4->67
+
+68[label="TABLE"]
+4->68
+
+69[label="Cliente"]
+4->69
+
+70[label="ADD"]
+4->70
+
+71[label="FechaNacimiento"]
+4->71
+
+72[label="DATE"]
+4->72
+
+
+0->5
+5[label=DROP]
+73[label="DROP"]
+5->73
+
+74[label="TABLE"]
+5->74
+
+75[label="ClienteX"]
+5->75
+
+
+0->6
+6[label=DML]
+76[label="INSERT"]
+6->76
+
+77[label="INTO"]
+6->77
+
+78[label="Cliente"]
+6->78
+
+116[label="("]
+6->116
+
+79[label="ID"]
+6->79
+80[label="Nombre"]
+6->80
+81[label="CorreoElectronico"]
+6->81
+82[label="FechaRegistro"]
+6->82
+83[label="FechaNacimiento"]
+6->83
+
+117[label=")"]
+6->117
+
+84[label="VALUES"]
+6->84
+
+118[label="("]
+6->118
+
+85[label="EXPRESION"]
+ 6->85
+86[label="DATO"]
+87[label="1"]
+ 86->87
+
+85->86
+88[label="EXPRESION"]
+ 6->88
+89[label="DATO"]
+90[label="Ana García"]
+ 89->90
+
+88->89
+91[label="EXPRESION"]
+ 6->91
+92[label="DATO"]
+93[label="anaGar@example.com"]
+ 92->93
+
+91->92
+94[label="EXPRESION"]
+ 6->94
+95[label="ARITMETICA"]
+96[label="ARITMETICA"]
+97[label="DATO"]
+98[label="2023"]
+ 97->98
+
+96->97
+
+99[label="-"]
+ 96->99
+
+100[label="DATO"]
+101[label="4"]
+ 100->101
+
+96->100
+
+
+95->96
+
+102[label="-"]
+ 95->102
+
+103[label="DATO"]
+104[label="10"]
+ 103->104
+
+95->103
+
+
+94->95
+105[label="EXPRESION"]
+ 6->105
+106[label="ARITMETICA"]
+107[label="ARITMETICA"]
+108[label="DATO"]
+109[label="1985"]
+ 108->109
+
+107->108
+
+110[label="-"]
+ 107->110
+
+111[label="DATO"]
+112[label="8"]
+ 111->112
+
+107->111
+
+
+106->107
+
+113[label="-"]
+ 106->113
+
+114[label="DATO"]
+115[label="20"]
+ 114->115
+
+106->114
+
+
+105->106
+
+119[label=")"]
+6->119
+
+
+0->7
+7[label=DML]
+120[label="INSERT"]
+7->120
+
+121[label="INTO"]
+7->121
+
+122[label="Cliente"]
+7->122
+
+160[label="("]
+7->160
+
+123[label="ID"]
+7->123
+124[label="Nombre"]
+7->124
+125[label="CorreoElectronico"]
+7->125
+126[label="FechaRegistro"]
+7->126
+127[label="FechaNacimiento"]
+7->127
+
+161[label=")"]
+7->161
+
+128[label="VALUES"]
+7->128
+
+162[label="("]
+7->162
+
+129[label="EXPRESION"]
+ 7->129
+130[label="DATO"]
+131[label="2"]
+ 130->131
+
+129->130
+132[label="EXPRESION"]
+ 7->132
+133[label="DATO"]
+134[label="Pedro López"]
+ 133->134
+
+132->133
+135[label="EXPRESION"]
+ 7->135
+136[label="DATO"]
+137[label="pedro@example.com"]
+ 136->137
+
+135->136
+138[label="EXPRESION"]
+ 7->138
+139[label="ARITMETICA"]
+140[label="ARITMETICA"]
+141[label="DATO"]
+142[label="2023"]
+ 141->142
+
+140->141
+
+143[label="-"]
+ 140->143
+
+144[label="DATO"]
+145[label="4"]
+ 144->145
+
+140->144
+
+
+139->140
+
+146[label="-"]
+ 139->146
+
+147[label="DATO"]
+148[label="12"]
+ 147->148
+
+139->147
+
+
+138->139
+149[label="EXPRESION"]
+ 7->149
+150[label="ARITMETICA"]
+151[label="ARITMETICA"]
+152[label="DATO"]
+153[label="1990"]
+ 152->153
+
+151->152
+
+154[label="-"]
+ 151->154
+
+155[label="DATO"]
+156[label="11"]
+ 155->156
+
+151->155
+
+
+150->151
+
+157[label="-"]
+ 150->157
+
+158[label="DATO"]
+159[label="15"]
+ 158->159
+
+150->158
+
+
+149->150
+
+163[label=")"]
+7->163
+
+
+0->8
+8[label=DML]
+164[label="INSERT"]
+8->164
+
+165[label="INTO"]
+8->165
+
+166[label="Cliente"]
+8->166
+
+204[label="("]
+8->204
+
+167[label="ID"]
+8->167
+168[label="Nombre"]
+8->168
+169[label="CorreoElectronico"]
+8->169
+170[label="FechaRegistro"]
+8->170
+171[label="FechaNacimiento"]
+8->171
+
+205[label=")"]
+8->205
+
+172[label="VALUES"]
+8->172
+
+206[label="("]
+8->206
+
+173[label="EXPRESION"]
+ 8->173
+174[label="DATO"]
+175[label="3"]
+ 174->175
+
+173->174
+176[label="EXPRESION"]
+ 8->176
+177[label="DATO"]
+178[label="Luisa Rodríguez"]
+ 177->178
+
+176->177
+179[label="EXPRESION"]
+ 8->179
+180[label="DATO"]
+181[label="luisa@example.com"]
+ 180->181
+
+179->180
+182[label="EXPRESION"]
+ 8->182
+183[label="ARITMETICA"]
+184[label="ARITMETICA"]
+185[label="DATO"]
+186[label="2023"]
+ 185->186
+
+184->185
+
+187[label="-"]
+ 184->187
+
+188[label="DATO"]
+189[label="4"]
+ 188->189
+
+184->188
+
+
+183->184
+
+190[label="-"]
+ 183->190
+
+191[label="DATO"]
+192[label="14"]
+ 191->192
+
+183->191
+
+
+182->183
+193[label="EXPRESION"]
+ 8->193
+194[label="ARITMETICA"]
+195[label="ARITMETICA"]
+196[label="DATO"]
+197[label="1982"]
+ 196->197
+
+195->196
+
+198[label="-"]
+ 195->198
+
+199[label="DATO"]
+200[label="3"]
+ 199->200
+
+195->199
+
+
+194->195
+
+201[label="-"]
+ 194->201
+
+202[label="DATO"]
+203[label="25"]
+ 202->203
+
+194->202
+
+
+193->194
+
+207[label=")"]
+8->207
+
+
+0->9
+9[label=DML]
+208[label="INSERT"]
+9->208
+
+209[label="INTO"]
+9->209
+
+210[label="Cliente"]
+9->210
+
+248[label="("]
+9->248
+
+211[label="ID"]
+9->211
+212[label="Nombre"]
+9->212
+213[label="CorreoElectronico"]
+9->213
+214[label="FechaRegistro"]
+9->214
+215[label="FechaNacimiento"]
+9->215
+
+249[label=")"]
+9->249
+
+216[label="VALUES"]
+9->216
+
+250[label="("]
+9->250
+
+217[label="EXPRESION"]
+ 9->217
+218[label="DATO"]
+219[label="4"]
+ 218->219
+
+217->218
+220[label="EXPRESION"]
+ 9->220
+221[label="DATO"]
+222[label="Carlos Sánchez"]
+ 221->222
+
+220->221
+223[label="EXPRESION"]
+ 9->223
+224[label="DATO"]
+225[label="carlos@example.com"]
+ 224->225
+
+223->224
+226[label="EXPRESION"]
+ 9->226
+227[label="ARITMETICA"]
+228[label="ARITMETICA"]
+229[label="DATO"]
+230[label="2023"]
+ 229->230
+
+228->229
+
+231[label="-"]
+ 228->231
+
+232[label="DATO"]
+233[label="4"]
+ 232->233
+
+228->232
+
+
+227->228
+
+234[label="-"]
+ 227->234
+
+235[label="DATO"]
+236[label="16"]
+ 235->236
+
+227->235
+
+
+226->227
+237[label="EXPRESION"]
+ 9->237
+238[label="ARITMETICA"]
+239[label="ARITMETICA"]
+240[label="DATO"]
+241[label="1995"]
+ 240->241
+
+239->240
+
+242[label="-"]
+ 239->242
+
+243[label="DATO"]
+244[label="9"]
+ 243->244
+
+239->243
+
+
+238->239
+
+245[label="-"]
+ 238->245
+
+246[label="DATO"]
+247[label="3"]
+ 246->247
+
+238->246
+
+
+237->238
+
+251[label=")"]
+9->251
+
+
+0->10
+10[label=DML]
+252[label="INSERT"]
+10->252
+
+253[label="INTO"]
+10->253
+
+254[label="Cliente"]
+10->254
+
+292[label="("]
+10->292
+
+255[label="ID"]
+10->255
+256[label="Nombre"]
+10->256
+257[label="CorreoElectronico"]
+10->257
+258[label="FechaRegistro"]
+10->258
+259[label="FechaNacimiento"]
+10->259
+
+293[label=")"]
+10->293
+
+260[label="VALUES"]
+10->260
+
+294[label="("]
+10->294
+
+261[label="EXPRESION"]
+ 10->261
+262[label="DATO"]
+263[label="5"]
+ 262->263
+
+261->262
+264[label="EXPRESION"]
+ 10->264
+265[label="DATO"]
+266[label="Isabel Martínez"]
+ 265->266
+
+264->265
+267[label="EXPRESION"]
+ 10->267
+268[label="DATO"]
+269[label="isabel@example.com"]
+ 268->269
+
+267->268
+270[label="EXPRESION"]
+ 10->270
+271[label="ARITMETICA"]
+272[label="ARITMETICA"]
+273[label="DATO"]
+274[label="2023"]
+ 273->274
+
+272->273
+
+275[label="-"]
+ 272->275
+
+276[label="DATO"]
+277[label="4"]
+ 276->277
+
+272->276
+
+
+271->272
+
+278[label="-"]
+ 271->278
+
+279[label="DATO"]
+280[label="18"]
+ 279->280
+
+271->279
+
+
+270->271
+281[label="EXPRESION"]
+ 10->281
+282[label="ARITMETICA"]
+283[label="ARITMETICA"]
+284[label="DATO"]
+285[label="1987"]
+ 284->285
+
+283->284
+
+286[label="-"]
+ 283->286
+
+287[label="DATO"]
+288[label="6"]
+ 287->288
+
+283->287
+
+
+282->283
+
+289[label="-"]
+ 282->289
+
+290[label="DATO"]
+291[label="12"]
+ 290->291
+
+282->290
+
+
+281->282
+
+295[label=")"]
+10->295
+
+
+0->11
+11[label=DML]
+296[label="INSERT"]
+11->296
+
+297[label="INTO"]
+11->297
+
+298[label="Productos"]
+11->298
+
+312[label="("]
+11->312
+
+299[label="ProductoID"]
+11->299
+300[label="NombreProducto"]
+11->300
+301[label="Precio"]
+11->301
+
+313[label=")"]
+11->313
+
+302[label="VALUES"]
+11->302
+
+314[label="("]
+11->314
+
+303[label="EXPRESION"]
+ 11->303
+304[label="DATO"]
+305[label="1"]
+ 304->305
+
+303->304
+306[label="EXPRESION"]
+ 11->306
+307[label="DATO"]
+308[label="Widget Inteligente"]
+ 307->308
+
+306->307
+309[label="EXPRESION"]
+ 11->309
+310[label="DATO"]
+311[label="49.99"]
+ 310->311
+
+309->310
+
+315[label=")"]
+11->315
+
+
+0->12
+12[label=DML]
+316[label="INSERT"]
+12->316
+
+317[label="INTO"]
+12->317
+
+318[label="Productos"]
+12->318
+
+332[label="("]
+12->332
+
+319[label="ProductoID"]
+12->319
+320[label="NombreProducto"]
+12->320
+321[label="Precio"]
+12->321
+
+333[label=")"]
+12->333
+
+322[label="VALUES"]
+12->322
+
+334[label="("]
+12->334
+
+323[label="EXPRESION"]
+ 12->323
+324[label="DATO"]
+325[label="2"]
+ 324->325
+
+323->324
+326[label="EXPRESION"]
+ 12->326
+327[label="DATO"]
+328[label="Widget Súper Inteligente"]
+ 327->328
+
+326->327
+329[label="EXPRESION"]
+ 12->329
+330[label="DATO"]
+331[label="99.99"]
+ 330->331
+
+329->330
+
+335[label=")"]
+12->335
+
+
+0->13
+13[label=DML]
+336[label="INSERT"]
+13->336
+
+337[label="INTO"]
+13->337
+
+338[label="Productos"]
+13->338
+
+352[label="("]
+13->352
+
+339[label="ProductoID"]
+13->339
+340[label="NombreProducto"]
+13->340
+341[label="Precio"]
+13->341
+
+353[label=")"]
+13->353
+
+342[label="VALUES"]
+13->342
+
+354[label="("]
+13->354
+
+343[label="EXPRESION"]
+ 13->343
+344[label="DATO"]
+345[label="3"]
+ 344->345
+
+343->344
+346[label="EXPRESION"]
+ 13->346
+347[label="DATO"]
+348[label="Widget Supremo"]
+ 347->348
+
+346->347
+349[label="EXPRESION"]
+ 13->349
+350[label="DATO"]
+351[label="149.99"]
+ 350->351
+
+349->350
+
+355[label=")"]
+13->355
+
+
+0->14
+14[label=DML]
+356[label="INSERT"]
+14->356
+
+357[label="INTO"]
+14->357
+
+358[label="Productos"]
+14->358
+
+372[label="("]
+14->372
+
+359[label="ProductoID"]
+14->359
+360[label="NombreProducto"]
+14->360
+361[label="Precio"]
+14->361
+
+373[label=")"]
+14->373
+
+362[label="VALUES"]
+14->362
+
+374[label="("]
+14->374
+
+363[label="EXPRESION"]
+ 14->363
+364[label="DATO"]
+365[label="4"]
+ 364->365
+
+363->364
+366[label="EXPRESION"]
+ 14->366
+367[label="DATO"]
+368[label="Widget Súper Supremo"]
+ 367->368
+
+366->367
+369[label="EXPRESION"]
+ 14->369
+370[label="DATO"]
+371[label="199.99"]
+ 370->371
+
+369->370
+
+375[label=")"]
+14->375
+
+
+0->15
+15[label=DML]
+376[label="INSERT"]
+15->376
+
+377[label="INTO"]
+15->377
+
+378[label="Productos"]
+15->378
+
+392[label="("]
+15->392
+
+379[label="ProductoID"]
+15->379
+380[label="NombreProducto"]
+15->380
+381[label="Precio"]
+15->381
+
+393[label=")"]
+15->393
+
+382[label="VALUES"]
+15->382
+
+394[label="("]
+15->394
+
+383[label="EXPRESION"]
+ 15->383
+384[label="DATO"]
+385[label="5"]
+ 384->385
+
+383->384
+386[label="EXPRESION"]
+ 15->386
+387[label="DATO"]
+388[label="Widget Hiper Supremo"]
+ 387->388
+
+386->387
+389[label="EXPRESION"]
+ 15->389
+390[label="DATO"]
+391[label="299.99"]
+ 390->391
+
+389->390
+
+395[label=")"]
+15->395
+
+
+0->16
+16[label=SELECT]
+396[label="SELECT"]
+16->396
+
+397[label="*"]
+16->397
+
+398[label="FROM"]
+16->398
+
+399[label="Cliente"]
+16->399
+
+
+0->17
+17[label=UPDATE]
+400[label="UPDATE"]
+17->400
+
+401[label="Cliente"]
+17->401
+
+402[label="SET"]
+17->402
+
+403[label="CorreoElectronico"]
+17->403
+404[label="="]
+17->404
+405[label="anaGar@example.com"]
+17->405
+
+406[label="WHERE"]
+17->406
+
+407[label="CONDICION"]
+ 17->407
+
+408[label="CONDICION"]
+409[label="ID"]
+408->409
+
+410[label="="]
+408->410
+
+411[label="EXPRESION"]
+ 408->411
+
+412[label="DATO"]
+413[label="1"]
+ 412->413
+
+411->412
+
+
+407->408
+
+0->18
+18[label=SELECT]
+414[label="SELECT"]
+18->414
+
+415[label="ID"]
+18->415
+416[label="Nombre"]
+18->416
+417[label="CorreoElectronico"]
+18->417
+418[label="FechaRegistro"]
+18->418
+419[label="FechaNacimiento"]
+18->419
+
+420[label="FROM"]
+18->420
+
+421[label="Cliente"]
+18->421
+
+422[label="WHERE"]
+18->422
+
+423[label="CONDICION"]
+ 18->423
+
+424[label="CONDICION"]
+425[label="ID"]
+424->425
+
+426[label="="]
+424->426
+
+427[label="EXPRESION"]
+ 424->427
+
+428[label="DATO"]
+429[label="1"]
+ 428->429
+
+427->428
+
+
+423->424
+
+0->19
+19[label=SELECT]
+430[label="SELECT"]
+19->430
+
+431[label="*"]
+19->431
+
+432[label="FROM"]
+19->432
+
+433[label="Productos"]
+19->433
+
+
+0->20
+20[label=TRUNCATE]
+434[label="TRUNCATE"]
+20->434
+
+435[label="TABLE"]
+20->435
+
+436[label="Productos"]
+20->436
+
+
+0->21
+21[label=SELECT]
+437[label="SELECT"]
+21->437
+
+438[label="*"]
+21->438
+
+439[label="FROM"]
+21->439
+
+440[label="Productos"]
+21->440
+
+
+0->22
+22[label="DELETE"]
+441[label="DELETE"]
+22->441
+
+442[label="FROM"]
+22->442
+
+443[label="Cliente"]
+22->443
+
+444[label="WHERE"]
+22->444
+
+445[label="CONDICION"]
+ 22->445
+
+445->446
+446[label="CONDICION"]
+447[label="FechaRegistro"]
+446->447
+
+448[label="="]
+446->448
+
+449[label="EXPRESION"]
+ 446->449
+
+450[label="DATO"]
+451[label="-0"]
+ 450->451
+
+449->450
+
+
+0->23
+23[label=SELECT]
+452[label="SELECT"]
+23->452
+
+453[label="*"]
+23->453
+
+454[label="FROM"]
+23->454
+
+455[label="Cliente"]
+23->455
+
+
+0->24
+24[label="BLOQUE"]
+457[label="BEGIN"]
+24->457
+
+456[label="instrucciones"]
+24->456
+
+458[label="END"]
+24->458
+
+456->459
+459[label="DECLARATION"]
+469[label="DECLARE"]
+459->469
+
+470[label="@edad"]
+459->470
+
+471[label="INT"]
+459->471
+
+472[label="DEFAULT"]
+459->472
+
+474[label="EXPRESION"]
+ 459->474
+
+473[label=";"]
+459->473
+
+475[label="DATO"]
+476[label="25"]
+ 475->476
+
+474->475
+
+456->460
+460[label="DECLARATION"]
+477[label="DECLARE"]
+460->477
+
+478[label="@puntosTalent"]
+460->478
+
+479[label="INT"]
+460->479
+
+480[label="DEFAULT"]
+460->480
+
+482[label="EXPRESION"]
+ 460->482
+
+481[label=";"]
+460->481
+
+483[label="DATO"]
+484[label="90"]
+ 483->484
+
+482->483
+
+456->461
+461[label="DECLARACION"]
+485[label="DECLARE"]
+ 461->485
+
+486[label="@resultadoTalent"]
+ 461->486
+
+487[label="VARCHAR"]
+ 461->487
+
+488[label=";"]
+ 461->488
+
+
+456->462
+462[label="CONTROL"]
+490[label="IF"]
+462->490
+
+501[label="EXPRESION"]
+ 462->501
+
+491[label="THEN"]
+462->491
+
+502[label="LOGICA"]
+503[label="LOGICA"]
+504[label="VARIABLE"]
+505[label="@edad"]
+ 504->505
+
+503->504
+
+506[label=">"]
+ 503->506
+
+507[label="DATO"]
+508[label="18"]
+ 507->508
+
+503->507
+
+
+502->503
+
+509[label="AND"]
+ 502->509
+
+510[label="LOGICA"]
+511[label="VARIABLE"]
+512[label="@puntosTalent"]
+ 511->512
+
+510->511
+
+513[label=">="]
+ 510->513
+
+514[label="DATO"]
+515[label="80"]
+ 514->515
+
+510->514
+
+
+502->510
+
+
+501->502
+
+489[label="instrucciones"]
+462->489
+
+489->493
+493[label="ASSIGMENT"]
+494[label="SET"]
+493->494
+
+495[label="@resultadoTalent"]
+493->495
+
+497[label="="]
+493->497
+
+498[label="EXPRESION"]
+ 493->498
+
+496[label=";"]
+493->496
+
+499[label="DATO"]
+500[label="Talent Plus"]
+ 499->500
+
+498->499
+
+
+492[label="END IF"]
+462->492
+
+456->463
+463[label="CONTROL"]
+517[label="IF"]
+463->517
+
+528[label="EXPRESION"]
+ 463->528
+
+518[label="THEN"]
+463->518
+
+529[label="LOGICA"]
+530[label="LOGICA"]
+531[label="VARIABLE"]
+532[label="@edad"]
+ 531->532
+
+530->531
+
+533[label=">"]
+ 530->533
+
+534[label="DATO"]
+535[label="18"]
+ 534->535
+
+530->534
+
+
+529->530
+
+536[label="AND"]
+ 529->536
+
+537[label="LOGICA"]
+538[label="VARIABLE"]
+539[label="@puntosTalent"]
+ 538->539
+
+537->538
+
+540[label="<"]
+ 537->540
+
+541[label="DATO"]
+542[label="80"]
+ 541->542
+
+537->541
+
+
+529->537
+
+
+528->529
+
+516[label="instrucciones"]
+463->516
+
+516->520
+520[label="ASSIGMENT"]
+521[label="SET"]
+520->521
+
+522[label="@resultadoTalent"]
+520->522
+
+524[label="="]
+520->524
+
+525[label="EXPRESION"]
+ 520->525
+
+523[label=";"]
+520->523
+
+526[label="DATO"]
+527[label="\"Talent\""]
+ 526->527
+
+525->526
+
+
+519[label="END IF"]
+463->519
+
+456->464
+464[label="CONTROL"]
+545[label="IF"]
+464->545
+
+561[label="EXPRESION"]
+ 464->561
+
+562[label="LOGICA"]
+563[label="VARIABLE"]
+564[label="@edad"]
+ 563->564
+
+562->563
+
+565[label="=="]
+ 562->565
+
+566[label="DATO"]
+567[label="10"]
+ 566->567
+
+562->566
+
+
+561->562
+
+547[label="THEN"]
+464->547
+
+543[label="instrucciones"]
+464->543
+
+543->549
+549[label="PRINT"]
+550[label="PRINT"]
+ 549->550
+
+552[label="EXPRESION"]
+ 549->552
+
+551[label=";"]
+ 549->551
+
+553[label="DATO"]
+554[label="\"La edad es 10\""]
+ 553->554
+
+552->553
+
+
+546[label="ELSE"]
+464->546
+
+544[label="instrucciones"]
+464->544
+
+544->555
+555[label="PRINT"]
+556[label="PRINT"]
+ 555->556
+
+558[label="EXPRESION"]
+ 555->558
+
+557[label=";"]
+ 555->557
+
+559[label="VARIABLE"]
+560[label="@edad"]
+ 559->560
+
+558->559
+
+
+548[label="END IF"]
+464->548
+
+456->465
+465[label="PRINT"]
+568[label="PRINT"]
+ 465->568
+
+570[label="EXPRESION"]
+ 465->570
+
+569[label=";"]
+ 465->569
+
+571[label="DATO"]
+572[label="El resultado es (PRINT):"]
+ 571->572
+
+570->571
+
+456->466
+466[label="PRINT"]
+573[label="PRINT"]
+ 466->573
+
+575[label="EXPRESION"]
+ 466->575
+
+574[label=";"]
+ 466->574
+
+576[label="VARIABLE"]
+577[label="@resultadoTalent"]
+ 576->577
+
+575->576
+
+456->467
+467[label="SELECT"]
+578[label="SELECT"]
+ 467->578
+
+580[label="EXPRESION"]
+ 467->580
+
+579[label=";"]
+ 467->579
+
+581[label="DATO"]
+582[label="El resultado es (SELECT):"]
+ 581->582
+
+580->581
+
+456->468
+468[label="SELECT"]
+583[label="SELECT"]
+ 468->583
+
+585[label="EXPRESION"]
+ 468->585
+
+584[label=";"]
+ 468->584
+
+586[label="VARIABLE"]
+587[label="@resultadoTalent"]
+ 586->587
+
+585->586
+
+
+
+0->25
+25[label="BLOQUE"]
+589[label="BEGIN"]
+25->589
+
+588[label="instrucciones"]
+25->588
+
+590[label="END"]
+25->590
+
+588->591
+591[label="DECLARATION"]
+595[label="DECLARE"]
+591->595
+
+596[label="@contador"]
+591->596
+
+597[label="INT"]
+591->597
+
+598[label="DEFAULT"]
+591->598
+
+600[label="EXPRESION"]
+ 591->600
+
+599[label=";"]
+591->599
+
+601[label="DATO"]
+602[label="1"]
+ 601->602
+
+600->601
+
+588->592
+592[label="DECLARATION"]
+603[label="DECLARE"]
+592->603
+
+604[label="@suma"]
+592->604
+
+605[label="INT"]
+592->605
+
+606[label="DEFAULT"]
+592->606
+
+608[label="EXPRESION"]
+ 592->608
+
+607[label=";"]
+592->607
+
+609[label="DATO"]
+610[label="0"]
+ 609->610
+
+608->609
+
+588->593
+593[label="BUCLE"]
+612[label="WHILE"]
+593->612
+
+655[label="EXPRESION"]
+ 593->655
+
+613[label="BEGIN"]
+593->613
+
+656[label="LOGICA"]
+657[label="VARIABLE"]
+658[label="@contador"]
+ 657->658
+
+656->657
+
+659[label="<="]
+ 656->659
+
+660[label="DATO"]
+661[label="20"]
+ 660->661
+
+656->660
+
+
+655->656
+
+611[label="instrucciones"]
+593->611
+
+611->615
+615[label="CONTROL"]
+618[label="IF"]
+615->618
+
+633[label="EXPRESION"]
+ 615->633
+
+619[label="THEN"]
+615->619
+
+634[label="LOGICA"]
+635[label="ARITMETICA"]
+636[label="VARIABLE"]
+637[label="@contador"]
+ 636->637
+
+635->636
+
+638[label="%"]
+ 635->638
+
+639[label="DATO"]
+640[label="3"]
+ 639->640
+
+635->639
+
+
+634->635
+
+641[label="=="]
+ 634->641
+
+642[label="DATO"]
+643[label="0"]
+ 642->643
+
+634->642
+
+
+633->634
+
+617[label="instrucciones"]
+615->617
+
+617->621
+621[label="ASSIGMENT"]
+622[label="SET"]
+621->622
+
+623[label="@suma"]
+621->623
+
+625[label="="]
+621->625
+
+626[label="EXPRESION"]
+ 621->626
+
+624[label=";"]
+621->624
+
+627[label="ARITMETICA"]
+628[label="VARIABLE"]
+629[label="@suma"]
+ 628->629
+
+627->628
+
+630[label="+"]
+ 627->630
+
+631[label="VARIABLE"]
+632[label="@contador"]
+ 631->632
+
+627->631
+
+
+626->627
+
+
+620[label="END IF"]
+615->620
+
+611->616
+616[label="ASSIGMENT"]
+644[label="SET"]
+616->644
+
+645[label="@contador"]
+616->645
+
+647[label="="]
+616->647
+
+648[label="EXPRESION"]
+ 616->648
+
+646[label=";"]
+616->646
+
+649[label="ARITMETICA"]
+650[label="VARIABLE"]
+651[label="@contador"]
+ 650->651
+
+649->650
+
+652[label="+"]
+ 649->652
+
+653[label="DATO"]
+654[label="1"]
+ 653->654
+
+649->653
+
+
+648->649
+
+
+614[label="END"]
+593->614
+
+588->594
+594[label="PRINT"]
+662[label="PRINT"]
+ 594->662
+
+664[label="EXPRESION"]
+ 594->664
+
+663[label=";"]
+ 594->663
+
+665[label="ARITMETICA"]
+666[label="DATO"]
+667[label="La suma de los múltiplos de 3 del 1 al 20 es: "]
+ 666->667
+
+665->666
+
+668[label="+"]
+ 665->668
+
+669[label="CASTEO"]
+670[label="CAST"]
+ 669->670
+
+671[label="("]
+ 669->671
+
+674[label="EXPRESION"]
+ 669->674
+
+673[label="AS"]
+ 669->673
+
+676[label="TIPO"]
+ 669->676
+
+672[label=")"]
+ 669->672
+
+675[label="VARIABLE"]
+678[label="@suma"]
+ 675->678
+
+674->675
+
+677[label="VARCHAR"]
+ 676->677
+
+
+665->669
+
+
+664->665
+
+
+
+0->26
+26[label="SELECT"]
+679[label="SELECT"]
+ 26->679
+
+681[label="EXPRESION"]
+ 26->681
+
+680[label=";"]
+ 26->680
+
+682[label="NATIVAS"]
+683[label="LOWER"]
+ 682->683
+
+684[label="("]
+ 682->684
+
+686[label="EXPRESION"]
+ 682->686
+
+685[label=")"]
+ 682->685
+
+687[label="DATO"]
+688[label="Hola, Mundo"]
+ 687->688
+
+686->687
+
+681->682
+
+0->27
+27[label="SELECT"]
+689[label="SELECT"]
+ 27->689
+
+691[label="EXPRESION"]
+ 27->691
+
+690[label=";"]
+ 27->690
+
+692[label="NATIVAS"]
+693[label="UPPER"]
+ 692->693
+
+694[label="("]
+ 692->694
+
+696[label="EXPRESION"]
+ 692->696
+
+695[label=")"]
+ 692->695
+
+697[label="DATO"]
+698[label="hola, mundo"]
+ 697->698
+
+696->697
+
+691->692
+
+0->28
+28[label="SELECT"]
+699[label="SELECT"]
+ 28->699
+
+701[label="EXPRESION"]
+ 28->701
+
+700[label=";"]
+ 28->700
+
+702[label="NATIVAS"]
+703[label="ROUND"]
+ 702->703
+
+704[label="("]
+ 702->704
+
+707[label="EXPRESION"]
+ 702->707
+
+706[label=","]
+ 702->706
+
+709[label="EXPRESION"]
+ 702->709
+
+705[label=")"]
+ 702->705
+
+708[label="DATO"]
+711[label="123.456789"]
+ 708->711
+
+707->708
+
+710[label="DATO"]
+712[label="2"]
+ 710->712
+
+709->710
+
+701->702
+
+0->29
+29[label="SELECT"]
+713[label="SELECT"]
+ 29->713
+
+715[label="EXPRESION"]
+ 29->715
+
+714[label=";"]
+ 29->714
+
+716[label="NATIVAS"]
+717[label="LEN"]
+ 716->717
+
+718[label="("]
+ 716->718
+
+720[label="EXPRESION"]
+ 716->720
+
+719[label=")"]
+ 716->719
+
+721[label="DATO"]
+722[label="¡Esto es un texto creativo y largo!"]
+ 721->722
+
+720->721
+
+715->716
+
+}

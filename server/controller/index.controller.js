@@ -6,6 +6,7 @@ const Lista_Errores=require('../interprete/Estructuras/ListaErrores.js')
 const {resetGlobConta}=require('../interprete/Estructuras/Contador.js')
 const Dato=require('../interprete/expresiones/Dato.js')
 const ListaContexto=require('../interprete/Estructuras/ListaContexto.js')
+const fs = require('fs');
 
 let cuerpo=""
 const index = (req, res) =>{
@@ -76,7 +77,16 @@ const TablaErrores= (req, res) =>{
 
 const GenerarAST= (req, res) =>{
 
-    let texto=`https://quickchart.io/graphviz?graph=digraph L{ordering="out" 0[label="instrucciones"]${encodeURIComponent(cuerpo)}}`
+    let texto=`https://quickchart.io/graphviz?graph= digraph L{ordering="out" 0[label="instrucciones"]${encodeURIComponent(cuerpo)}}`
+    let contenido=`digraph L{ordering="out" 0[label="instrucciones"]${cuerpo}}`
+    fs.writeFileSync('../Arbol/grafo.dot', contenido, 'utf8', (err) => {
+        if (err) {
+            console.error('Error al escribir el archivo:', err);
+            return;
+        }
+        console.log('El archivo grafo.dot ha sido creado correctamente.');
+    });
+
     res.render('AST.ejs',{ imageUrl: texto});
 }
 
