@@ -90,7 +90,7 @@
 <if> ::= "IF" <expresion> "THEN" <lista_instrucciones> "END" "IF"
           | "IF" <expresion> "THEN" <lista_instrucciones> "ELSE" <lista_instrucciones> "END" "IF"
 
-<for> ::= "FOR" "ID" "IN" <expresion> "RANGO" <expresion> "BEGIN" <lista_instrucciones> "END"
+<for> ::= "FOR" "VARIABLE" "IN" <expresion> "RANGO" <expresion> "BEGIN" <lista_instrucciones> "END"
 
 <while> ::= "WHILE" <expresion> "BEGIN" <lista_instrucciones> "END"
 

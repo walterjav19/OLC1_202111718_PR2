@@ -17,8 +17,15 @@ class Dato extends Instruccion {
             label:"DATO",
             id:getGlobConta(),
             valor:this.valor,
+            tipo:this.tipo,
             texto:function(){
                 aumentarGlobal();
+                if(this.tipo=="VARCHAR"){
+                    this.valor = this.valor.replaceAll("\"", "\\\"")
+                }
+
+                
+                
                 let hijo=`${getGlobConta()}[label="${this.valor}"]\n ${this.id}->${getGlobConta()}\n`
                 return `${this.id}[label="${this.label}"]\n${hijo}`
             }

@@ -7,6 +7,7 @@ const {resetGlobConta}=require('../interprete/Estructuras/Contador.js')
 const Dato=require('../interprete/expresiones/Dato.js')
 const ListaContexto=require('../interprete/Estructuras/ListaContexto.js')
 const fs = require('fs');
+const { exec } = require("child_process");
 
 let cuerpo=""
 const index = (req, res) =>{
@@ -85,6 +86,19 @@ const GenerarAST= (req, res) =>{
             return;
         }
         console.log('El archivo grafo.dot ha sido creado correctamente.');
+    });
+
+    exec("dot -Tpng ../Arbol/grafo.dot -o ../Arbol/ast.png", (error, stdout, stderr) => {
+        if (error) {
+            console.log(`error: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.log(`stderr: ${stderr}`);
+            return;
+        }
+        console.log(`stdout: ${stdout}`);
+        
     });
 
     res.render('AST.ejs',{ imageUrl: texto});

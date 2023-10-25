@@ -469,7 +469,7 @@ if
 
 
 for
-    : FOR ID IN expresion RANGO expresion BEGIN lista_instrucciones END {$$=new For($2,$4,$6,$8);}
+    : FOR VARIABLE IN expresion RANGO expresion BEGIN lista_instrucciones END {$$=new For($2,$4,$6,$8);}
 ;
 
 while
