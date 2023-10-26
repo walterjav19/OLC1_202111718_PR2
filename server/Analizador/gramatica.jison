@@ -317,7 +317,7 @@ variable ("@"[a-zA-Z_][a-zA-Z0-9_]*)
 %left 'OR'
 %left 'AND'
 %left 'NOT'
-%left 'EQUALS' 'NOTEQUALS' 'MAYOR' 'MENOR' 'MAYORIGUAL' 'MENORIGUAL'
+%left 'EQUALS' 'NOTEQUALS' 'MAYOR' 'MENOR' 'MAYORIGUAL' 'MENORIGUAL','IGUAL'
 %left 'MAS' 'MENOS'
 %left 'POR' 'DIV' 'MOD'
 %left UMINUS,IG
@@ -533,6 +533,7 @@ logica
     :expresion OR expresion {$$=new Logica($1,'OR',$3, this._$.first_line, this._$.first_column);}
     |expresion AND expresion {$$=new Logica($1,'AND',$3, this._$.first_line, this._$.first_column);}
     |expresion EQUALS expresion {$$=new Logica($1,'==',$3, this._$.first_line, this._$.first_column);}
+    |expresion IGUAL expresion {$$=new Logica($1,'==',$3, this._$.first_line, this._$.first_column);}
     |expresion NOTEQUALS expresion {$$=new Logica($1,'!=',$3, this._$.first_line, this._$.first_column);}
     |expresion MAYOR expresion {$$=new Logica($1,'>',$3, this._$.first_line, this._$.first_column);}
     |expresion MENOR expresion {$$=new Logica($1,'<',$3, this._$.first_line, this._$.first_column);}
