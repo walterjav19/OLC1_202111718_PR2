@@ -29,6 +29,7 @@ class CallFunction extends Instruccion{
                 let parder=`${getGlobConta()}[label=")"]\n${this.id}->${getGlobConta()}\n`
                 let i=0;
                 let lista=""
+                if(this.argumentos){
                 this.argumentos.forEach(element => {
                     if(i!=this.argumentos.length-1){
                         let nodo=element.GenerarAST();
@@ -41,7 +42,7 @@ class CallFunction extends Instruccion{
                     }
                     i++;
                 });
-
+                }   
 
                 return `${this.id}[label="${this.label}"]\n${nombre}\n${parizq}\n${lista}\n${parder}`
             }
@@ -52,6 +53,7 @@ class CallFunction extends Instruccion{
     obtenerTexto(){
         let args="";
         let i=0;
+        if(this.argumentos){
         this.argumentos.forEach(element => {
             if (i != this.argumentos.length - 1) {
                 args += element.obtenerTexto() + (element.tipo ? ` ${element.tipo},` : ',');
@@ -60,7 +62,8 @@ class CallFunction extends Instruccion{
             }
             i++;
         });
-        return "CALL "+this.id+`(${args})`
+        }
+        return this.id+`(${args})`
     }
 
     ejecutar(entorno){
@@ -72,6 +75,7 @@ class CallFunction extends Instruccion{
             
 
             let i=0;
+            if(func.parametros){
             func.parametros.Declaraciones.forEach(element => {
                 if(this.argumentos[i]!==undefined){
                     element.valor=this.argumentos[i].ejecutar(entorno);
@@ -81,7 +85,7 @@ class CallFunction extends Instruccion{
             });
 
             func.parametros.ejecutar(func.entorno)
-
+        }
 
             if (func.instrucciones){
                 func.instrucciones.forEach(element => {
@@ -89,7 +93,7 @@ class CallFunction extends Instruccion{
                 });
             }
             
-            console.log(func.devolver.ejecutar(func.entorno))
+            //console.log(func.devolver.ejecutar(func.entorno))
             
 
             return func.devolver.ejecutar(func.entorno)

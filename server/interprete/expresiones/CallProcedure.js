@@ -28,6 +28,7 @@ class CallProcedure extends Instruccion{
                 let parder=`${getGlobConta()}[label=")"]\n${this.id}->${getGlobConta()}\n`
                 let i=0;
                 let lista=""
+                if(this.argumentos){
                 this.argumentos.forEach(element => {
                     if(i!=this.argumentos.length-1){
                         let nodo=element.GenerarAST();
@@ -40,7 +41,7 @@ class CallProcedure extends Instruccion{
                     }
                     i++;
                 });
-
+            }
 
                 return `${this.id}[label="${this.label}"]\n${call}\n${nombre}\n${parizq}\n${lista}\n${parder}`
             }
@@ -52,6 +53,9 @@ class CallProcedure extends Instruccion{
         let proc=entorno.obtenerProcedimiento(this.id);
         if(proc){
             let i=0;
+
+            if(proc.listaParametros){
+
             proc.listaParametros.Declaraciones.forEach(element => {
                 if(this.argumentos[i]!==undefined){
                     element.valor=this.argumentos[i].ejecutar(entorno);
@@ -62,6 +66,8 @@ class CallProcedure extends Instruccion{
 
             
             proc.listaParametros.ejecutar(proc.entorno);
+            }
+
             proc.listaInstrucciones.forEach(element => {
                 element.ejecutar(proc.entorno);
             });

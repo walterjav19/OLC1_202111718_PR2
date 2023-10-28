@@ -46,12 +46,16 @@ class Function extends Instruccion{
                 let tipo=`${getGlobConta()}[label="${this.tipo}"]\n${this.id}->${getGlobConta()}\n`
 
                 let listaparam=""
+                if(this.parametros){
+
                 this.parametros.Declaraciones.forEach(element => {
                     aumentarGlobal();
                     listaparam+=`${getGlobConta()}[label="${element.id}"]\n${this.id}->${getGlobConta()}\n`
                     aumentarGlobal();
                     listaparam+=`${getGlobConta()}[label="${element.tipo}"]\n${this.id}->${getGlobConta()}\n`
                 });
+                }
+
 
                 if(this.Instruccion){
                     this.Instruccion.forEach(element => {
@@ -80,7 +84,9 @@ class Function extends Instruccion{
     ejecutar(entorno){
         let nuevoEntorno=new Entorno('FUNCION',entorno);
         ListaContexto.push(nuevoEntorno)
-        this.parametros.ejecutar(nuevoEntorno)
+        if(this.parametros){
+            this.parametros.ejecutar(nuevoEntorno)
+        }
         this.entorno=nuevoEntorno;
         entorno.AgregarFuncion(this.id,this);
     }

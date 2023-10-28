@@ -51,6 +51,7 @@ const Function=require('../interprete/expresiones/Function.js');
 const Procedure=require('../interprete/expresiones/Procedure.js');
 const CallFunction=require('../interprete/expresiones/CallFunction.js');
 const CallProcedure=require('../interprete/expresiones/CallProcedure.js');
+const SelectAllTable=require('../interprete/instrucciones/SelectAllTable.js');
 let condicion=[];
 %}
 
@@ -367,11 +368,14 @@ procedure:CREATE PROCEDURE ID listavariable AS BEGIN lista_instrucciones END{$$=
 ;
 
 call: CALL ID PARIZQ listaexpresion PARDER{$$=new CallProcedure($2,$4);}
+    | CALL ID PARIZQ PARDER{$$=new CallProcedure($2,null);}
 ;
 
 function
         :CREATE FUNCTION ID PARIZQ listavariable PARDER RETURNS tipo BEGIN lista_instrucciones RETURN expresion PYC END{$$=new Function($3,new ListDeclaration($5),$8,$10,$12, this._$.first_line, this._$.first_column);}
         |CREATE FUNCTION ID PARIZQ listavariable PARDER RETURNS tipo BEGIN RETURN expresion PYC END{$$=new Function($3,new ListDeclaration($5),$8,null,$11, this._$.first_line, this._$.first_column);}
+        |CREATE FUNCTION ID PARIZQ  PARDER RETURNS tipo BEGIN lista_instrucciones RETURN expresion PYC END{$$=new Function($3,null,$7,$9,$11, this._$.first_line, this._$.first_column);}
+        |CREATE FUNCTION ID PARIZQ  PARDER RETURNS tipo BEGIN RETURN expresion PYC END{$$=new Function($3,null,$7,null,$10, this._$.first_line, this._$.first_column);}
 ;
 
 print_instruccion
@@ -406,6 +410,7 @@ select
     | SELECT POR FROM ID {$$=new SelectTable($4);}
     | SELECT expresion AS ID{$$=new SelectAs($2,$4);}
     | SELECT listaid FROM ID WHERE expresion{$$=new SelectWhere($2,$4,$6,condicion);condicion=[];} 
+    | SELECT POR FROM ID WHERE expresion{$$=new SelectAllTable($4,$6,condicion);condicion=[];}
 ;
 
 
@@ -518,6 +523,7 @@ symbols:DECIMAL {$$ = new Dato($1,'DOUBLE', this._$.first_line, this._$.first_co
     | PARIZQ ID PARDER{$$=new Access($2, this._$.first_line, this._$.first_column);}
     | case    {$$=$1;}
     | ID PARIZQ listaexpresion PARDER{$$=new CallFunction($1,$3);}
+    | ID PARIZQ  PARDER{$$=new CallFunction($1,null);}
 ;
 
 aritmetica
